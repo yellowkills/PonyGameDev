@@ -31,9 +31,9 @@ namespace First_Game
             set
             {
                 position.X = MathHelper.Clamp(value.X, 0,
-                        Game1.MapWidthInPixels - Game1.ScreenWidth);
+                        Map.MapWidthInPixels - Game1.ScreenWidth);
                 position.Y = MathHelper.Clamp(value.Y, 0,
-                        Game1.MapHeightInPixels - Game1.ScreenHeight);
+                        Map.MapHeightInPixels - Game1.ScreenHeight);
             }
         }
 
@@ -59,20 +59,20 @@ namespace First_Game
 
         private void Track()
         {
-            if(heroPtr.position.X >= (position.X + Game1.screenWidth - (gamePtr.tileWidth*3)) )
+            if(heroPtr.position.X >= (position.X + Game1.screenWidth - (Tiles.tileWidth*3)) )
             {
                 ScrollRight();
             }
-            else if(heroPtr.position.X <= (position.X + (gamePtr.tileWidth*2)))
+            else if (heroPtr.position.X <= (position.X + (Tiles.tileWidth * 2)))
             {
                 ScrollLeft();
             }
 
-            if (heroPtr.position.Y >= (position.Y + Game1.screenHeight - (gamePtr.tileHeight * 3)))
+            if (heroPtr.position.Y >= (position.Y + Game1.screenHeight - (Tiles.tileHeight * 3)))
             {
                 ScrollDown();
             }
-            else if (heroPtr.position.Y <= (position.Y + (gamePtr.tileHeight * 2)))
+            else if (heroPtr.position.Y <= (position.Y + (Tiles.tileHeight * 2)))
             {
                 ScrollUp();
             }

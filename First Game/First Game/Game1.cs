@@ -21,11 +21,13 @@ namespace First_Game
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D spritesheet;
-        Texture2D wht, blk, clr, red;
+        
         Texture2D heroimg, heroLimg, heroRimg, swordimg, swordLimg, swordRimg, enemy1Normalimg, enemy1Damagedimg;
-        List<Texture2D> tiles;
-        Camera camera;
+        
+        private Camera camera;
         private kbdController keyControls;
+        private Map gameMap;
+        private Tiles tiles;
         
         Hero hero;
 
@@ -36,14 +38,9 @@ namespace First_Game
         SpriteFont debugFont;
         Vector2 dbug1, dbug2;// dbug3, dbug4, dbug5;
 
-        int[,] map;
-        public int tileHeight, tileWidth;
-        int tileMapWidth;
-        int tileMapHeight;
         public static int screenWidth;
         public static int screenHeight;
-        static int mapWidthInPixels;
-        static int mapHeightInPixels;
+        
 
 
         public Game1()
@@ -72,97 +69,28 @@ namespace First_Game
         {
             get { return screenHeight; }
         }
-        public static int MapWidthInPixels
-        {
-            get { return mapWidthInPixels; }
-        }
-        public static int MapHeightInPixels
-        {
-            get { return mapHeightInPixels; }
-        }
-        private Point VectorToCell(Vector2 vector)
-        {
-            return new Point(
-                        (int)(vector.X / tileWidth),
-                        (int)(vector.Y / tileHeight));
-        }
-        private Vector2 ViewPortVector()
-        {
-            return new Vector2(
-                    screenWidth + tileWidth,
-                    screenHeight + tileHeight);
-        }
+        
+       
         public void MarkTile(Point cell)
         {
             spriteBatch.Begin();
-            debug.X = tileWidth * cell.X + tileWidth / 2 - 1 - (int)camera.Position.X;
-            debug.Y = tileHeight * cell.Y + tileHeight / 2 - 1 - (int)camera.Position.Y;
-            spriteBatch.Draw(red, debug, Color.White);
+            debug.X = Tiles.tileWidth * cell.X + Tiles.tileWidth / 2 - 1 - (int)camera.Position.X;
+            debug.Y = Tiles.tileHeight * cell.Y + Tiles.tileHeight / 2 - 1 - (int)camera.Position.Y;
+            spriteBatch.Draw(tiles.red, debug, Color.White);
             spriteBatch.End();
         }
         public void MarkTile(Point cell, Color tint)
         {
             spriteBatch.Begin();
-            debug.X = tileWidth * cell.X + tileWidth / 2 - 1 - (int)camera.Position.X;
-            debug.Y = tileHeight * cell.Y + tileHeight / 2 - 1 - (int)camera.Position.Y;
-            spriteBatch.Draw(wht, debug, tint);
+            debug.X = Tiles.tileWidth * cell.X + Tiles.tileWidth / 2 - 1 - (int)camera.Position.X;
+            debug.Y = Tiles.tileHeight * cell.Y + Tiles.tileHeight / 2 - 1 - (int)camera.Position.Y;
+            spriteBatch.Draw(tiles.wht, debug, tint);
             spriteBatch.End();
         }
-        Point[] NearbyCells(Hero h)
-        {
-            List<Point> cells = new List<Point>();
-            Point topleft = VectorToCell(new Vector2(hero.position.X-tileMapWidth,hero.position.Y-tileHeight));
-            Point bottomright = VectorToCell(new Vector2(hero.position.X + hero.rect.Width + tileMapWidth,
-                                                         hero.position.Y + hero.rect.Height + tileHeight));
-            for (int i = topleft.Y; i <= bottomright.Y; i++)
-                for (int j = topleft.X; j <= bottomright.X; j++)
-                    cells.Add(new Point(j,i));
-
-            return cells.ToArray();
-        }
-
-        void CollisionTest(Hero h)
-        {
-            Point[] cells = NearbyCells(h);
-
-            Point top = VectorToCell(h.top);
-            Point midleftHIGH = VectorToCell(h.midleftHIGH);
-            Point midleftLOW = VectorToCell(h.midleftLOW);
-            Point midrightHIGH = VectorToCell(h.midrightHIGH);
-            Point midrightLOW = VectorToCell(h.midrightLOW);
-            Point botleft = VectorToCell(h.botleft);
-            Point botright = VectorToCell(h.botright);
+        
 
 
-            foreach (Point p in cells)
-            {
-                if (map[p.Y, p.X] == 1)
-                {
-                    if (p.Equals(midleftHIGH) || p.Equals(midleftLOW))
-                    {
-                        h.DeltaX = 0;
-                        h.position.X = (p.X + 1) * tileWidth;
-                    }
-                    if (p.Equals(midrightHIGH) || p.Equals(midrightLOW))
-                    {
-                        h.DeltaX = 0;
-                        h.position.X = (p.X - 1) * tileWidth;
-                    }
-                    if (h.DeltaY > 0 && (p.Equals(botleft) || p.Equals(botright)))
-                    {
-                        h.Land();
-                        h.position.Y = (p.Y - 2) * tileHeight;
-                    }
-                    else if (p.Equals(top))
-                    {
-                        h.DeltaY = 0;
-                        h.position.Y = (p.Y+1) * tileHeight;
-                    }
-
-
-                }
-            }
-        }
+        
 
 
 
@@ -174,57 +102,6 @@ namespace First_Game
         /// </summary>
         protected override void Initialize()
         {
-            tileHeight = 32;
-            tileWidth = 32;
-
-            tiles = new List<Texture2D>();
-
-            
-
-            map =   new int[40,40]  {
-                                        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},  //  01
-                                        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},  //  02
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  03
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  04
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1},  //  05
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1},  //  06
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1},  //  07
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,1,1},  //  08
-                                        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1},  //  09
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,0,0,0,1,0,0,0,0,0,0,1,1},  //  10
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1},  //  11
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,1,1},  //  12
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,1},  //  13
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  14
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1},  //  15
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1},  //  16
-                                        {1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1},  //  17
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,1,1},  //  18
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1},  //  19
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,1},  //  20
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  21
-                                        {1,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  22
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  23
-                                        {1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  24
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1},  //  25
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  26
-                                        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  27
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  28
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,1,1},  //  29
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  30
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  31
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1},  //  32
-                                        {1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,1},  //  33
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},  //  34
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  35
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  36
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  37
-                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  38
-                                        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},  //  39
-                                        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}   //  40
-
-                                    };
-
             dbug1 = new Vector2(5, 5);
             dbug2 = new Vector2(5, 25);
 
@@ -242,10 +119,7 @@ namespace First_Game
             debugFont = Content.Load<SpriteFont>("DebugFont");
             spritesheet = Content.Load<Texture2D>("spritesheet");
 
-            wht = Content.Load<Texture2D>("WhiteBox");
-            blk = Content.Load<Texture2D>("BlackBox");
-            clr = Content.Load<Texture2D>("ClearBox");
-            red = Content.Load<Texture2D>("RedBox");
+            /*Move all this to a function in the Hero/Entity class?*/
             heroimg = Content.Load<Texture2D>("Hero");
             heroLimg = Content.Load<Texture2D>("HeroLeft");
             heroRimg = Content.Load<Texture2D>("HeroRight");
@@ -255,16 +129,7 @@ namespace First_Game
             enemy1Normalimg = Content.Load<Texture2D>("Enemy1Normal");
             enemy1Damagedimg = Content.Load<Texture2D>("Enemy1Damaged");
             
-            tiles.Add(wht);
-            tiles.Add(blk);
-            tiles.Add(clr);
-            tiles.Add(red);
-
-            tileMapWidth = map.GetLength(1);
-            tileMapHeight = map.GetLength(0);
-
-            mapWidthInPixels = tileMapWidth * tileWidth;
-            mapHeightInPixels = tileMapHeight * tileHeight;
+            
 
             screenWidth = GraphicsDevice.Viewport.Width;
             screenHeight = GraphicsDevice.Viewport.Height;
@@ -279,6 +144,8 @@ namespace First_Game
             hero = new Hero(heroRimg, swordimg, startPos, walkLeft, walkRight);
             camera = new Camera(hero,this);
             keyControls = new kbdController(this, hero);
+            tiles = new Tiles(this);
+            gameMap = new Map(this, hero, camera, tiles);
 
         }
 
@@ -323,9 +190,9 @@ namespace First_Game
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            DrawMap();
+            gameMap.DrawMap(spriteBatch);
 
-            hero.Draw(spriteBatch, camera, wht);
+            hero.Draw(spriteBatch, camera, tiles.wht);
 
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
 
@@ -339,19 +206,19 @@ namespace First_Game
 
             if (DEBUG)
             {
-                Point[] cells = NearbyCells(hero);
+                Point[] cells = Tiles.NearbyCells(hero);
 
-                Point top = VectorToCell(hero.top);
-                Point midleftHIGH = VectorToCell(hero.midleftHIGH);
-                Point midleftLOW = VectorToCell(hero.midleftLOW);
-                Point midrightHIGH = VectorToCell(hero.midrightHIGH);
-                Point midrightLOW = VectorToCell(hero.midrightLOW);
-                Point botleft = VectorToCell(hero.botleft);
-                Point botright = VectorToCell(hero.botright);
+                Point top = Tiles.VectorToCell(hero.top);
+                Point midleftHIGH = Tiles.VectorToCell(hero.midleftHIGH);
+                Point midleftLOW = Tiles.VectorToCell(hero.midleftLOW);
+                Point midrightHIGH = Tiles.VectorToCell(hero.midrightHIGH);
+                Point midrightLOW = Tiles.VectorToCell(hero.midrightLOW);
+                Point botleft = Tiles.VectorToCell(hero.botleft);
+                Point botright = Tiles.VectorToCell(hero.botright);
 
                 foreach (Point p in cells)
                 {
-                    if (map[p.Y, p.X] == 1 && (p.Equals(botleft) || p.Equals(botright) ||
+                    if (gameMap.map[p.Y, p.X] == 1 && (p.Equals(botleft) || p.Equals(botright) ||
                                                p.Equals(midleftHIGH) || p.Equals(midleftLOW) ||
                                                p.Equals(midrightHIGH) || p.Equals(midrightLOW) ||
                                                p.Equals(top)))
@@ -361,40 +228,53 @@ namespace First_Game
                 }
             }
 
-            
-
             base.Draw(gameTime);
         }
 
-        private void DrawMap()
+
+        //Should be moved to Hero.
+        void CollisionTest(Hero h)
         {
-            Point cameraPoint = VectorToCell(camera.Position);
-            Point viewPoint = VectorToCell(camera.Position +
-                                ViewPortVector());
+            Point[] cells = Tiles.NearbyCells(h);
 
-            Point min = new Point();
-            Point max = new Point();
+            Point top = Tiles.VectorToCell(h.top);
+            Point midleftHIGH = Tiles.VectorToCell(h.midleftHIGH);
+            Point midleftLOW = Tiles.VectorToCell(h.midleftLOW);
+            Point midrightHIGH = Tiles.VectorToCell(h.midrightHIGH);
+            Point midrightLOW = Tiles.VectorToCell(h.midrightLOW);
+            Point botleft = Tiles.VectorToCell(h.botleft);
+            Point botright = Tiles.VectorToCell(h.botright);
 
-            min.X = cameraPoint.X;
-            min.Y = cameraPoint.Y;
-            max.X = (int)Math.Min(viewPoint.X, map.GetLength(1));
-            max.Y = (int)Math.Min(viewPoint.Y, map.GetLength(0));
 
-            Rectangle tileRectangle = new Rectangle(0, 0, tileWidth, tileHeight);
-
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
-            for (int y = min.Y; y < max.Y; y++)
+            foreach (Point p in cells)
             {
-                for (int x = min.X; x < max.X; x++)
+                if (gameMap.map[p.Y, p.X] == 1)
                 {
-                    tileRectangle.X = x * tileWidth - (int)camera.Position.X;
-                    tileRectangle.Y = y * tileHeight - (int)camera.Position.Y;
-                    spriteBatch.Draw(tiles[map[y, x]],
-                        tileRectangle,
-                        Color.White);
+                    if (p.Equals(midleftHIGH) || p.Equals(midleftLOW))
+                    {
+                        h.DeltaX = 0;
+                        h.position.X = (p.X + 1) * Tiles.tileWidth;
+                    }
+                    if (p.Equals(midrightHIGH) || p.Equals(midrightLOW))
+                    {
+                        h.DeltaX = 0;
+                        h.position.X = (p.X - 1) * Tiles.tileWidth;
+                    }
+                    if (h.DeltaY > 0 && (p.Equals(botleft) || p.Equals(botright)))
+                    {
+                        h.Land();
+                        h.position.Y = (p.Y - 2) * Tiles.tileHeight;
+                    }
+                    else if (p.Equals(top))
+                    {
+                        h.DeltaY = 0;
+                        h.position.Y = (p.Y + 1) * Tiles.tileHeight;
+                    }
+
+
                 }
             }
-            spriteBatch.End();
         }
+        
     }
 }
