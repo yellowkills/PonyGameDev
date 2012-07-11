@@ -28,7 +28,7 @@ namespace First_Game
         Texture2D heroimg, heroLimg, heroRimg, swordimg, swordLimg, swordRimg, enemy1Normalimg, enemy1Damagedimg;
         List<Texture2D> tiles;
         Camera camera;
-        Vector2 motion;
+        
         Hero hero;
 
         bool DEBUG;
@@ -38,11 +38,11 @@ namespace First_Game
         Vector2 dbug1, dbug2;// dbug3, dbug4, dbug5;
 
         int[,] map;
-        int tileHeight, tileWidth;
+        public int tileHeight, tileWidth;
         int tileMapWidth;
         int tileMapHeight;
-        static int screenWidth;
-        static int screenHeight;
+        public static int screenWidth;
+        public static int screenHeight;
         static int mapWidthInPixels;
         static int mapHeightInPixels;
 
@@ -52,8 +52,9 @@ namespace First_Game
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             DEBUG = true;
-            camera = new Camera();
+            
             this.IsMouseVisible = true;
+            
 
             graphics.PreferredBackBufferWidth = 1024;
             graphics.PreferredBackBufferHeight = 768;
@@ -63,22 +64,7 @@ namespace First_Game
         }
 
 
-        private void ScrollRight()
-        {
-            motion.X = 1;
-        }
-        private void ScrollDown()
-        {
-            motion.Y = 1;
-        }
-        private void ScrollLeft()
-        {
-            motion.X = -1;
-        }
-        private void ScrollUp()
-        {
-            motion.Y = -1;
-        }
+        
         public static int ScreenWidth
         {
             get { return screenWidth; }
@@ -295,6 +281,7 @@ namespace First_Game
             Animation walkRight = new Animation(spritesheet, Rframes, 32,64,4,5);
             Vector2 startPos = new Vector2(100, 100);
             hero = new Hero(heroRimg, swordimg, startPos, walkLeft, walkRight);
+            camera = new Camera(hero,this);
         }
 
         /// <summary>
@@ -313,10 +300,15 @@ namespace First_Game
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
+            /*
+             * All keyboard logic should be split off into a separate class
+             */
+
             currentKeyboardState = Keyboard.GetState();
             currentMouseState = Mouse.GetState();
             keys = currentKeyboardState.GetPressedKeys();
-            motion = Vector2.Zero;
+            camera.resetMotion();
 
             hero.weaponimg = swordimg;
 
@@ -349,18 +341,23 @@ namespace First_Game
                 else
                     switch (key)
                     {
+                        /* 
+                         * 
                         case Keys.Up:
-                            ScrollUp();
+                            camera.ScrollUp();
                             break;
                         case Keys.Down:
-                            ScrollDown();
+                            camera.ScrollDown();
                             break;
                         case Keys.Left:
-                            ScrollLeft();
+                            camera.ScrollLeft();
                             break;
                         case Keys.Right:
-                            ScrollRight();
+                            camera.ScrollRight();
                             break;
+                         * 
+                         * Disabling keyboard control of the Camera while working on Camera AI
+                         */
                         case Keys.W:
                             hero.MoveUp();
                             break;
@@ -375,11 +372,9 @@ namespace First_Game
                             break;
                     }
             }
-            if (motion != Vector2.Zero)
-            {
-                motion.Normalize();
-                camera.Position += motion * camera.Speed;
-            }
+            
+
+            camera.Update();
 
             hero.Update(gameTime);
             CollisionTest(hero);
@@ -402,7 +397,7 @@ namespace First_Game
 
             hero.Draw(spriteBatch, camera, wht);
 
-            spriteBatch.Begin(SpriteBlendMode.AlphaBlend);
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
 
             if (DEBUG)
             {
@@ -457,7 +452,7 @@ namespace First_Game
 
             Rectangle tileRectangle = new Rectangle(0, 0, tileWidth, tileHeight);
 
-            spriteBatch.Begin(SpriteBlendMode.AlphaBlend);
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
             for (int y = min.Y; y < max.Y; y++)
             {
                 for (int x = min.X; x < max.X; x++)

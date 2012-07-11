@@ -8,14 +8,13 @@ namespace First_Game
 {
     class Camera
     {
-        Vector2 position;
-        float speed;
+        private Vector2 position;
+        private float speed;
+        private Vector2 motion;
 
-        public Camera()
-        {
-            position = new Vector2();
-            speed = 10.0f;
-        }
+        /***Pointers***/
+        private Game1 gamePtr;
+        private Hero heroPtr;
 
         public float Speed
         {
@@ -36,6 +35,73 @@ namespace First_Game
                 position.Y = MathHelper.Clamp(value.Y, 0,
                         Game1.MapHeightInPixels - Game1.ScreenHeight);
             }
+        }
+
+        /******************************/
+
+        public Camera(Hero heroPtr, Game1 parent)
+        {
+            gamePtr = parent;
+            this.heroPtr = heroPtr;
+            position = new Vector2();
+            speed = 10.0f;
+        }
+
+        public void Update()
+        {
+            Track();
+            if (motion != Vector2.Zero)
+            {
+                motion.Normalize();
+                Position += motion * Speed;
+            }
+        }
+
+        private void Track()
+        {
+            if(heroPtr.position.X >= (position.X + Game1.screenWidth - (gamePtr.tileWidth*3)) )
+            {
+                ScrollRight();
+            }
+            else if(heroPtr.position.X <= (position.X + (gamePtr.tileWidth*2)))
+            {
+                ScrollLeft();
+            }
+
+            if (heroPtr.position.Y >= (position.Y + Game1.screenHeight - (gamePtr.tileHeight * 3)))
+            {
+                ScrollDown();
+            }
+            else if (heroPtr.position.Y <= (position.Y + (gamePtr.tileHeight * 2)))
+            {
+                ScrollUp();
+            }
+        }
+
+        /***/
+
+        public void ScrollRight()
+        {
+            motion.X = 1;
+        }
+        public void ScrollDown()
+        {
+            motion.Y = 1;
+        }
+        public void ScrollLeft()
+        {
+            motion.X = -1;
+        }
+        public void ScrollUp()
+        {
+            motion.Y = -1;
+        }
+        
+        /***/
+
+        public void resetMotion()
+        {
+            motion = Vector2.Zero;
         }
     }
 }

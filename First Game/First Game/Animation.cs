@@ -74,14 +74,14 @@ namespace First_Game
         public void DrawFirstFrame(SpriteBatch spriteBatch, Rectangle rect)
         {
             clip.X = (int)frames[0].X;
-            spriteBatch.Begin(SpriteBlendMode.AlphaBlend);
+            spriteBatch.Begin(SpriteSortMode.BackToFront,BlendState.NonPremultiplied);
             spriteBatch.Draw(spritesheet, rect, clip, Color.White);
             spriteBatch.End();
         }
 
         public void Draw(SpriteBatch spriteBatch, Rectangle rect)
         {
-            spriteBatch.Begin(SpriteBlendMode.AlphaBlend);
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
             spriteBatch.Draw(spritesheet, rect, clip, Color.White);
             spriteBatch.End();
 
