@@ -130,6 +130,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="TestLevel.cs" />
     <Compile Include="Tiles.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -45,7 +45,7 @@ namespace First_Game
         GameScreen activescreen;
         TestLevel testlvl;
 
-
+        // Commit test 1 WTF DUDE!
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -90,11 +90,6 @@ namespace First_Game
             spriteBatch.Draw(tiles.wht, debug, tint);
             spriteBatch.End();
         }
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> added GameScreens, and fixing Entity and Hero
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
