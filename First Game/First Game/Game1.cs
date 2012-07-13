@@ -45,7 +45,6 @@ namespace First_Game
         GameScreen activescreen;
         TestLevel testlvl;
 
-        // Commit test 1 WTF DUDE!
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -144,18 +143,14 @@ namespace First_Game
 
 
 
-
-
-
-
-
-            hero = new Hero(this, spriteBatch, camera,startPos, heroimg);
+            hero = new Hero(this, spriteBatch, camera, gameMap,startPos, heroimg);
             camera = new Camera(hero, this);
-            hero.camera = camera;
             keyControls = new kbdController(this, hero);
             tiles = new Tiles(this);
             gameMap = new Map(this, hero, camera, tiles);
 
+            hero.camera = camera;
+            hero.map = gameMap;
 
             // loading the level
             testlvl = new TestLevel(this, spriteBatch);

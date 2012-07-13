@@ -17,24 +17,25 @@ namespace First_Game
     class Hero : Entity
     {
         public Texture2D img;
-        public Rectangle pxlrect;
         public bool DEBUG = true;
         const int heroHeight = 64;
         const int heroWidth = 32;
+        public Map map;
 
-        public Hero(Game game, SpriteBatch spriteBatch, Camera camera,Vector2 position, Texture2D img)
+        public Hero(Game game, SpriteBatch spriteBatch, Camera camera, Map map, Vector2 position, Texture2D img)
             : base(game, spriteBatch, camera)
         {
             this.position = position;
             this.img = img;
+            this.map = map;
 
-            xAcceleration = .2f;
+            xAcceleration = .1f;
             yAcceleration = .5f;
             friction = .9f;
             airFriction = .98f;
             gravity = .2f;
             jumpforce = -6.0f;
-            maxSpeedX = 4.5f;
+            maxSpeedX = 3.5f;
             maxSpeedY = 7.0f;
 
 
@@ -84,41 +85,6 @@ namespace First_Game
             midrightLOW.X = position.X + rect.Width;
             midrightLOW.Y = position.Y + rect.Height * (9.0f / 10.0f) - 4;
         }
-        
-        void drawCollisionPoints(SpriteBatch spriteBatch, Camera camera,Texture2D pxl)
-        {
-            spriteBatch.Begin();
-
-            pxlrect.X = (int)top.X - 1 - (int)camera.Position.X;
-            pxlrect.Y = (int)top.Y - 1 - (int)camera.Position.Y;
-            spriteBatch.Draw(pxl, pxlrect, Color.Lime);
-
-            pxlrect.X = (int)botleft.X - 1 - (int)camera.Position.X;
-            pxlrect.Y = (int)botleft.Y - 1 - (int)camera.Position.Y;
-            spriteBatch.Draw(pxl, pxlrect, Color.Lime);
-
-            pxlrect.X = (int)botright.X - 1 - (int)camera.Position.X;
-            pxlrect.Y = (int)botright.Y - 1 - (int)camera.Position.Y;
-            spriteBatch.Draw(pxl, pxlrect, Color.Lime);
-
-            pxlrect.X = (int)midleftHIGH.X - 1 - (int)camera.Position.X;
-            pxlrect.Y = (int)midleftHIGH.Y - 1 - (int)camera.Position.Y;
-            spriteBatch.Draw(pxl, pxlrect, Color.Lime);
-
-            pxlrect.X = (int)midleftLOW.X - 1 - (int)camera.Position.X;
-            pxlrect.Y = (int)midleftLOW.Y - 1 - (int)camera.Position.Y;
-            spriteBatch.Draw(pxl, pxlrect, Color.Lime);
-
-            pxlrect.X = (int)midrightHIGH.X - 1 - (int)camera.Position.X;
-            pxlrect.Y = (int)midrightHIGH.Y - 1 - (int)camera.Position.Y;
-            spriteBatch.Draw(pxl, pxlrect, Color.Lime);
-
-            pxlrect.X = (int)midrightLOW.X - 1 - (int)camera.Position.X;
-            pxlrect.Y = (int)midrightLOW.Y - 1 - (int)camera.Position.Y;
-            spriteBatch.Draw(pxl, pxlrect, Color.Lime);
-
-            spriteBatch.End();
-        }
 
         public override void Update(GameTime gameTime)
         {
@@ -130,6 +96,7 @@ namespace First_Game
                     DeltaX *= friction;
                 if (Math.Abs(DeltaX) < 0.1f) DeltaX = 0;
             }
+
             DeltaY += gravity;
 
             if(state != State.INAIR) state = (Math.Abs(DeltaX) < 1) ? State.STANDING : State.RUNNING;
@@ -147,33 +114,11 @@ namespace First_Game
             spriteBatch.Draw(img,rect,Color.White);
             spriteBatch.End();
 
-
-            /*
             if (DEBUG)
             {
-                Point[] cells = Tiles.NearbyCells(map);
-
-                Point top = Tiles.VectorToCell(hero.top);
-                Point midleftHIGH = Tiles.VectorToCell(hero.midleftHIGH);
-                Point midleftLOW = Tiles.VectorToCell(hero.midleftLOW);
-                Point midrightHIGH = Tiles.VectorToCell(hero.midrightHIGH);
-                Point midrightLOW = Tiles.VectorToCell(hero.midrightLOW);
-                Point botleft = Tiles.VectorToCell(hero.botleft);
-                Point botright = Tiles.VectorToCell(hero.botright);
-
-                foreach (Point p in cells)
-                {
-                    if (gameMap.map[p.Y, p.X] == 1 && (p.Equals(botleft) || p.Equals(botright) ||
-                                               p.Equals(midleftHIGH) || p.Equals(midleftLOW) ||
-                                               p.Equals(midrightHIGH) || p.Equals(midrightLOW) ||
-                                               p.Equals(top)))
-                        MarkTile(p, Color.Yellow);
-                    else
-                        MarkTile(p);
-                }
-
-                drawCollisionPoints(spriteBatch, camera, pxl);
-            }*/
+                drawTestedCells(map.map);
+                drawCollisionPoints();
+            }
         }
     }
 }
