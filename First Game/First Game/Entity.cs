@@ -93,7 +93,6 @@ namespace First_Game
         {
             DeltaX -= xAcceleration;
             if (DeltaX < 0)
-
                 direction = Direction.LEFT;
         }
         public void MoveRight()
@@ -122,8 +121,8 @@ namespace First_Game
         }
         public void Land()
         {
-            state = State.RUNNING;
             DeltaY = 0;
+            state = (Math.Abs(DeltaX) == 0)? State.STANDING : State.RUNNING;
         }
 
 

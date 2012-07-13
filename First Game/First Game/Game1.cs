@@ -112,7 +112,7 @@ namespace First_Game
             enemy1Damagedimg = Content.Load<Texture2D>("Enemy1Damaged");
 
             // TWILIGHT!
-            spritesheet_Twilight = Content.Load<Texture2D>("Enemy1Damaged");
+            spritesheet_Twilight = Content.Load<Texture2D>("twiWalk");
 
             screenWidth = GraphicsDevice.Viewport.Width;
             screenHeight = GraphicsDevice.Viewport.Height;
@@ -129,14 +129,13 @@ namespace First_Game
 
             Vector2 startPos = new Vector2(100, 100);
 
-            hero = new Hero(this, spriteBatch, camera, gameMap,startPos, 8, heroimg);
             camera = new Camera(this);
+            hero = new Hero(this, spriteBatch, camera, gameMap,startPos, 8, spritesheet_Twilight);
             camera.lockEntity(hero);
             keyControls = new kbdController(this, hero);
             tiles = new Tiles(this);
             gameMap = new Map(this, hero, camera, tiles);
 
-            hero.camera = camera;
             hero.map = gameMap;
 
             // loading the level
