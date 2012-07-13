@@ -42,14 +42,14 @@ namespace First_Game
                                     // occasionally triggers damage.
 
         // Custom Variables
-        protected int HP
+        public int HP
         {
             get { return hp; }
             set
             {
                 if (value <= 0)
                 {
-                    hp = value;
+                    hp = 0;
                     isDead = true;
                 }
                 else if (value >= startingHP)
@@ -96,6 +96,7 @@ namespace First_Game
         {
             this.position = position;
             this.startingHP = startingHP;
+            HP = startingHP;
 
 
             // These values are just so the compiler will shut up. I highly 
@@ -111,21 +112,21 @@ namespace First_Game
         /*      DAMAGE     */
 
         // Causes one point of damage, which lowers the creatures health by one.
-        protected void take1Damage() 
+        public void takeDamage() 
         { 
             HP -= 1;
             isRecovering = true;
         }
 
         // Causes a specified point of damage, which lowers the creatures health by that amount.
-        protected void takeDamage(int amountOfDamage)
+        public void takeDamage(int amountOfDamage)
         {
             HP -= amountOfDamage;
             isRecovering = true;
         }
 
         // Reduces the creatures health to zero
-        protected void kill()
+        public void kill()
         {
             HP = 0;
         }

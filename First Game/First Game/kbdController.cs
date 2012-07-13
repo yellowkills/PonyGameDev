@@ -54,6 +54,9 @@ namespace First_Game
                             gamePtr.DEBUG = !gamePtr.DEBUG;
                             playerPtr.DEBUG = !playerPtr.DEBUG;
                             break;
+                        case Keys.Delete:
+                            playerPtr.takeDamage();
+                            break;
                         case Keys.Escape:
                             gamePtr.Exit();
                             break;

@@ -23,6 +23,8 @@ namespace First_Game
         Texture2D spritesheet;
         
         Texture2D heroimg, heroLimg, heroRimg, swordimg, swordLimg, swordRimg, enemy1Normalimg, enemy1Damagedimg;
+
+        Texture2D spritesheet_Twilight;
         
         private Camera camera;
         private kbdController keyControls;
@@ -108,6 +110,9 @@ namespace First_Game
             swordRimg = Content.Load<Texture2D>("Sword1SwingR");
             enemy1Normalimg = Content.Load<Texture2D>("Enemy1Normal");
             enemy1Damagedimg = Content.Load<Texture2D>("Enemy1Damaged");
+
+            // TWILIGHT!
+            spritesheet_Twilight = Content.Load<Texture2D>("Enemy1Damaged");
 
             screenWidth = GraphicsDevice.Viewport.Width;
             screenHeight = GraphicsDevice.Viewport.Height;

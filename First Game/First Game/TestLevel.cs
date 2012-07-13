@@ -20,6 +20,7 @@ namespace First_Game
         private Hero hero;
         private Map map;
         private Camera camera;
+        private HUD hud;
 
         // Protected Variables : none
         // Public Variables : none
@@ -28,6 +29,7 @@ namespace First_Game
         // Default Constructor
         public TestLevel(Game game, SpriteBatch spriteBatch) : base(game, spriteBatch)
         {
+            hud = new HUD(game, spriteBatch);
         }
         
 
@@ -44,6 +46,11 @@ namespace First_Game
         {
             this.hero = hero;
             Components.Add(hero);
+            hud.setHero(hero);
+            hud.Show();
+            Components.Add(hud);
+
+            
         }
 
 
