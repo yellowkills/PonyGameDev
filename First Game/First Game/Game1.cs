@@ -124,7 +124,7 @@ namespace First_Game
 
             Vector2 startPos = new Vector2(100, 100);
 
-            hero = new Hero(this, spriteBatch, camera, gameMap,startPos, heroimg);
+            hero = new Hero(this, spriteBatch, camera, gameMap,startPos, 8, heroimg);
             camera = new Camera(hero, this);
             keyControls = new kbdController(this, hero);
             tiles = new Tiles(this);

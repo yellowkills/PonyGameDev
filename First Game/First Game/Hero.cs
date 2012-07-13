@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Storage;
 
 namespace First_Game
 {
-    class Hero : Entity
+    class Hero : KillableCreature
     {
         // [Private Variables]
         private const int _heroHeight = 64;
@@ -29,32 +29,8 @@ namespace First_Game
 
  
         // Default Constructor
-        public Hero(Game game, SpriteBatch spriteBatch, Camera camera)
-            : base(game, spriteBatch, camera)
-        {
-            // Physics stuff
-            xAcceleration = .3f;
-            yAcceleration = .5f;
-            friction = .7f;
-            airFriction = .98f;
-            gravity = .4f;
-            jumpforce = -20.0f;
-            maxSpeedX = 6.5f;
-            maxSpeedY = 9.0f;
-
-            direction = Direction.RIGHT;
-            state = State.STANDING;
-
-            rect = new Rectangle((int)position.X, (int)position.Y, _heroWidth, _heroHeight);
-            pxlrect = new Rectangle(0, 0, 3, 3);
-
-            deltaX = 0.0f;
-            deltaY = 0.0f;
-        }
-
-        // Robust Constructor (protip: use this one!)
-        public Hero(Game game, SpriteBatch spriteBatch, Camera camera, Map map, Vector2 position, Texture2D img)
-            : base(game, spriteBatch, camera)
+        public Hero(Game game, SpriteBatch spriteBatch, Camera camera, Map map, Vector2 position, int startingHealth,Texture2D img)
+            : base(game, spriteBatch, camera, position, startingHealth)
         {
             this.position = position;
             this.img = img;
@@ -68,7 +44,7 @@ namespace First_Game
             gravity = .4f;
             jumpforce = -20.0f;
             maxSpeedX = 6.5f;
-            maxSpeedY = 7.0f;
+            maxSpeedY = 9.0f;
 
             direction = Direction.RIGHT;
             state = State.STANDING;

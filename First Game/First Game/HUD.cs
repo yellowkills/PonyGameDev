@@ -22,7 +22,7 @@ namespace First_Game
 
 
         // Default Constructor
-        public HUD(Game game, SpriteBatch spriteBatch)
+        public HUD(Game game, SpriteBatch spriteBatch, Hero hero)
             : base(game, spriteBatch)
         {
         }

@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Storage;
 
 namespace First_Game
 {
-    class Enemy : KillableCreature //TODO
+    class MenuComponent : Microsoft.Xna.Framework.DrawableGameComponent //TODO
     {
         // [Private Variables] : none
         // [Protected Variables] : none
@@ -22,9 +22,10 @@ namespace First_Game
 
 
         // Default Constructor
-        public Enemy(Game game, SpriteBatch spriteBatch, Camera camera, Vector2 position, int startingHealth)
-            : base(game, spriteBatch, camera, position, startingHealth)
+        public MenuComponent(Game game, SpriteBatch spriteBatch)
+            : base(game)
         {
+
         }
     }
 }
