@@ -36,11 +36,8 @@ namespace First_Game
             gravity = .4f;
             jumpforce = -20.0f;
             maxSpeedX = 6.5f;
-<<<<<<< HEAD
             maxSpeedY = 5.0f;
-=======
-            maxSpeedY = 7.0f;
->>>>>>> Changetest2
+
 
             direction = Direction.RIGHT;
             state = State.STANDING;
