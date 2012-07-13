@@ -36,7 +36,7 @@ namespace First_Game
             gravity = .4f;
             jumpforce = -20.0f;
             maxSpeedX = 6.5f;
-            maxSpeedY = 9.0f;
+            maxSpeedY = 5.0f;
 
             direction = Direction.RIGHT;
             state = State.STANDING;
