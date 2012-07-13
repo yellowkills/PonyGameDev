@@ -87,6 +87,29 @@ namespace First_Game
             walkLeft = new Animation(spritesheet, Lframes, 96, 64, 12, 3);
             walkRight = new Animation(spritesheet, Rframes, 96, 64, 12, 3);
         }
+        private void refreshCollisionPoints()
+        {
+            top.X = position.X + rect.Width / 1.5f;
+            top.Y = position.Y;
+
+            botleft.X = position.X + rect.Width / 3;
+            botleft.Y = position.Y + rect.Height;
+
+            botright.X = position.X + rect.Width / 1.4f;
+            botright.Y = position.Y + rect.Height;
+
+            midleftHIGH.X = position.X + rect.Width / 5;
+            midleftHIGH.Y = position.Y + rect.Height * (4.0f / 10.0f);
+
+            midleftLOW.X = position.X + rect.Width / 5;
+            midleftLOW.Y = position.Y + rect.Height * (9.0f / 10.0f) - 4;
+
+            midrightHIGH.X = position.X + rect.Width / 1.3f;
+            midrightHIGH.Y = position.Y + rect.Height * (4.0f / 10.0f);
+
+            midrightLOW.X = position.X + rect.Width / 1.3f;
+            midrightLOW.Y = position.Y + rect.Height * (9.0f / 10.0f) - 4;
+        }
 
 
         // Base Game Functions
@@ -110,6 +133,7 @@ namespace First_Game
             if(state != State.INAIR) state = (Math.Abs(DeltaX) < 1) ? State.STANDING : State.RUNNING;
             
             RefreshPosition();
+            refreshCollisionPoints();
             CollisionTest(map.map);
         }
         public override void Draw(GameTime gameTime)

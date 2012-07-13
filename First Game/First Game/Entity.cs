@@ -175,7 +175,7 @@ namespace First_Game
                     if (p.Equals(midrightHIGH) || p.Equals(midrightLOW))
                     {
                         DeltaX = 0;
-                        position.X = (p.X - 1) * _tileWidth;
+                        position.X = (p.X) * _tileWidth - rect.Width;
                     }
                     if (DeltaY > 0 && (p.Equals(botleft) || p.Equals(botright)))
                     {
@@ -265,28 +265,6 @@ namespace First_Game
         {
             position.X += DeltaX;
             position.Y += DeltaY;
-
-
-            top.X = position.X + rect.Width / 2;
-            top.Y = position.Y;
-
-            botleft.X = position.X + 7;
-            botleft.Y = position.Y + rect.Height;
-
-            botright.X = position.X + rect.Width - 7;
-            botright.Y = position.Y + rect.Height;
-
-            midleftHIGH.X = position.X;
-            midleftHIGH.Y = position.Y + rect.Height * (4.0f / 10.0f);
-
-            midleftLOW.X = position.X;
-            midleftLOW.Y = position.Y + rect.Height * (9.0f / 10.0f) - 4;
-
-            midrightHIGH.X = position.X + rect.Width;
-            midrightHIGH.Y = position.Y + rect.Height * (4.0f / 10.0f);
-
-            midrightLOW.X = position.X + rect.Width;
-            midrightLOW.Y = position.Y + rect.Height * (9.0f / 10.0f) - 4;
         }
 
 
