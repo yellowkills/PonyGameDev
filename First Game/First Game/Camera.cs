@@ -8,6 +8,7 @@ namespace First_Game
 {
     class Camera
     {
+        //Useless comment for git testing!
         private Vector2 position;
         private float speed;
         private Vector2 motion;
