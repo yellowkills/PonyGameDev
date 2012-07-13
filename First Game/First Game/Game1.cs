@@ -40,7 +40,10 @@ namespace First_Game
 
         public static int screenWidth;
         public static int screenHeight;
-        
+
+
+        GameScreen activescreen;
+        TestLevel testlvl;
 
 
         public Game1()
@@ -87,12 +90,11 @@ namespace First_Game
             spriteBatch.Draw(tiles.wht, debug, tint);
             spriteBatch.End();
         }
+<<<<<<< HEAD
         
+=======
 
-
-        
-
-
+>>>>>>> added GameScreens, and fixing Entity and Hero
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -105,6 +107,8 @@ namespace First_Game
             dbug1 = new Vector2(5, 5);
             dbug2 = new Vector2(5, 25);
 
+            
+
             base.Initialize();
         }
 
@@ -115,6 +119,7 @@ namespace First_Game
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            
 
             debugFont = Content.Load<SpriteFont>("DebugFont");
             spritesheet = Content.Load<Texture2D>("spritesheet");
@@ -128,25 +133,48 @@ namespace First_Game
             swordRimg = Content.Load<Texture2D>("Sword1SwingR");
             enemy1Normalimg = Content.Load<Texture2D>("Enemy1Normal");
             enemy1Damagedimg = Content.Load<Texture2D>("Enemy1Damaged");
-            
-            
 
             screenWidth = GraphicsDevice.Viewport.Width;
             screenHeight = GraphicsDevice.Viewport.Height;
 
             debug = new Rectangle(0, 0, 3, 3);
 
+
+            // Animation [UNUSED]
             Vector2[] Rframes = new Vector2[4] { new Vector2(0, 32), new Vector2(32, 32), new Vector2(64, 32), new Vector2(96, 32) };
             Vector2[] Lframes = new Vector2[4] { new Vector2(0, 96), new Vector2(32, 96), new Vector2(64, 96), new Vector2(96, 96) };
             Animation walkLeft = new Animation(spritesheet, Lframes, 32, 64, 4, 5);
             Animation walkRight = new Animation(spritesheet, Rframes, 32,64,4,5);
             Vector2 startPos = new Vector2(100, 100);
-            hero = new Hero(heroRimg, swordimg, startPos, walkLeft, walkRight);
-            camera = new Camera(hero,this);
+
+
+
+
+
+
+
+
+            hero = new Hero(this, spriteBatch, camera,startPos, heroimg);
+            camera = new Camera(hero, this);
+            hero.camera = camera;
             keyControls = new kbdController(this, hero);
             tiles = new Tiles(this);
             gameMap = new Map(this, hero, camera, tiles);
 
+
+            // loading the level
+            testlvl = new TestLevel(this, spriteBatch);
+            testlvl.LoadCamera(camera);
+            testlvl.LoadHero(hero);
+            testlvl.LoadMap(gameMap);
+
+            Components.Add(testlvl);
+
+
+
+
+            activescreen = testlvl;
+            testlvl.Show();
         }
 
         /// <summary>
@@ -168,14 +196,11 @@ namespace First_Game
 
             camera.resetMotion();
 
-            hero.weaponimg = swordimg;
-
-
             keyControls.kbdUpdate();
             camera.Update();
 
             hero.Update(gameTime);
-            CollisionTest(hero);
+            hero.CollisionTest(gameMap.map);
             
 
             base.Update(gameTime);
@@ -190,10 +215,6 @@ namespace First_Game
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            gameMap.DrawMap(spriteBatch);
-
-            hero.Draw(spriteBatch, camera, tiles.wht);
-
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
 
             if (DEBUG)
@@ -204,77 +225,7 @@ namespace First_Game
 
             spriteBatch.End();
 
-            if (DEBUG)
-            {
-                Point[] cells = Tiles.NearbyCells(hero);
-
-                Point top = Tiles.VectorToCell(hero.top);
-                Point midleftHIGH = Tiles.VectorToCell(hero.midleftHIGH);
-                Point midleftLOW = Tiles.VectorToCell(hero.midleftLOW);
-                Point midrightHIGH = Tiles.VectorToCell(hero.midrightHIGH);
-                Point midrightLOW = Tiles.VectorToCell(hero.midrightLOW);
-                Point botleft = Tiles.VectorToCell(hero.botleft);
-                Point botright = Tiles.VectorToCell(hero.botright);
-
-                foreach (Point p in cells)
-                {
-                    if (gameMap.map[p.Y, p.X] == 1 && (p.Equals(botleft) || p.Equals(botright) ||
-                                               p.Equals(midleftHIGH) || p.Equals(midleftLOW) ||
-                                               p.Equals(midrightHIGH) || p.Equals(midrightLOW) ||
-                                               p.Equals(top)))
-                        MarkTile(p, Color.Yellow);
-                    else
-                        MarkTile(p);
-                }
-            }
-
             base.Draw(gameTime);
         }
-
-
-        //Should be moved to Hero.
-        void CollisionTest(Hero h)
-        {
-            Point[] cells = Tiles.NearbyCells(h);
-
-            Point top = Tiles.VectorToCell(h.top);
-            Point midleftHIGH = Tiles.VectorToCell(h.midleftHIGH);
-            Point midleftLOW = Tiles.VectorToCell(h.midleftLOW);
-            Point midrightHIGH = Tiles.VectorToCell(h.midrightHIGH);
-            Point midrightLOW = Tiles.VectorToCell(h.midrightLOW);
-            Point botleft = Tiles.VectorToCell(h.botleft);
-            Point botright = Tiles.VectorToCell(h.botright);
-
-
-            foreach (Point p in cells)
-            {
-                if (gameMap.map[p.Y, p.X] == 1)
-                {
-                    if (p.Equals(midleftHIGH) || p.Equals(midleftLOW))
-                    {
-                        h.DeltaX = 0;
-                        h.position.X = (p.X + 1) * Tiles.tileWidth;
-                    }
-                    if (p.Equals(midrightHIGH) || p.Equals(midrightLOW))
-                    {
-                        h.DeltaX = 0;
-                        h.position.X = (p.X - 1) * Tiles.tileWidth;
-                    }
-                    if (h.DeltaY > 0 && (p.Equals(botleft) || p.Equals(botright)))
-                    {
-                        h.Land();
-                        h.position.Y = (p.Y - 2) * Tiles.tileHeight;
-                    }
-                    else if (p.Equals(top))
-                    {
-                        h.DeltaY = 0;
-                        h.position.Y = (p.Y + 1) * Tiles.tileHeight;
-                    }
-
-
-                }
-            }
-        }
-        
     }
 }

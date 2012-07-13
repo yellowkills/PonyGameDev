@@ -16,19 +16,18 @@ namespace First_Game
 {
     class Hero : Entity
     {
+        public Texture2D img;
+        public Rectangle pxlrect;
         public bool DEBUG = true;
         const int heroHeight = 64;
         const int heroWidth = 32;
         bool inAir;
-        Animation walkLeft, walkRight;
 
-        public Hero(Game game, SpriteBatch spriteBatch, Camera camera, Vector2 position, Texture2D img)
-            : base(game, spriteBatch)
+        public Hero(Game game, SpriteBatch spriteBatch, Camera camera,Vector2 position, Texture2D img)
+            : base(game, spriteBatch, camera)
         {
-            this.game = game;
-            this.spriteBatch = spriteBatch;
-            this.camera = camera;
             this.position = position;
+            this.img = img;
 
             xAcceleration = .3f;
             yAcceleration = .5f;
@@ -39,18 +38,9 @@ namespace First_Game
             maxSpeedX = 6.5f;
             maxSpeedY = 9.0f;
 
-        }
-        /*
-        public Hero(Texture2D img, Texture2D weaponimg, Vector2 position, Animation walkLeft,Animation walkRight)
-        {
-            this.img = img;
-            this.weaponimg = weaponimg;
-            this.position = position;
-            this.walkLeft = walkLeft;
-            this.walkRight = walkRight;
-
             direction = Direction.RIGHT;
             state = State.STANDING;
+
 
             top = new Vector2(position.X + rect.Width / 2, position.Y);
             botleft = new Vector2(position.X, position.Y + rect.Height);
@@ -59,16 +49,14 @@ namespace First_Game
             midleftLOW = new Vector2(position.X, position.Y + rect.Height * (9.0f / 10.0f));
             midrightHIGH = new Vector2(position.X + rect.Width, position.Y + rect.Height * (4.0f / 10.0f));
             midrightLOW = new Vector2(position.X + rect.Width, position.Y + rect.Height * (9.0f / 10.0f));
-            sword = midrightHIGH;
+
 
             rect = new Rectangle((int)position.X, (int)position.Y, heroWidth, heroHeight);
-            swordrect = new Rectangle((int)(sword.X-swordWidth/2), (int)(sword.Y-swordHeight), swordWidth, swordHeight);
             pxlrect = new Rectangle(0, 0, 3, 3);
             inAir = true;
             deltaX = 0.0f;
             deltaY = 0.0f;
-
-        }*/
+        }
 
         void RefreshPosition()
         {
@@ -97,7 +85,7 @@ namespace First_Game
             midrightLOW.X = position.X + rect.Width;
             midrightLOW.Y = position.Y + rect.Height * (9.0f / 10.0f) - 4;
         }
-
+        
         void drawCollisionPoints(SpriteBatch spriteBatch, Camera camera,Texture2D pxl)
         {
             spriteBatch.Begin();
@@ -155,22 +143,38 @@ namespace First_Game
             rect.X = (int)position.X - (int)camera.Position.X;
             rect.Y = (int)position.Y - (int)camera.Position.Y;
 
-            if (state == State.STANDING)
+
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
+            spriteBatch.Draw(img,rect,Color.White);
+            spriteBatch.End();
+
+
+            /*
+            if (DEBUG)
             {
-                if (direction == Direction.LEFT)
-                    walkLeft.DrawFirstFrame(spriteBatch, rect);
-                else
-                    walkRight.DrawFirstFrame(spriteBatch, rect);
-            }
-            else
-            {
-                if (direction == Direction.LEFT)
-                    walkLeft.Draw(spriteBatch, rect);
-                else
-                    walkRight.Draw(spriteBatch, rect);
-            }
-           
-            if(DEBUG) drawCollisionPoints(spriteBatch, camera, pxl);
+                Point[] cells = Tiles.NearbyCells(map);
+
+                Point top = Tiles.VectorToCell(hero.top);
+                Point midleftHIGH = Tiles.VectorToCell(hero.midleftHIGH);
+                Point midleftLOW = Tiles.VectorToCell(hero.midleftLOW);
+                Point midrightHIGH = Tiles.VectorToCell(hero.midrightHIGH);
+                Point midrightLOW = Tiles.VectorToCell(hero.midrightLOW);
+                Point botleft = Tiles.VectorToCell(hero.botleft);
+                Point botright = Tiles.VectorToCell(hero.botright);
+
+                foreach (Point p in cells)
+                {
+                    if (gameMap.map[p.Y, p.X] == 1 && (p.Equals(botleft) || p.Equals(botright) ||
+                                               p.Equals(midleftHIGH) || p.Equals(midleftLOW) ||
+                                               p.Equals(midrightHIGH) || p.Equals(midrightLOW) ||
+                                               p.Equals(top)))
+                        MarkTile(p, Color.Yellow);
+                    else
+                        MarkTile(p);
+                }
+
+                drawCollisionPoints(spriteBatch, camera, pxl);
+            }*/
         }
     }
 }

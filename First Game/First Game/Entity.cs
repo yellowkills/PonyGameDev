@@ -27,10 +27,10 @@ namespace First_Game
         protected Direction direction;
         protected State state;
 
+        //protected Map map;
         protected Game game;
         protected SpriteBatch spriteBatch;
-
-        protected Rectangle rect;
+        
         protected Vector2 top, botleft, botright, midleftHIGH, midleftLOW, midrightHIGH, midrightLOW;
 
         protected float deltaX, deltaY;
@@ -46,6 +46,7 @@ namespace First_Game
 
         // Public Variables
         public Camera camera;
+        public Rectangle rect;
         public Vector2 position;
         public float DeltaX
         {
@@ -67,11 +68,12 @@ namespace First_Game
 
 
         // Default Constructor
-        public Entity(Game game, SpriteBatch spriteBatch)
+        public Entity(Game game, SpriteBatch spriteBatch, Camera camera)
             : base(game)
         {
             this.game = game;
             this.spriteBatch = spriteBatch;
+            this.camera = camera;
         }
 
 
