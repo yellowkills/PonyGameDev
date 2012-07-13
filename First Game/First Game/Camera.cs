@@ -61,7 +61,7 @@ namespace First_Game
             gamePtr = parent;
             pubPosition = new Vector2();
             cameraCenter = new Vector2();
-            speed = 5.0f;
+            speed = 10.0f;
             hasTarget = false;
             moveCam = false;
         }
