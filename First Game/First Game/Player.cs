@@ -142,8 +142,8 @@ namespace First_Game
         }
         public override void Draw(GameTime gameTime)
         {
-            rect.X = (int)position.X - (int)camera.Position.X;
-            rect.Y = (int)position.Y - (int)camera.Position.Y;
+            rect.X = (int)position.X - (int)camera.pubPosition.X;
+            rect.Y = (int)position.Y - (int)camera.pubPosition.Y;
 
             switch (state)
             {

@@ -101,8 +101,8 @@ namespace First_Game
 
         public void DrawMap(SpriteBatch spriteBatch)
         {
-            Point cameraPoint = Tiles.VectorToCell(cameraPtr.Position);
-            Point viewPoint = Tiles.VectorToCell(cameraPtr.Position +
+            Point cameraPoint = Tiles.VectorToCell(cameraPtr.pubPosition);
+            Point viewPoint = Tiles.VectorToCell(cameraPtr.pubPosition +
                                 Tiles.ViewPortVector());
 
             Point min = new Point();
@@ -120,8 +120,8 @@ namespace First_Game
             {
                 for (int x = min.X; x < max.X; x++)
                 {
-                    tileRectangle.X = x * Tiles.tileWidth - (int)cameraPtr.Position.X;
-                    tileRectangle.Y = y * Tiles.tileHeight - (int)cameraPtr.Position.Y;
+                    tileRectangle.X = x * Tiles.tileWidth - (int)cameraPtr.pubPosition.X;
+                    tileRectangle.Y = y * Tiles.tileHeight - (int)cameraPtr.pubPosition.Y;
                     spriteBatch.Draw(tilePtr.tiles[map[y, x]],
                         tileRectangle, Color.White);
                 }

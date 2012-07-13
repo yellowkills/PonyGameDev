@@ -8,10 +8,12 @@ namespace First_Game
 {
     class Camera
     {
-        //Useless comment for git testing!
         private Vector2 position;
         private float speed;
         private Vector2 motion;
+        private Vector2 cameraCenter;
+        private Vector2 targetCenter;
+        private bool moveCam;
 
         /***Pointers***/
         private Game1 gamePtr;
@@ -28,7 +30,19 @@ namespace First_Game
             }
         }
 
-        public Vector2 Position
+        public Vector2 pubPosition
+        {
+            get { return position; }
+            set
+            {
+                position.X = MathHelper.Clamp(value.X, 0,
+                        Map.MapWidthInPixels - Game1.ScreenWidth);
+                position.Y = MathHelper.Clamp(value.Y, 0,
+                        Map.MapHeightInPixels - Game1.ScreenHeight);
+            }
+        }
+
+        public Vector2 TargetPosition
         {
             get { return position; }
             set
@@ -45,18 +59,23 @@ namespace First_Game
         public Camera(Game1 parent)
         {
             gamePtr = parent;
-            position = new Vector2();
-            speed = 10.0f;
+            pubPosition = new Vector2();
+            cameraCenter = new Vector2();
+            speed = 5.0f;
             hasTarget = false;
+            moveCam = false;
         }
 
         public void Update()
         {
+            updateCenter();
             Track();
+            if(moveCam)
+                gotoTarget();
             if (motion != Vector2.Zero)
             {
                 motion.Normalize();
-                Position += motion * Speed;
+                pubPosition += motion * Speed;
             }
         }
 
@@ -75,24 +94,49 @@ namespace First_Game
         {
             if (hasTarget)
             {
-                if (lockTarget.position.X >= (position.X + Game1.screenWidth - (Tiles.tileWidth*3)))
+                if (lockTarget.position.X >= (Game1.ScreenWidth / 3) * 2 ||
+                    lockTarget.position.X <= Game1.screenWidth / 3)
                 {
-                    ScrollRight();
-                }
-                else if (lockTarget.position.X <= (position.X + (Tiles.tileWidth*2)))
-                {
-                    ScrollLeft();
+                    targetCenter.X = lockTarget.position.X;
+                    moveCam = true;
                 }
 
-                if (lockTarget.position.Y >= (position.Y + Game1.screenHeight - (Tiles.tileHeight*3)))
+                /* Platform Lock on Y axis */
+                if(lockTarget.position.Y > (Game1.screenHeight/3) *2 ||
+                    lockTarget.position.Y < (Game1.ScreenHeight/3) )
                 {
-                    ScrollDown();
-                }
-                else if (lockTarget.position.Y <= (position.Y + (Tiles.tileHeight*2)))
-                {
-                    ScrollUp();
+                    targetCenter.Y = lockTarget.position.Y; //Target the player's current Y as the center for the camera.
+                    moveCam = true;
                 }
             }
+        }
+
+        private void gotoTarget()
+        {
+            bool moved = false;
+            if(targetCenter.X > cameraCenter.X + Tiles.tileWidth)
+            {
+                ScrollRight();
+                moved = true;
+            }
+            else if (targetCenter.X < cameraCenter.X - Tiles.tileWidth)
+            {
+                ScrollLeft();
+                moved = true;
+            }
+            if (targetCenter.Y > cameraCenter.Y + Tiles.tileHeight)
+            {
+                ScrollDown();
+                moved = true;
+            }
+            else if (targetCenter.Y < cameraCenter.Y - Tiles.tileHeight)
+            {
+                ScrollUp();
+                moved = true;
+            }
+            if(!moved)
+                moveCam = false;
+
         }
 
         /***/
@@ -115,6 +159,12 @@ namespace First_Game
         }
         
         /***/
+
+        private void updateCenter()
+        {
+            cameraCenter.X = position.X + Game1.screenWidth / 2;
+            cameraCenter.Y = position.Y + Game1.screenHeight / 2;
+        }
 
         public void resetMotion()
         {

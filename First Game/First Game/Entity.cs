@@ -22,8 +22,8 @@ namespace First_Game
 
 
         // [Protected Variables]
-        protected enum Direction { LEFT, RIGHT, UP, DOWN }
-        protected enum State { STANDING, RUNNING, INAIR }
+        public enum Direction { LEFT, RIGHT, UP, DOWN }
+        public enum State { STANDING, RUNNING, INAIR }
 
         protected Direction direction;
         protected State state;
@@ -54,7 +54,7 @@ namespace First_Game
 
         // [Public Variables]
         public Camera camera;
-        public Rectangle rect;
+        public Rectangle rect; //Needs a more descriptive name.
         public Vector2 position;
         public float DeltaX
         {
@@ -125,6 +125,14 @@ namespace First_Game
             state = (Math.Abs(DeltaX) == 0)? State.STANDING : State.RUNNING;
         }
 
+        public Vector2 centerPoint()
+        {
+            float cX, cY;
+            cX = position.X + (rect.Width/2);
+            cY = position.Y + (rect.Height/2);
+
+            return new Vector2(cX, cY);
+        }
 
         // Collision Testing
         private Point VectorToCell(Vector2 vector)
@@ -197,8 +205,8 @@ namespace First_Game
         private void MarkTile(Point cell, Color tint)
         {
             spriteBatch.Begin();
-            pxlrect.X = Tiles.tileWidth * cell.X + Tiles.tileWidth / 2 - 1 - (int)camera.Position.X;
-            pxlrect.Y = Tiles.tileHeight * cell.Y + Tiles.tileHeight / 2 - 1 - (int)camera.Position.Y;
+            pxlrect.X = Tiles.tileWidth * cell.X + Tiles.tileWidth / 2 - 1 - (int)camera.pubPosition.X;
+            pxlrect.Y = Tiles.tileHeight * cell.Y + Tiles.tileHeight / 2 - 1 - (int)camera.pubPosition.Y;
             spriteBatch.Draw(whtpxl, pxlrect, tint);
             spriteBatch.End();
         }
@@ -229,32 +237,32 @@ namespace First_Game
         {
             spriteBatch.Begin();
 
-            pxlrect.X = (int)top.X - 1 - (int)camera.Position.X;
-            pxlrect.Y = (int)top.Y - 1 - (int)camera.Position.Y;
+            pxlrect.X = (int)top.X - 1 - (int)camera.pubPosition.X;
+            pxlrect.Y = (int)top.Y - 1 - (int)camera.pubPosition.Y;
             spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
 
-            pxlrect.X = (int)botleft.X - 1 - (int)camera.Position.X;
-            pxlrect.Y = (int)botleft.Y - 1 - (int)camera.Position.Y;
+            pxlrect.X = (int)botleft.X - 1 - (int)camera.pubPosition.X;
+            pxlrect.Y = (int)botleft.Y - 1 - (int)camera.pubPosition.Y;
             spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
 
-            pxlrect.X = (int)botright.X - 1 - (int)camera.Position.X;
-            pxlrect.Y = (int)botright.Y - 1 - (int)camera.Position.Y;
+            pxlrect.X = (int)botright.X - 1 - (int)camera.pubPosition.X;
+            pxlrect.Y = (int)botright.Y - 1 - (int)camera.pubPosition.Y;
             spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
 
-            pxlrect.X = (int)midleftHIGH.X - 1 - (int)camera.Position.X;
-            pxlrect.Y = (int)midleftHIGH.Y - 1 - (int)camera.Position.Y;
+            pxlrect.X = (int)midleftHIGH.X - 1 - (int)camera.pubPosition.X;
+            pxlrect.Y = (int)midleftHIGH.Y - 1 - (int)camera.pubPosition.Y;
             spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
 
-            pxlrect.X = (int)midleftLOW.X - 1 - (int)camera.Position.X;
-            pxlrect.Y = (int)midleftLOW.Y - 1 - (int)camera.Position.Y;
+            pxlrect.X = (int)midleftLOW.X - 1 - (int)camera.pubPosition.X;
+            pxlrect.Y = (int)midleftLOW.Y - 1 - (int)camera.pubPosition.Y;
             spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
 
-            pxlrect.X = (int)midrightHIGH.X - 1 - (int)camera.Position.X;
-            pxlrect.Y = (int)midrightHIGH.Y - 1 - (int)camera.Position.Y;
+            pxlrect.X = (int)midrightHIGH.X - 1 - (int)camera.pubPosition.X;
+            pxlrect.Y = (int)midrightHIGH.Y - 1 - (int)camera.pubPosition.Y;
             spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
 
-            pxlrect.X = (int)midrightLOW.X - 1 - (int)camera.Position.X;
-            pxlrect.Y = (int)midrightLOW.Y - 1 - (int)camera.Position.Y;
+            pxlrect.X = (int)midrightLOW.X - 1 - (int)camera.pubPosition.X;
+            pxlrect.Y = (int)midrightLOW.Y - 1 - (int)camera.pubPosition.Y;
             spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
 
             spriteBatch.End();
@@ -265,6 +273,11 @@ namespace First_Game
         {
             position.X += DeltaX;
             position.Y += DeltaY;
+        }
+
+        public State getState()
+        {
+            return state;
         }
 
 
