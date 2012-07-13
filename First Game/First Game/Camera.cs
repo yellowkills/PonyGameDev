@@ -15,6 +15,8 @@ namespace First_Game
 
         /***Pointers***/
         private Game1 gamePtr;
+
+        private bool hasTarget;
         private Entity lockTarget;
 
         public float Speed
@@ -45,6 +47,7 @@ namespace First_Game
             gamePtr = parent;
             position = new Vector2();
             speed = 10.0f;
+            hasTarget = false;
         }
 
         public void Update()
@@ -60,26 +63,35 @@ namespace First_Game
         public void lockEntity(Entity target)
         {
             lockTarget = target;
+            hasTarget = true;
+        }
+
+        public void releaseLock()
+        {
+            hasTarget = false;
         }
 
         private void Track()
         {
-            if(lockTarget.position.X >= (position.X + Game1.screenWidth - (Tiles.tileWidth*3)) )
+            if (hasTarget)
             {
-                ScrollRight();
-            }
-            else if (lockTarget.position.X <= (position.X + (Tiles.tileWidth * 2)))
-            {
-                ScrollLeft();
-            }
+                if (lockTarget.position.X >= (position.X + Game1.screenWidth - (Tiles.tileWidth*3)))
+                {
+                    ScrollRight();
+                }
+                else if (lockTarget.position.X <= (position.X + (Tiles.tileWidth*2)))
+                {
+                    ScrollLeft();
+                }
 
-            if (lockTarget.position.Y >= (position.Y + Game1.screenHeight - (Tiles.tileHeight * 3)))
-            {
-                ScrollDown();
-            }
-            else if (lockTarget.position.Y <= (position.Y + (Tiles.tileHeight * 2)))
-            {
-                ScrollUp();
+                if (lockTarget.position.Y >= (position.Y + Game1.screenHeight - (Tiles.tileHeight*3)))
+                {
+                    ScrollDown();
+                }
+                else if (lockTarget.position.Y <= (position.Y + (Tiles.tileHeight*2)))
+                {
+                    ScrollUp();
+                }
             }
         }
 
