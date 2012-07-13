@@ -34,6 +34,7 @@ namespace First_Game
         // Collision points
         protected Vector2 top, botleft, botright, midleftHIGH, midleftLOW, midrightHIGH, midrightLOW;
 
+        // Debug Pixel
         protected Rectangle pxlrect;
         protected Texture2D whtpxl;
 
@@ -193,6 +194,37 @@ namespace First_Game
         }
 
         // Debug
+        private void MarkTile(Point cell, Color tint)
+        {
+            spriteBatch.Begin();
+            pxlrect.X = Tiles.tileWidth * cell.X + Tiles.tileWidth / 2 - 1 - (int)camera.Position.X;
+            pxlrect.Y = Tiles.tileHeight * cell.Y + Tiles.tileHeight / 2 - 1 - (int)camera.Position.Y;
+            spriteBatch.Draw(whtpxl, pxlrect, tint);
+            spriteBatch.End();
+        }
+        protected void drawTestedCells(int[,] map)
+        {
+            Point[] cells = NearbyCells(map);
+
+            Point top = VectorToCell(this.top);
+            Point midleftHIGH = VectorToCell(this.midleftHIGH);
+            Point midleftLOW = VectorToCell(this.midleftLOW);
+            Point midrightHIGH = VectorToCell(this.midrightHIGH);
+            Point midrightLOW = VectorToCell(this.midrightLOW);
+            Point botleft = VectorToCell(this.botleft);
+            Point botright = VectorToCell(this.botright);
+
+            foreach (Point p in cells)
+            {
+                if (map[p.Y, p.X] == 1 && (p.Equals(botleft) || p.Equals(botright) ||
+                                           p.Equals(midleftHIGH) || p.Equals(midleftLOW) ||
+                                           p.Equals(midrightHIGH) || p.Equals(midrightLOW) ||
+                                           p.Equals(top)))
+                    MarkTile(p, Color.Yellow);
+                else
+                    MarkTile(p, Color.Red);
+            }
+        }
         protected void drawCollisionPoints()
         {
             spriteBatch.Begin();
@@ -225,37 +257,6 @@ namespace First_Game
             pxlrect.Y = (int)midrightLOW.Y - 1 - (int)camera.Position.Y;
             spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
 
-            spriteBatch.End();
-        }
-        protected void drawTestedCells(int[,] map)
-        {
-            Point[] cells = NearbyCells(map);
-
-            Point top = VectorToCell(this.top);
-            Point midleftHIGH = VectorToCell(this.midleftHIGH);
-            Point midleftLOW = VectorToCell(this.midleftLOW);
-            Point midrightHIGH = VectorToCell(this.midrightHIGH);
-            Point midrightLOW = VectorToCell(this.midrightLOW);
-            Point botleft = VectorToCell(this.botleft);
-            Point botright = VectorToCell(this.botright);
-
-            foreach (Point p in cells)
-            {
-                if (map[p.Y, p.X] == 1 && (p.Equals(botleft) || p.Equals(botright) ||
-                                           p.Equals(midleftHIGH) || p.Equals(midleftLOW) ||
-                                           p.Equals(midrightHIGH) || p.Equals(midrightLOW) ||
-                                           p.Equals(top)))
-                    MarkTile(p, Color.Yellow);
-                else
-                    MarkTile(p, Color.Red);
-            }
-        }
-        protected void MarkTile(Point cell, Color tint)
-        {
-            spriteBatch.Begin();
-            pxlrect.X = Tiles.tileWidth * cell.X + Tiles.tileWidth / 2 - 1 - (int)camera.Position.X;
-            pxlrect.Y = Tiles.tileHeight * cell.Y + Tiles.tileHeight / 2 - 1 - (int)camera.Position.Y;
-            spriteBatch.Draw(whtpxl, pxlrect, tint);
             spriteBatch.End();
         }
 

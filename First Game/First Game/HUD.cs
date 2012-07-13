@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Storage;
 
 namespace First_Game
 {
-    class Enemy : Entity //TODO
+    class HUD : GameScreen //TODO
     {
         // [Private Variables] : none
         // [Protected Variables] : none
@@ -22,8 +22,8 @@ namespace First_Game
 
 
         // Default Constructor
-        public Enemy(Game game, SpriteBatch spriteBatch, Camera camera)
-            : base(game, spriteBatch, camera)
+        public HUD(Game game, SpriteBatch spriteBatch)
+            : base(game, spriteBatch)
         {
         }
     }
