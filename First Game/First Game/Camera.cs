@@ -15,7 +15,7 @@ namespace First_Game
 
         /***Pointers***/
         private Game1 gamePtr;
-        private Hero heroPtr;
+        private Entity lockTarget;
 
         public float Speed
         {
@@ -40,10 +40,9 @@ namespace First_Game
 
         /******************************/
 
-        public Camera(Hero heroPtr, Game1 parent)
+        public Camera(Game1 parent)
         {
             gamePtr = parent;
-            this.heroPtr = heroPtr;
             position = new Vector2();
             speed = 10.0f;
         }
@@ -58,22 +57,27 @@ namespace First_Game
             }
         }
 
+        public void lockEntity(Entity target)
+        {
+            lockTarget = target;
+        }
+
         private void Track()
         {
-            if(heroPtr.position.X >= (position.X + Game1.screenWidth - (Tiles.tileWidth*3)) )
+            if(lockTarget.position.X >= (position.X + Game1.screenWidth - (Tiles.tileWidth*3)) )
             {
                 ScrollRight();
             }
-            else if (heroPtr.position.X <= (position.X + (Tiles.tileWidth * 2)))
+            else if (lockTarget.position.X <= (position.X + (Tiles.tileWidth * 2)))
             {
                 ScrollLeft();
             }
 
-            if (heroPtr.position.Y >= (position.Y + Game1.screenHeight - (Tiles.tileHeight * 3)))
+            if (lockTarget.position.Y >= (position.Y + Game1.screenHeight - (Tiles.tileHeight * 3)))
             {
                 ScrollDown();
             }
-            else if (heroPtr.position.Y <= (position.Y + (Tiles.tileHeight * 2)))
+            else if (lockTarget.position.Y <= (position.Y + (Tiles.tileHeight * 2)))
             {
                 ScrollUp();
             }
