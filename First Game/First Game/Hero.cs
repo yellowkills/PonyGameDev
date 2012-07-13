@@ -14,44 +14,33 @@ using Microsoft.Xna.Framework.Storage;
 
 namespace First_Game
 {
-    class Hero
+    class Hero : Entity
     {
-        public enum Direction { LEFT, RIGHT, UP, DOWN }
-        public enum State { STANDING, RUNNING}
-
         public bool DEBUG = true;
-
         const int heroHeight = 64;
         const int heroWidth = 32;
-        const int swordHeight = 40;
-        const int swordWidth = 18;
-
-
-        public Direction direction;
-        public State state;
-
-        public Texture2D img, weaponimg;
-        public Rectangle rect, pxlrect, swordrect;
-        public Vector2 position;
-        
-        public Vector2 top, botleft, botright, midleftHIGH, midleftLOW, midrightHIGH, midrightLOW, sword;
-        public bool inAir;
-
-        float deltaX, deltaY;
-
-        float xAcceleration = .3f;
-        float yAcceleration = .5f;
-        float xDeceleration = .7f;
-        float xDeceleration2 = .98f;
-        float gravity = .4f;
-        float jumpforce = -20.0f;
-        float maxSpeedX = 6.5f;
-        float maxSpeedY = 9.0f;
-
+        bool inAir;
         Animation walkLeft, walkRight;
 
+        public Hero(Game game, SpriteBatch spriteBatch, Camera camera, Vector2 position, Texture2D img)
+            : base(game, spriteBatch)
+        {
+            this.game = game;
+            this.spriteBatch = spriteBatch;
+            this.camera = camera;
+            this.position = position;
 
+            xAcceleration = .3f;
+            yAcceleration = .5f;
+            xDeceleration = .7f;
+            xDeceleration2 = .98f;
+            gravity = .4f;
+            jumpforce = -20.0f;
+            maxSpeedX = 6.5f;
+            maxSpeedY = 9.0f;
 
+        }
+        /*
         public Hero(Texture2D img, Texture2D weaponimg, Vector2 position, Animation walkLeft,Animation walkRight)
         {
             this.img = img;
@@ -79,69 +68,7 @@ namespace First_Game
             deltaX = 0.0f;
             deltaY = 0.0f;
 
-        }
-
-        public float DeltaX
-        {
-            get { return deltaX; }
-            set
-            {
-                deltaX = MathHelper.Clamp(value, -maxSpeedX, maxSpeedX);
-            }
-        }
-        public float DeltaY
-        {
-            get { return deltaY; }
-            set
-            {
-                deltaY = MathHelper.Clamp(value, -maxSpeedY, maxSpeedY);
-            }
-        }
-
-        public void MoveLeft()
-        {
-            DeltaX -= xAcceleration;
-            if (DeltaX < 0)
-
-                direction = Direction.LEFT;
-            else
-                walkLeft.reset(); // inefficiant
-        }
-        public void MoveRight()
-        {
-            DeltaX += xAcceleration;
-            if (DeltaX > 0)
-                direction = Direction.RIGHT;
-            else
-                walkRight.reset(); // inefficiant
-        }
-        public void MoveUp()
-        {
-            DeltaY -= yAcceleration;
-        }
-        public void MoveDown()
-        {
-            DeltaY += yAcceleration;
-        }
-        public void Jump()
-        {
-            if (inAir == false)
-            {
-                inAir = true;
-                DeltaY = jumpforce;
-                position.Y += DeltaY;
-            }
-        }
-        public void Land()
-        {
-            inAir = false;
-            DeltaY = 0;
-        }
-
-        void CollisionTest(int[,] map)
-        {
-
-        }
+        }*/
 
         void RefreshPosition()
         {
@@ -169,17 +96,6 @@ namespace First_Game
 
             midrightLOW.X = position.X + rect.Width;
             midrightLOW.Y = position.Y + rect.Height * (9.0f / 10.0f) - 4;
-
-            if (direction == Direction.LEFT)
-            {
-                sword.X = midleftHIGH.X - swordWidth / 2;
-                sword.Y = midleftHIGH.Y - swordHeight;
-            }
-            else
-            {
-                sword.X = midrightHIGH.X - swordWidth / 2;
-                sword.Y = midrightHIGH.Y - swordHeight;
-            }
         }
 
         void drawCollisionPoints(SpriteBatch spriteBatch, Camera camera,Texture2D pxl)
@@ -217,7 +133,7 @@ namespace First_Game
             spriteBatch.End();
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             if (Keyboard.GetState().IsKeyUp(Keys.A) && Keyboard.GetState().IsKeyUp(Keys.D))
             {
@@ -234,14 +150,10 @@ namespace First_Game
             RefreshPosition();
         }
 
-        public void Draw(SpriteBatch spriteBatch, Camera camera,Texture2D pxl)
+        public override void Draw(GameTime gameTime)
         {
             rect.X = (int)position.X - (int)camera.Position.X;
             rect.Y = (int)position.Y - (int)camera.Position.Y;
-            swordrect.X = (int)sword.X - (int)camera.Position.X;
-            swordrect.Y = (int)sword.Y - (int)camera.Position.Y;
-
-
 
             if (state == State.STANDING)
             {

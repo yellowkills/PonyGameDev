@@ -121,6 +121,8 @@
   <ItemGroup>
     <Compile Include="Animation.cs" />
     <Compile Include="Camera.cs" />
+    <Compile Include="Entity.cs" />
+    <Compile Include="GameScreen.cs" />
     <Compile Include="Hero.cs" />
     <Compile Include="kbdController.cs" />
     <Compile Include="Map.cs" />
