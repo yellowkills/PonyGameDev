@@ -22,7 +22,7 @@ namespace First_Game
 
 
         // Default Constructor
-        public Enemy(Game game, SpriteBatch spriteBatch, Camera camera)
+        public Enemy(Game game, SpriteBatch spriteBatch, Camera camera, Vector2 position)
             : base(game, spriteBatch, camera)
         {
         }

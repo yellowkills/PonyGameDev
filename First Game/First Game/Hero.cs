@@ -20,8 +20,6 @@ namespace First_Game
         private const int _heroHeight = 64;
         private const int _heroWidth = 32;
 
-        private int hp;
-
         // [Protected Variables] : none
 
         // [Public Variables]
@@ -29,8 +27,32 @@ namespace First_Game
         public Map map;
         public bool DEBUG = true;
 
-
+ 
         // Default Constructor
+        public Hero(Game game, SpriteBatch spriteBatch, Camera camera)
+            : base(game, spriteBatch, camera)
+        {
+            // Physics stuff
+            xAcceleration = .3f;
+            yAcceleration = .5f;
+            friction = .7f;
+            airFriction = .98f;
+            gravity = .4f;
+            jumpforce = -20.0f;
+            maxSpeedX = 6.5f;
+            maxSpeedY = 9.0f;
+
+            direction = Direction.RIGHT;
+            state = State.STANDING;
+
+            rect = new Rectangle((int)position.X, (int)position.Y, _heroWidth, _heroHeight);
+            pxlrect = new Rectangle(0, 0, 3, 3);
+
+            deltaX = 0.0f;
+            deltaY = 0.0f;
+        }
+
+        // Robust Constructor (protip: use this one!)
         public Hero(Game game, SpriteBatch spriteBatch, Camera camera, Map map, Vector2 position, Texture2D img)
             : base(game, spriteBatch, camera)
         {
@@ -67,34 +89,6 @@ namespace First_Game
             deltaY = 0.0f;
         }
 
-        // Updates the position and re-calculates all the collision points. [inefficient? maybe]
-        void RefreshPosition()
-        {
-            position.X += DeltaX;
-            position.Y += DeltaY;
-        
-
-            top.X = position.X + rect.Width / 2;
-            top.Y = position.Y;
-
-            botleft.X = position.X + 7;
-            botleft.Y = position.Y + rect.Height;
-
-            botright.X = position.X + rect.Width - 7;
-            botright.Y = position.Y + rect.Height;
-
-            midleftHIGH.X = position.X;
-            midleftHIGH.Y = position.Y + rect.Height * (4.0f / 10.0f);
-
-            midleftLOW.X = position.X;
-            midleftLOW.Y = position.Y + rect.Height * (9.0f / 10.0f) - 4;
-
-            midrightHIGH.X = position.X + rect.Width;
-            midrightHIGH.Y = position.Y + rect.Height * (4.0f / 10.0f);
-
-            midrightLOW.X = position.X + rect.Width;
-            midrightLOW.Y = position.Y + rect.Height * (9.0f / 10.0f) - 4;
-        }
 
         // Base Game Functions
         public override void Update(GameTime gameTime)
