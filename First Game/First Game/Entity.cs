@@ -16,35 +16,43 @@ namespace First_Game
 {
     class Entity : Microsoft.Xna.Framework.DrawableGameComponent
     {
-        // Private Vaiables
+        // [Private Vaiables]
         private const int _tileWidth = 32;
         private const int _tileHeight = 32;
 
-        // Protected Variables
+
+        // [Protected Variables]
         protected enum Direction { LEFT, RIGHT, UP, DOWN }
         protected enum State { STANDING, RUNNING, INAIR }
 
         protected Direction direction;
         protected State state;
 
-        //protected Map map;
         protected Game game;
         protected SpriteBatch spriteBatch;
-        
+
+        // Collision points
         protected Vector2 top, botleft, botright, midleftHIGH, midleftLOW, midrightHIGH, midrightLOW;
 
+        // Debug Pixel
+        protected Rectangle pxlrect;
+        protected Texture2D whtpxl;
+
+        // The change in position
         protected float deltaX, deltaY;
 
+        // Physics stuff
         protected float xAcceleration;
         protected float yAcceleration;
-        protected float xDeceleration;
-        protected float xDeceleration2;
+        protected float friction;
+        protected float airFriction;
         protected float gravity;
         protected float jumpforce;
         protected float maxSpeedX;
         protected float maxSpeedY;
 
-        // Public Variables
+
+        // [Public Variables]
         public Camera camera;
         public Rectangle rect;
         public Vector2 position;
@@ -74,6 +82,9 @@ namespace First_Game
             this.game = game;
             this.spriteBatch = spriteBatch;
             this.camera = camera;
+
+            pxlrect = new Rectangle(0, 0, 3, 3);
+            whtpxl = game.Content.Load<Texture2D>("whtpxl");
         }
 
 
@@ -183,8 +194,104 @@ namespace First_Game
             }
         }
 
+        // Debug
+        private void MarkTile(Point cell, Color tint)
+        {
+            spriteBatch.Begin();
+            pxlrect.X = Tiles.tileWidth * cell.X + Tiles.tileWidth / 2 - 1 - (int)camera.Position.X;
+            pxlrect.Y = Tiles.tileHeight * cell.Y + Tiles.tileHeight / 2 - 1 - (int)camera.Position.Y;
+            spriteBatch.Draw(whtpxl, pxlrect, tint);
+            spriteBatch.End();
+        }
+        protected void drawTestedCells(int[,] map)
+        {
+            Point[] cells = NearbyCells(map);
 
-        // Game Stuff
+            Point top = VectorToCell(this.top);
+            Point midleftHIGH = VectorToCell(this.midleftHIGH);
+            Point midleftLOW = VectorToCell(this.midleftLOW);
+            Point midrightHIGH = VectorToCell(this.midrightHIGH);
+            Point midrightLOW = VectorToCell(this.midrightLOW);
+            Point botleft = VectorToCell(this.botleft);
+            Point botright = VectorToCell(this.botright);
+
+            foreach (Point p in cells)
+            {
+                if (map[p.Y, p.X] == 1 && (p.Equals(botleft) || p.Equals(botright) ||
+                                           p.Equals(midleftHIGH) || p.Equals(midleftLOW) ||
+                                           p.Equals(midrightHIGH) || p.Equals(midrightLOW) ||
+                                           p.Equals(top)))
+                    MarkTile(p, Color.Yellow);
+                else
+                    MarkTile(p, Color.Red);
+            }
+        }
+        protected void drawCollisionPoints()
+        {
+            spriteBatch.Begin();
+
+            pxlrect.X = (int)top.X - 1 - (int)camera.Position.X;
+            pxlrect.Y = (int)top.Y - 1 - (int)camera.Position.Y;
+            spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
+
+            pxlrect.X = (int)botleft.X - 1 - (int)camera.Position.X;
+            pxlrect.Y = (int)botleft.Y - 1 - (int)camera.Position.Y;
+            spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
+
+            pxlrect.X = (int)botright.X - 1 - (int)camera.Position.X;
+            pxlrect.Y = (int)botright.Y - 1 - (int)camera.Position.Y;
+            spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
+
+            pxlrect.X = (int)midleftHIGH.X - 1 - (int)camera.Position.X;
+            pxlrect.Y = (int)midleftHIGH.Y - 1 - (int)camera.Position.Y;
+            spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
+
+            pxlrect.X = (int)midleftLOW.X - 1 - (int)camera.Position.X;
+            pxlrect.Y = (int)midleftLOW.Y - 1 - (int)camera.Position.Y;
+            spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
+
+            pxlrect.X = (int)midrightHIGH.X - 1 - (int)camera.Position.X;
+            pxlrect.Y = (int)midrightHIGH.Y - 1 - (int)camera.Position.Y;
+            spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
+
+            pxlrect.X = (int)midrightLOW.X - 1 - (int)camera.Position.X;
+            pxlrect.Y = (int)midrightLOW.Y - 1 - (int)camera.Position.Y;
+            spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
+
+            spriteBatch.End();
+        }
+
+        // Updates the position and re-calculates all the collision points. [inefficient? maybe]
+        protected void RefreshPosition()
+        {
+            position.X += DeltaX;
+            position.Y += DeltaY;
+
+
+            top.X = position.X + rect.Width / 2;
+            top.Y = position.Y;
+
+            botleft.X = position.X + 7;
+            botleft.Y = position.Y + rect.Height;
+
+            botright.X = position.X + rect.Width - 7;
+            botright.Y = position.Y + rect.Height;
+
+            midleftHIGH.X = position.X;
+            midleftHIGH.Y = position.Y + rect.Height * (4.0f / 10.0f);
+
+            midleftLOW.X = position.X;
+            midleftLOW.Y = position.Y + rect.Height * (9.0f / 10.0f) - 4;
+
+            midrightHIGH.X = position.X + rect.Width;
+            midrightHIGH.Y = position.Y + rect.Height * (4.0f / 10.0f);
+
+            midrightLOW.X = position.X + rect.Width;
+            midrightLOW.Y = position.Y + rect.Height * (9.0f / 10.0f) - 4;
+        }
+
+
+        // Base Game Functions
         public override void Update(GameTime gameTime)
         {
         }
