@@ -37,8 +37,8 @@ namespace First_Game
 
         protected float xAcceleration;
         protected float yAcceleration;
-        protected float xDeceleration;
-        protected float xDeceleration2;
+        protected float friction;
+        protected float airFriction;
         protected float gravity;
         protected float jumpforce;
         protected float maxSpeedX;

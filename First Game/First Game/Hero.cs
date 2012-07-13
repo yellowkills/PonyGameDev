@@ -21,7 +21,6 @@ namespace First_Game
         public bool DEBUG = true;
         const int heroHeight = 64;
         const int heroWidth = 32;
-        bool inAir;
 
         public Hero(Game game, SpriteBatch spriteBatch, Camera camera,Vector2 position, Texture2D img)
             : base(game, spriteBatch, camera)
@@ -29,14 +28,14 @@ namespace First_Game
             this.position = position;
             this.img = img;
 
-            xAcceleration = .3f;
+            xAcceleration = .2f;
             yAcceleration = .5f;
-            xDeceleration = .7f;
-            xDeceleration2 = .98f;
-            gravity = .4f;
-            jumpforce = -20.0f;
-            maxSpeedX = 6.5f;
-            maxSpeedY = 5.0f;
+            friction = .9f;
+            airFriction = .98f;
+            gravity = .2f;
+            jumpforce = -6.0f;
+            maxSpeedX = 4.5f;
+            maxSpeedY = 7.0f;
 
 
             direction = Direction.RIGHT;
@@ -54,7 +53,6 @@ namespace First_Game
 
             rect = new Rectangle((int)position.X, (int)position.Y, heroWidth, heroHeight);
             pxlrect = new Rectangle(0, 0, 3, 3);
-            inAir = true;
             deltaX = 0.0f;
             deltaY = 0.0f;
         }
@@ -126,15 +124,15 @@ namespace First_Game
         {
             if (Keyboard.GetState().IsKeyUp(Keys.A) && Keyboard.GetState().IsKeyUp(Keys.D))
             {
-                if(inAir == false)
-                    DeltaX *= xDeceleration;
+                if(state == State.INAIR)
+                    DeltaX *= airFriction;
                 else
-                    DeltaX *= xDeceleration2;
+                    DeltaX *= friction;
                 if (Math.Abs(DeltaX) < 0.1f) DeltaX = 0;
             }
             DeltaY += gravity;
 
-            state = (Math.Abs(DeltaX) < 1) ? State.STANDING : State.RUNNING;
+            if(state != State.INAIR) state = (Math.Abs(DeltaX) < 1) ? State.STANDING : State.RUNNING;
 
             RefreshPosition();
         }
