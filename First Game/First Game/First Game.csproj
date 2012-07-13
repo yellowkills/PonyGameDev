@@ -127,6 +127,7 @@
     <Compile Include="Hero.cs" />
     <Compile Include="HUD.cs" />
     <Compile Include="kbdController.cs" />
+    <Compile Include="MainMenu.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="PauseScreen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

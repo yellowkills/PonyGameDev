@@ -20,6 +20,8 @@ namespace First_Game
         private const int _heroHeight = 64;
         private const int _heroWidth = 32;
 
+        private int hp;
+
         // [Protected Variables] : none
 
         // [Public Variables]
@@ -37,14 +39,14 @@ namespace First_Game
             this.map = map;
 
             // Physics stuff
-            xAcceleration = .15f;
+            xAcceleration = .3f;
             yAcceleration = .5f;
-            friction = .9f;
+            friction = .7f;
             airFriction = .98f;
-            gravity = .2f;
-            jumpforce = -6.0f;
-            maxSpeedX = 4.0f;
-            maxSpeedY = 7.0f;
+            gravity = .4f;
+            jumpforce = -20.0f;
+            maxSpeedX = 6.5f;
+            maxSpeedY = 9.0f;
 
             direction = Direction.RIGHT;
             state = State.STANDING;
@@ -113,8 +115,9 @@ namespace First_Game
             DeltaY += gravity;
 
             if(state != State.INAIR) state = (Math.Abs(DeltaX) < 1) ? State.STANDING : State.RUNNING;
-
+            
             RefreshPosition();
+            CollisionTest(map.map);
         }
         public override void Draw(GameTime gameTime)
         {

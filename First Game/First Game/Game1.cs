@@ -33,18 +33,29 @@ namespace First_Game
 
         //Will make a function to control this eventually. Public for now.
         public bool DEBUG;
-        
         Rectangle debug;
         SpriteFont debugFont;
         Vector2 dbug1, dbug2;// dbug3, dbug4, dbug5;
 
-        public static int screenWidth;
-        public static int screenHeight;
 
-
+        // Various GameScreens
         GameScreen activescreen;
         TestLevel testlvl;
 
+        public static int screenWidth;
+        public static int screenHeight;
+
+        public static int ScreenWidth
+        {
+            get { return screenWidth; }
+        }
+        public static int ScreenHeight
+        {
+            get { return screenHeight; }
+        }
+
+
+        // Default Constructor
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -62,34 +73,6 @@ namespace First_Game
         }
 
 
-        
-        public static int ScreenWidth
-        {
-            get { return screenWidth; }
-        }
-        public static int ScreenHeight
-        {
-            get { return screenHeight; }
-        }
-        
-       
-        public void MarkTile(Point cell)
-        {
-            spriteBatch.Begin();
-            debug.X = Tiles.tileWidth * cell.X + Tiles.tileWidth / 2 - 1 - (int)camera.Position.X;
-            debug.Y = Tiles.tileHeight * cell.Y + Tiles.tileHeight / 2 - 1 - (int)camera.Position.Y;
-            spriteBatch.Draw(tiles.red, debug, Color.White);
-            spriteBatch.End();
-        }
-        public void MarkTile(Point cell, Color tint)
-        {
-            spriteBatch.Begin();
-            debug.X = Tiles.tileWidth * cell.X + Tiles.tileWidth / 2 - 1 - (int)camera.Position.X;
-            debug.Y = Tiles.tileHeight * cell.Y + Tiles.tileHeight / 2 - 1 - (int)camera.Position.Y;
-            spriteBatch.Draw(tiles.wht, debug, tint);
-            spriteBatch.End();
-        }
-
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
         /// This is where it can query for any required services and load any non-graphic
@@ -100,8 +83,6 @@ namespace First_Game
         {
             dbug1 = new Vector2(5, 5);
             dbug2 = new Vector2(5, 25);
-
-            
 
             base.Initialize();
         }
@@ -139,9 +120,9 @@ namespace First_Game
             Vector2[] Lframes = new Vector2[4] { new Vector2(0, 96), new Vector2(32, 96), new Vector2(64, 96), new Vector2(96, 96) };
             Animation walkLeft = new Animation(spritesheet, Lframes, 32, 64, 4, 5);
             Animation walkRight = new Animation(spritesheet, Rframes, 32,64,4,5);
+
+
             Vector2 startPos = new Vector2(100, 100);
-
-
 
             hero = new Hero(this, spriteBatch, camera, gameMap,startPos, heroimg);
             camera = new Camera(hero, this);
@@ -159,9 +140,6 @@ namespace First_Game
             testlvl.LoadMap(gameMap);
 
             Components.Add(testlvl);
-
-
-
 
             activescreen = testlvl;
             testlvl.Show();
@@ -183,15 +161,10 @@ namespace First_Game
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
             camera.resetMotion();
 
             keyControls.kbdUpdate();
             camera.Update();
-
-            hero.Update(gameTime);
-            hero.CollisionTest(gameMap.map);
-            
 
             base.Update(gameTime);
             keyControls.storeStates();

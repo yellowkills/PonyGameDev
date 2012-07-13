@@ -15,6 +15,7 @@ namespace First_Game
 {
     class TestLevel : GameScreen
     {
+
         // Private Variables
         private Hero hero;
         private Map map;
@@ -24,12 +25,11 @@ namespace First_Game
         // Public Variables : none
 
 
-
         // Default Constructor
         public TestLevel(Game game, SpriteBatch spriteBatch) : base(game, spriteBatch)
         {
         }
-
+        
 
         // Loading
         public void LoadCamera(Camera camera)
