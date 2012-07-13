@@ -170,12 +170,12 @@ namespace First_Game
                     if (p.Equals(midleftHIGH) || p.Equals(midleftLOW))
                     {
                         DeltaX = 0;
-                        position.X = (p.X + 1) * _tileWidth;
+                        position.X = (p.X + 0.5f) * _tileWidth;
                     }
-                    if (p.Equals(midrightHIGH) || p.Equals(midrightLOW))
-                    {
+                    if (p.Equals(midrightHIGH) || p.Equals(midrightLOW))  //Adding 0.5 here makes the bounceback from colliding less 
+                    {                                                     //but it should just stop the player like before.
                         DeltaX = 0;
-                        position.X = (p.X) * _tileWidth - rect.Width;
+                        position.X = (p.X + 0.5f) * _tileWidth - rect.Width;
                     }
                     if (DeltaY > 0 && (p.Equals(botleft) || p.Equals(botright)))
                     {

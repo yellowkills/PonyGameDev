@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Storage;
 
 namespace First_Game
 {
-    class Hero : KillableCreature
+    class Player : KillableCreature
     {
         // [Private Variables]
         private const int _heroHeight = 64;
@@ -33,7 +33,7 @@ namespace First_Game
 
  
         // Default Constructor
-        public Hero(Game game, SpriteBatch spriteBatch, Camera camera, Map map, Vector2 position, int startingHealth,Texture2D spritesheet)
+        public Player(Game game, SpriteBatch spriteBatch, Camera camera, Map map, Vector2 position, int startingHealth,Texture2D spritesheet)
             : base(game, spriteBatch, camera, position, startingHealth)
         {
             this.position = position;
@@ -89,7 +89,11 @@ namespace First_Game
         }
         private void refreshCollisionPoints()
         {
-            top.X = position.X + rect.Width / 1.5f;
+            if(direction == Direction.RIGHT)
+                top.X = position.X + rect.Width / 1.5f; //<-- What is / Why 1.5?
+            else
+                top.X = position.X + Tiles.tileWidth;
+            
             top.Y = position.Y;
 
             botleft.X = position.X + rect.Width / 3;

@@ -31,7 +31,7 @@ namespace First_Game
         private Map gameMap;
         private Tiles tiles;
         
-        Hero hero;
+        Player _player;
 
         //Will make a function to control this eventually. Public for now.
         public bool DEBUG;
@@ -101,7 +101,7 @@ namespace First_Game
             debugFont = Content.Load<SpriteFont>("DebugFont");
             spritesheet = Content.Load<Texture2D>("spritesheet");
 
-            /*Move all this to a function in the Hero/Entity class?*/
+            /*Move all this to a function in the Player/Entity class?*/
             heroimg = Content.Load<Texture2D>("Hero");
             heroLimg = Content.Load<Texture2D>("HeroLeft");
             heroRimg = Content.Load<Texture2D>("HeroRight");
@@ -130,18 +130,18 @@ namespace First_Game
             Vector2 startPos = new Vector2(100, 100);
 
             camera = new Camera(this);
-            hero = new Hero(this, spriteBatch, camera, gameMap,startPos, 8, spritesheet_Twilight);
-            camera.lockEntity(hero);
-            keyControls = new kbdController(this, hero);
+            _player = new Player(this, spriteBatch, camera, gameMap,startPos, 8, spritesheet_Twilight);
+            camera.lockEntity(_player);
+            keyControls = new kbdController(this, _player);
             tiles = new Tiles(this);
-            gameMap = new Map(this, hero, camera, tiles);
+            gameMap = new Map(this, _player, camera, tiles);
 
-            hero.map = gameMap;
+            _player.map = gameMap;
 
             // loading the level
             testlvl = new TestLevel(this, spriteBatch);
             testlvl.LoadCamera(camera);
-            testlvl.LoadHero(hero);
+            testlvl.LoadHero(_player);
             testlvl.LoadMap(gameMap);
 
             Components.Add(testlvl);
@@ -187,8 +187,8 @@ namespace First_Game
 
             if (DEBUG)
             {
-                spriteBatch.DrawString(debugFont, hero.DeltaX.ToString(), dbug1, Color.Red);
-                spriteBatch.DrawString(debugFont, hero.DeltaY.ToString(), dbug2, Color.Red);
+                spriteBatch.DrawString(debugFont, _player.DeltaX.ToString(), dbug1, Color.Red);
+                spriteBatch.DrawString(debugFont, _player.DeltaY.ToString(), dbug2, Color.Red);
             }
 
             spriteBatch.End();

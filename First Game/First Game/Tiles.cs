@@ -59,7 +59,7 @@ namespace First_Game
                     Game1.screenHeight + tileHeight);
         }
 
-        public static Point[] NearbyCells(Hero h)
+        public static Point[] NearbyCells(Player h)
         {
             List<Point> cells = new List<Point>();
             Point topleft = VectorToCell(new Vector2(h.position.X - Map.tileMapWidth, h.position.Y - tileHeight));

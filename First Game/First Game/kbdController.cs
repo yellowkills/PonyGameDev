@@ -9,13 +9,13 @@ namespace First_Game
     class kbdController
     {
         private Game1 gamePtr;
-        private Hero playerPtr;
+        private Player playerPtr;
 
         KeyboardState oldKeyboardState, currentKeyboardState;
         MouseState oldMouseState, currentMouseState;
         Keys[] keys;
 
-        public kbdController(Game1 mainGame, Hero inPlayer)
+        public kbdController(Game1 mainGame, Player inPlayer)
         {
             gamePtr = mainGame;
             playerPtr = inPlayer;
@@ -32,7 +32,7 @@ namespace First_Game
             if (currentMouseState.LeftButton == ButtonState.Pressed &&
                oldMouseState.LeftButton == ButtonState.Released)
             {
-                if (playerPtr.direction == Hero.Direction.LEFT)
+                if (playerPtr.direction == Player.Direction.LEFT)
                     playerPtr.weaponimg = swordLimg;
                 else
                     playerPtr.weaponimg = swordRimg;

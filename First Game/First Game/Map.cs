@@ -19,7 +19,7 @@ namespace First_Game
         //Pointers to objects of interest
         private Camera cameraPtr;
         private Game1 gamePtr;
-        private Hero heroPtr;
+        private Player _playerPtr;
         private Tiles tilePtr;
 
         //Private Vars
@@ -39,10 +39,10 @@ namespace First_Game
 
         /** Constructor **/
 
-        public Map(Game1 mainGame, Hero theHero, Camera cam, Tiles gameTiles)
+        public Map(Game1 mainGame, Player thePlayer, Camera cam, Tiles gameTiles)
         {
             cameraPtr = cam;
-            heroPtr = theHero;
+            _playerPtr = thePlayer;
             gamePtr = mainGame;
             tilePtr = gameTiles;
 

@@ -17,7 +17,7 @@ namespace First_Game
     {
 
         // Private Variables
-        private Hero hero;
+        private Player _player;
         private Map map;
         private Camera camera;
         private HUD hud;
@@ -42,11 +42,11 @@ namespace First_Game
         {
             this.map = map;
         }
-        public void LoadHero(Hero hero) // this will be changed to load all the entities for a lvl
+        public void LoadHero(Player _player) // this will be changed to load all the entities for a lvl
         {
-            this.hero = hero;
-            Components.Add(hero);
-            hud.setHero(hero);
+            this._player = _player;
+            Components.Add(_player);
+            hud.setHero(_player);
             hud.Show();
             Components.Add(hud);
 
