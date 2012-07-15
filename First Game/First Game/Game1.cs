@@ -20,18 +20,17 @@ namespace First_Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Texture2D spritesheet;
         
-        Texture2D heroimg, heroLimg, heroRimg, swordimg, swordLimg, swordRimg, enemy1Normalimg, enemy1Damagedimg;
+        Texture2D enemy1Normalimg, enemy1Damagedimg;
 
-        Texture2D spritesheet_Twilight;
+        Texture2D spritesheet_GenericMap, spritesheet_GenericMap_DEBUG,spritesheet_Twilight;
         
         private Camera camera;
         private kbdController keyControls;
         private Map gameMap;
-        private Tiles tiles;
+        //private Tiles tiles;
         
-        Player _player;
+        Hero _player;
 
         //Will make a function to control this eventually. Public for now.
         public bool DEBUG;
@@ -62,7 +61,7 @@ namespace First_Game
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            DEBUG = true;
+            DEBUG = false;
             
             this.IsMouseVisible = true;
             
@@ -96,45 +95,37 @@ namespace First_Game
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            
-
-            debugFont = Content.Load<SpriteFont>("DebugFont");
-            spritesheet = Content.Load<Texture2D>("spritesheet");
-
-            /*Move all this to a function in the Player/Entity class?*/
-            heroimg = Content.Load<Texture2D>("Hero");
-            heroLimg = Content.Load<Texture2D>("HeroLeft");
-            heroRimg = Content.Load<Texture2D>("HeroRight");
-            swordimg = Content.Load<Texture2D>("Sword1Normal");
-            swordLimg = Content.Load<Texture2D>("Sword1SwingL");
-            swordRimg = Content.Load<Texture2D>("Sword1SwingR");
-            enemy1Normalimg = Content.Load<Texture2D>("Enemy1Normal");
-            enemy1Damagedimg = Content.Load<Texture2D>("Enemy1Damaged");
-
-            // TWILIGHT!
-            spritesheet_Twilight = Content.Load<Texture2D>("twiWalk");
-
             screenWidth = GraphicsDevice.Viewport.Width;
             screenHeight = GraphicsDevice.Viewport.Height;
 
+            debugFont = Content.Load<SpriteFont>("DebugFont");
             debug = new Rectangle(0, 0, 3, 3);
 
 
-            // Animation [UNUSED]
-            Vector2[] Rframes = new Vector2[4] { new Vector2(0, 32), new Vector2(32, 32), new Vector2(64, 32), new Vector2(96, 32) };
-            Vector2[] Lframes = new Vector2[4] { new Vector2(0, 96), new Vector2(32, 96), new Vector2(64, 96), new Vector2(96, 96) };
-            Animation walkLeft = new Animation(spritesheet, Lframes, 32, 64, 4, 5);
-            Animation walkRight = new Animation(spritesheet, Rframes, 32,64,4,5);
+
+
+            /*Move all this to a function in the Player/Entity class?*/
+            enemy1Normalimg = Content.Load<Texture2D>("Enemy1Normal");
+            enemy1Damagedimg = Content.Load<Texture2D>("Enemy1Damaged");
+
+            // Sprite sheets
+            spritesheet_GenericMap = Content.Load<Texture2D>("spritesheet_map_genericTiles");
+            spritesheet_GenericMap_DEBUG = Content.Load<Texture2D>("spritesheet_map_genericTiles_DEBUG");
+            spritesheet_Twilight = Content.Load<Texture2D>("twiWalk"); // TWILIGHT!
+            
+
+
 
 
             Vector2 startPos = new Vector2(100, 100);
 
             camera = new Camera(this);
-            _player = new Player(this, spriteBatch, camera, gameMap,startPos, 8, spritesheet_Twilight);
+            gameMap = new Map(this, camera, spritesheet_GenericMap);
+            _player = new Hero(this, spriteBatch, camera, gameMap,startPos, 8, spritesheet_Twilight);
             camera.lockEntity(_player);
             keyControls = new kbdController(this, _player);
-            tiles = new Tiles(this);
-            gameMap = new Map(this, _player, camera, tiles);
+            //tiles = new Tiles(this, spritesheet_GenericMap);
+            
 
             _player.map = gameMap;
 
@@ -149,6 +140,18 @@ namespace First_Game
             activescreen = testlvl;
             testlvl.Show();
         }
+
+        public void toggleDebug()
+        {
+            DEBUG = !DEBUG;
+            _player.DEBUG = DEBUG;
+
+            if (DEBUG)
+                gameMap.setSpriteSheet(spritesheet_GenericMap_DEBUG);
+            else
+                gameMap.setSpriteSheet(spritesheet_GenericMap);
+        }
+
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload

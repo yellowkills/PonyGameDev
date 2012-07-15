@@ -22,20 +22,18 @@ namespace First_Game
         private int frameWidth, frameHeight, frameIndex, numFrames;
         private int timespan, countdown;
 
-
-
-        public Animation(Texture2D spritesheet, Vector2[] frames, int frameWidth,
-                         int frameHeight, int numFrames, int timespan)
+        public Animation(Texture2D spritesheet, Vector2 startingPosition, int frameWidth, int frameHeight, int numFrames, 
+                         int timespan)
         {
             this.spritesheet = spritesheet;
-            this.frames = frames;
             this.frameWidth = frameWidth;
             this.frameHeight = frameHeight;
             this.numFrames = numFrames;
             this.timespan = timespan;
             this.frameIndex = 0;
+            this.frames = generateFramePositions(startingPosition, frameWidth, numFrames);
 
-            clip = new Rectangle((int) frames[0].X, (int) frames[0].Y, frameWidth, frameHeight);
+            clip = new Rectangle((int)startingPosition.X, (int)startingPosition.Y, frameWidth, frameHeight);
         }
 
         public int FrameIndex
@@ -58,11 +56,24 @@ namespace First_Game
                 {
                     countdown = timespan;
                     FrameIndex += 1;
-                    clip.X = (int)frames[0].X + frameWidth * FrameIndex;
+                    //clip.X = (int)frames[0].X + frameWidth * FrameIndex;
+                    clip.X = (int)frames[FrameIndex].X;
                 }
                 else
                     countdown = value;
             }
+        }
+
+        public Vector2[] generateFramePositions(Vector2 startingPosition, int frameWidth, int numFrames)
+        {
+            Vector2[] f = new Vector2[numFrames];
+
+            for (int i = 0; i < numFrames; i++)
+            {
+                f[i] = new Vector2(startingPosition.X + i*frameWidth, startingPosition.Y);
+            }
+
+            return f;
         }
 
 

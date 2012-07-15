@@ -9,13 +9,13 @@ namespace First_Game
     class kbdController
     {
         private Game1 gamePtr;
-        private Player playerPtr;
+        private Hero playerPtr;
 
         KeyboardState oldKeyboardState, currentKeyboardState;
         MouseState oldMouseState, currentMouseState;
         Keys[] keys;
 
-        public kbdController(Game1 mainGame, Player inPlayer)
+        public kbdController(Game1 mainGame, Hero inPlayer)
         {
             gamePtr = mainGame;
             playerPtr = inPlayer;
@@ -51,8 +51,10 @@ namespace First_Game
                             playerPtr.Jump();
                             break;
                         case Keys.OemTilde:
-                            gamePtr.DEBUG = !gamePtr.DEBUG;
-                            playerPtr.DEBUG = !playerPtr.DEBUG;
+                            gamePtr.toggleDebug();
+                            break;
+                        case Keys.Insert:
+                            playerPtr.testHealing();
                             break;
                         case Keys.Delete:
                             playerPtr.takeDamage();

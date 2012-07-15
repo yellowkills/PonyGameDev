@@ -17,13 +17,14 @@ namespace First_Game
         public static int tileMapHeight;
 
         //Pointers to objects of interest
-        private Camera cameraPtr;
+        private Camera camera;
         private Game1 gamePtr;
-        private Player _playerPtr;
+        private Hero _playerPtr;
         private Tiles tilePtr;
 
         //Private Vars
-
+        private Texture2D spritesheet;
+        private Tiles tiles;
 
         public int[,] map;
 
@@ -39,9 +40,9 @@ namespace First_Game
 
         /** Constructor **/
 
-        public Map(Game1 mainGame, Player thePlayer, Camera cam, Tiles gameTiles)
+        public Map(Game1 mainGame, Hero thePlayer, Camera cam, Tiles gameTiles)
         {
-            cameraPtr = cam;
+            camera = cam;
             _playerPtr = thePlayer;
             gamePtr = mainGame;
             tilePtr = gameTiles;
@@ -97,13 +98,75 @@ namespace First_Game
             mapHeightInPixels = tileMapHeight * Tiles.tileHeight;
         }
 
-        
+
+
+        public Map(Game game, Camera camera, Texture2D spritesheet)
+        {
+            this.camera = camera;
+            this.spritesheet = spritesheet;
+            tiles = new Tiles(game, spritesheet);
+
+            map = new int[40, 40]  {
+                                        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},  //  01
+                                        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},  //  02
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  03
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  04
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1},  //  05
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1},  //  06
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1},  //  07
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,1,1},  //  08
+                                        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1},  //  09
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,0,0,0,1,0,0,0,0,0,0,1,1},  //  10
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1},  //  11
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,1,1},  //  12
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,1},  //  13
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  14
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1},  //  15
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1},  //  16
+                                        {1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1},  //  17
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,1,1},  //  18
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1},  //  19
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,1},  //  20
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  21
+                                        {1,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  22
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  23
+                                        {1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  24
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,1,1},  //  25
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  26
+                                        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  27
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  28
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,1,1},  //  29
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  30
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  31
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1},  //  32
+                                        {1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,1},  //  33
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},  //  34
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  35
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  36
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  37
+                                        {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1},  //  38
+                                        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},  //  39
+                                        {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}   //  40
+
+                                    };//End map definition
+
+            tileMapWidth = map.GetLength(1);
+            tileMapHeight = map.GetLength(0);
+
+            mapWidthInPixels = tileMapWidth * Tiles.tileWidth;
+            mapHeightInPixels = tileMapHeight * Tiles.tileHeight;
+        }
+
+
+        public void setSpriteSheet(Texture2D spritesheet)
+        {
+            this.spritesheet = spritesheet;
+        }
 
         public void DrawMap(SpriteBatch spriteBatch)
         {
-            Point cameraPoint = Tiles.VectorToCell(cameraPtr.pubPosition);
-            Point viewPoint = Tiles.VectorToCell(cameraPtr.pubPosition +
-                                Tiles.ViewPortVector());
+            Point cameraPoint = Tiles.VectorToCell(camera.pubPosition);
+            Point viewPoint = Tiles.VectorToCell(camera.pubPosition + Tiles.ViewPortVector());
 
             Point min = new Point();
             Point max = new Point();
@@ -116,20 +179,20 @@ namespace First_Game
             Rectangle tileRectangle = new Rectangle(0, 0, Tiles.tileWidth, Tiles.tileHeight);
 
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
+
             for (int y = min.Y; y < max.Y; y++)
             {
                 for (int x = min.X; x < max.X; x++)
                 {
-                    tileRectangle.X = x * Tiles.tileWidth - (int)cameraPtr.pubPosition.X;
-                    tileRectangle.Y = y * Tiles.tileHeight - (int)cameraPtr.pubPosition.Y;
-                    spriteBatch.Draw(tilePtr.tiles[map[y, x]],
-                        tileRectangle, Color.White);
+                    tileRectangle.X = x * Tiles.tileWidth - (int)camera.pubPosition.X;
+                    tileRectangle.Y = y * Tiles.tileHeight - (int)camera.pubPosition.Y;
+                    spriteBatch.Draw(spritesheet, tileRectangle, tiles.tiles[map[y, x]], Color.White);
+                    //spriteBatch.Draw(tilePtr.tiles[map[y, x]], tileRectangle, Color.White);
                 }
             }
+
             spriteBatch.End();
+
         }
-
-
-        
     }
 }

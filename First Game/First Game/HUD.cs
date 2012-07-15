@@ -19,7 +19,7 @@ namespace First_Game
         // [Private Variables] : none
         //private MenuComponent health;
         private Vector2 healthDisplay;
-        private Player _player;
+        private Hero _player;
         private SpriteFont hpFont;
 
         // [Protected Variables] : none
@@ -35,7 +35,7 @@ namespace First_Game
         }
 
 
-        public void setHero(Player _player)
+        public void setHero(Hero _player)
         {
             this._player = _player;
         }

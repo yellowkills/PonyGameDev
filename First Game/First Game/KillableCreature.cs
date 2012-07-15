@@ -79,8 +79,8 @@ namespace First_Game
             {
                 if (value <= 0)
                 {
+                    recoverTimer = 0;
                     isRecovering = false;
-                    recoverTimer = recoverSpeed;
                 }
                 else
                     recoverTimer = value;
@@ -101,28 +101,41 @@ namespace First_Game
 
             // These values are just so the compiler will shut up. I highly 
             // recommend that you overwrite these when you extend this class.
-            healSpeed = 50;
-            recoverSpeed = 5;
+            healSpeed = 500;
+            recoverSpeed = 15;
             poisonTimer = 0;
         }
 
-
+        // This allows damage and healing to work on a timed basis
+        public void tickTimers()
+        {
+            HealTimer -= 1;
+            if(isRecovering) DamageTimer -= 1;
+        }
 
 
         /*      DAMAGE     */
 
         // Causes one point of damage, which lowers the creatures health by one.
         public void takeDamage() 
-        { 
-            HP -= 1;
-            isRecovering = true;
+        {
+            if (DamageTimer <= 0)
+            {
+                HP -= 1;
+                isRecovering = true;
+                DamageTimer = recoverSpeed;
+            } 
         }
 
         // Causes a specified point of damage, which lowers the creatures health by that amount.
         public void takeDamage(int amountOfDamage)
         {
-            HP -= amountOfDamage;
-            isRecovering = true;
+            if (recoverTimer <= 0)
+            {
+                HP -= amountOfDamage;
+                isRecovering = true;
+                DamageTimer = recoverSpeed;
+            } 
         }
 
         // Reduces the creatures health to zero

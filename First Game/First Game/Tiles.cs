@@ -9,39 +9,35 @@ namespace First_Game
 {
     class Tiles
     {
-        //Pointers to Objects of Interest
-        private Game1 gamePtr;
+        private const int numTiles = 4; // The number of tile positions that will be loaded into the rectangle array.
+                                        // ^hardcoded. need to fix
 
+
+        //Pointers to Objects of Interest
         public static int tileHeight;
         public static int tileWidth;
 
-        public List<Texture2D> tiles;
+        private Game game;
 
-        //Find a way to protect these.
-        public Texture2D wht, blk, clr, red;
+        public Rectangle[] tiles;
 
-        public Tiles(Game1 mainGame)
+        public Tiles(Game game, Texture2D spritesheet)
         {
-            gamePtr = mainGame;
-            tiles = new List<Texture2D>();
+            this.game = game;
             tileHeight = 32;
             tileWidth = 32;
-            loadTiles();
+            loadTiles(spritesheet);
         }
 
-        private void loadTiles()
+        // Hardcoded. need to fix
+        private void loadTiles(Texture2D spritesheet) 
         {
-            wht = gamePtr.Content.Load<Texture2D>("WhiteBox");
-            tiles.Add(wht);
+            tiles = new Rectangle[numTiles];
 
-            blk = gamePtr.Content.Load<Texture2D>("BlackBox");
-            tiles.Add(blk);
-
-            clr = gamePtr.Content.Load<Texture2D>("ClearBox");
-            tiles.Add(clr);
-
-            red = gamePtr.Content.Load<Texture2D>("RedBox");
-            tiles.Add(red);
+            for (int i = 0; i < 4; i++)
+            {
+                tiles[i] = new Rectangle((i+1)*tileWidth, 0, tileWidth, tileHeight);
+            }
         }
 
         /*Helper Methods*/
@@ -59,7 +55,7 @@ namespace First_Game
                     Game1.screenHeight + tileHeight);
         }
 
-        public static Point[] NearbyCells(Player h)
+        public static Point[] NearbyCells(Hero h)
         {
             List<Point> cells = new List<Point>();
             Point topleft = VectorToCell(new Vector2(h.position.X - Map.tileMapWidth, h.position.Y - tileHeight));
