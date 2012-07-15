@@ -23,16 +23,15 @@ namespace First_Game
         
         Texture2D enemy1Normalimg, enemy1Damagedimg;
 
-        Texture2D spritesheet_GenericMap, spritesheet_GenericMap_DEBUG,spritesheet_Twilight;
+        Texture2D spritesheet_GenericMap, spritesheet_GenericMap_DEBUG, spritesheet_Twilight, spritesheet_ponybot1;
         
         private Camera camera;
         private kbdController keyControls;
-        private Map gameMap;
+        private Map gameMap, gameMap2;
         //private Tiles tiles;
         
         Hero _player;
 
-        //Will make a function to control this eventually. Public for now.
         public bool DEBUG;
         Rectangle debug;
         SpriteFont debugFont;
@@ -41,7 +40,7 @@ namespace First_Game
 
         // Various GameScreens
         GameScreen activescreen;
-        TestLevel testlvl;
+        TestLevel testlvl, battlelvl;
 
         public static int screenWidth;
         public static int screenHeight;
@@ -111,7 +110,8 @@ namespace First_Game
             // Sprite sheets
             spritesheet_GenericMap = Content.Load<Texture2D>("spritesheet_map_genericTiles");
             spritesheet_GenericMap_DEBUG = Content.Load<Texture2D>("spritesheet_map_genericTiles_DEBUG");
-            spritesheet_Twilight = Content.Load<Texture2D>("twiWalk"); // TWILIGHT!
+            spritesheet_Twilight = Content.Load<Texture2D>("spritesheet_Twilight"); // TWILIGHT!
+            spritesheet_ponybot1 = Content.Load<Texture2D>("spritesheet_ponybot1"); // ROBOTS!
             
 
 
@@ -120,23 +120,26 @@ namespace First_Game
             Vector2 startPos = new Vector2(100, 100);
 
             camera = new Camera(this);
-            gameMap = new Map(this, camera, spritesheet_GenericMap);
             _player = new Hero(this, spriteBatch, camera, gameMap,startPos, 8, spritesheet_Twilight);
             camera.lockEntity(_player);
-            keyControls = new kbdController(this, _player);
-            //tiles = new Tiles(this, spritesheet_GenericMap);
-            
+            keyControls = new kbdController(this, _player);            
 
-            _player.map = gameMap;
-
-            // loading the level
+            // General test lvl
             testlvl = new TestLevel(this, spriteBatch);
-            testlvl.LoadCamera(camera);
             testlvl.LoadHero(_player);
-            testlvl.LoadMap(gameMap);
+            testlvl.LoadMap(camera, spritesheet_GenericMap);
+
+            // enemy AI testing lvl
+            battlelvl = new TestLevel(this, spriteBatch);
+            battlelvl.LoadHero(_player);
+            battlelvl.LoadMap(camera, spritesheet_GenericMap);
+
+
 
             Components.Add(testlvl);
+            //Components.Add(battlelvl);
 
+            //activescreen = battlelvl;
             activescreen = testlvl;
             testlvl.Show();
         }

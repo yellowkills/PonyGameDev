@@ -17,13 +17,10 @@ namespace First_Game
         public static int tileHeight;
         public static int tileWidth;
 
-        private Game game;
-
         public Rectangle[] tiles;
 
-        public Tiles(Game game, Texture2D spritesheet)
+        public Tiles(Texture2D spritesheet)
         {
-            this.game = game;
             tileHeight = 32;
             tileWidth = 32;
             loadTiles(spritesheet);

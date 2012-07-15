@@ -99,11 +99,11 @@ namespace First_Game
             HP = startingHP;
 
 
-            // These values are just so the compiler will shut up. I highly 
-            // recommend that you overwrite these when you extend this class.
-            healSpeed = 500;
-            recoverSpeed = 15;
-            poisonTimer = 0;
+            
+            
+            healSpeed = 500;    // These values are just so the compiler will shut up. I highly 
+            recoverSpeed = 20;  // recommend that you overwrite these when you extend this class.
+            poisonTimer = 0;    //
         }
 
         // This allows damage and healing to work on a timed basis

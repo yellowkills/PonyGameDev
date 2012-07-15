@@ -33,15 +33,7 @@ namespace First_Game
         }
         
 
-        // Loading
-        public void LoadCamera(Camera camera)
-        {
-            this.camera = camera;
-        }
-        public void LoadMap(Map map)
-        {
-            this.map = map;
-        }
+        // Loading :: Important: always load the player before the map or player will be null. this needs to be fixed somehow
         public void LoadHero(Hero _player) // this will be changed to load all the entities for a lvl
         {
             this._player = _player;
@@ -49,8 +41,12 @@ namespace First_Game
             hud.setHero(_player);
             hud.Show();
             Components.Add(hud);
-
-            
+        }
+        public void LoadMap(Camera camera, Texture2D spritesheet)
+        {
+            this.map = new Map(camera, spritesheet);
+            this.camera = camera;
+            _player.map = map;
         }
 
 

@@ -31,11 +31,9 @@ namespace First_Game
         protected Game game;
         protected SpriteBatch spriteBatch;
 
-        // Collision points
-        protected Vector2 topleft, topright,            // For simplicity, I'm just making a rectangle for the collision points.
-                          botleft, botright,            // Later on, we can make this more accurate. Also, it may be more efficient
-                          midleftHIGH, midleftLOW,      // for these to be offsets of 'position' rather than the true coordinates
-                          midrightHIGH, midrightLOW;    // of the collision points.
+        // Collision point offsets
+        protected Vector2 topLeft, topRight, botLeft, botRight,    
+                          leftSideHigh, leftSideLow, rightSideHigh, rightSideLow;
 
         // Debug Pixel
         protected Rectangle pxlrect;
@@ -54,11 +52,46 @@ namespace First_Game
         protected float maxSpeedX;
         protected float maxSpeedY;
 
-
+        
         // [Public Variables]
         public Camera camera;
         public Rectangle rect; //Needs a more descriptive name.
         public Vector2 position;
+
+        // Actual collision point coordinates
+        public Vector2 TopLeft
+        {
+            get { return Vector2.Add(position,topLeft); }
+        }
+        public Vector2 TopRight
+        {
+            get { return Vector2.Add(position,topRight); }
+        }
+        public Vector2 BotLeft
+        {
+            get { return Vector2.Add(position, botLeft); }
+        }
+        public Vector2 BotRight
+        {
+            get { return Vector2.Add(position, botRight); }
+        }
+        public Vector2 LeftSideHigh
+        {
+            get { return Vector2.Add(position, leftSideHigh); }
+        }
+        public Vector2 LeftSideLow
+        {
+            get { return Vector2.Add(position, leftSideLow); }
+        }
+        public Vector2 RightSideHigh
+        {
+            get { return Vector2.Add(position, rightSideHigh); }
+        }
+        public Vector2 RightSideLow
+        {
+            get { return Vector2.Add(position, rightSideLow); }
+        }
+
         public float DeltaX
         {
             get { return deltaX; }
@@ -75,6 +108,7 @@ namespace First_Game
                 deltaY = MathHelper.Clamp(value, -maxSpeedY, maxSpeedY);
             }
         }
+
 
 
 
@@ -152,11 +186,11 @@ namespace First_Game
             int tileMapHeight = map.GetLength(0);
 
             List<Point> cells = new List<Point>();
-            Point topleft = VectorToCell(new Vector2(this.midleftHIGH.X - tileMapWidth, this.topleft.Y - _tileHeight));
-            Point bottomright = VectorToCell(new Vector2(this.midrightLOW.X + tileMapWidth,
-                                                         this.botright.Y + _tileHeight));
-            for (int i = topleft.Y; i <= bottomright.Y; i++)
-                for (int j = topleft.X; j <= bottomright.X; j++)
+            Point CELL_topleft = VectorToCell(new Vector2(LeftSideHigh.X - tileMapWidth, TopLeft.Y - _tileHeight));
+            Point CELL_botright = VectorToCell(new Vector2(RightSideLow.X + tileMapWidth,
+                                                         BotRight.Y + _tileHeight));
+            for (int i = CELL_topleft.Y; i <= CELL_botright.Y; i++)
+                for (int j = CELL_topleft.X; j <= CELL_botright.X; j++)
                     cells.Add(new Point(j, i));
 
             return cells.ToArray();
@@ -165,40 +199,40 @@ namespace First_Game
         {
             Point[] cells = NearbyCells(map);
 
-            Point topleft = VectorToCell(this.topleft);
-            Point topright = VectorToCell(this.topright);
-            Point midleftHIGH = VectorToCell(this.midleftHIGH);
-            Point midleftLOW = VectorToCell(this.midleftLOW);
-            Point midrightHIGH = VectorToCell(this.midrightHIGH);
-            Point midrightLOW = VectorToCell(this.midrightLOW);
-            Point botleft = VectorToCell(this.botleft);
-            Point botright = VectorToCell(this.botright);
+            Point CELL_topleft = VectorToCell(TopLeft);
+            Point CELL_topright = VectorToCell(TopRight);
+            Point CELL_botleft = VectorToCell(BotLeft);
+            Point CELL_botright = VectorToCell(BotRight);
+            Point CELL_leftSideHigh = VectorToCell(LeftSideHigh);
+            Point CELL_leftSideLow = VectorToCell(LeftSideLow);
+            Point CELL_rightSideHigh = VectorToCell(RightSideHigh);
+            Point CELL_rightSideLow = VectorToCell(RightSideLow);
+
 
 
             foreach (Point p in cells)
             {
                 if (map[p.Y, p.X] == 1)
                 {
-                    if (p.Equals(midleftHIGH) || p.Equals(midleftLOW))
+                    if (p.Equals(CELL_leftSideHigh) || p.Equals(CELL_leftSideLow))
                     {
                         DeltaX = 0;
-                        position.X = ((p.X + 1) * _tileWidth) - Math.Abs((position.X - this.midleftHIGH.X));
+                        position.X = (p.X + 1) * _tileWidth - leftSideHigh.X;
                     }
-                    if (p.Equals(midrightHIGH) || p.Equals(midrightLOW))
+                    if (p.Equals(CELL_rightSideHigh) || p.Equals(CELL_rightSideLow))
                     {
                         DeltaX = 0;
-                        position.X = (p.X * _tileWidth - 1) - Math.Abs((position.X - this.midrightHIGH.X));
+                        position.X = (p.X * _tileWidth) - rightSideHigh.X;
                     }
-                    if (DeltaY > 0 && (p.Equals(botleft) || p.Equals(botright)))
+                    if (DeltaY > 0 && (p.Equals(CELL_botleft) || p.Equals(CELL_botright)))
                     {
                         Land();
-                        //position.Y = ((p.Y-1) * _tileHeight) - (rect.Height - Math.Abs((position.Y - this.topleft.Y)));
                         position.Y = p.Y * _tileHeight - rect.Height;
                     }
-                    else if (p.Equals(topleft) || p.Equals(topright))
+                    else if (p.Equals(CELL_topleft) || p.Equals(CELL_topright))
                     {
                         DeltaY = 0;
-                        position.Y = ((p.Y + 1) * _tileHeight) - Math.Abs((position.Y - this.topleft.Y));
+                        position.Y = ((p.Y + 1) * _tileHeight) - topLeft.Y;
                     }
                 }
             }
@@ -217,21 +251,21 @@ namespace First_Game
         {
             Point[] cells = NearbyCells(map);
 
-            Point topleft = VectorToCell(this.topleft);
-            Point topright = VectorToCell(this.topright);
-            Point midleftHIGH = VectorToCell(this.midleftHIGH);
-            Point midleftLOW = VectorToCell(this.midleftLOW);
-            Point midrightHIGH = VectorToCell(this.midrightHIGH);
-            Point midrightLOW = VectorToCell(this.midrightLOW);
-            Point botleft = VectorToCell(this.botleft);
-            Point botright = VectorToCell(this.botright);
+            Point CELL_topleft = VectorToCell(TopLeft);
+            Point CELL_topright = VectorToCell(TopRight);
+            Point CELL_botleft = VectorToCell(BotLeft);
+            Point CELL_botright = VectorToCell(BotRight);
+            Point CELL_leftSideHigh = VectorToCell(LeftSideHigh);
+            Point CELL_leftSideLow = VectorToCell(LeftSideLow);
+            Point CELL_rightSideHigh = VectorToCell(RightSideHigh);
+            Point CELL_rightSideLow = VectorToCell(RightSideLow);
 
             foreach (Point p in cells)
             {
-                if (map[p.Y, p.X] == 1 && (p.Equals(botleft) || p.Equals(botright) ||
-                                           p.Equals(midleftHIGH) || p.Equals(midleftLOW) ||
-                                           p.Equals(midrightHIGH) || p.Equals(midrightLOW) ||
-                                           p.Equals(topleft) || p.Equals(topright)))
+                if (map[p.Y, p.X] == 1 && (p.Equals(CELL_topleft) || p.Equals(CELL_topright) ||
+                                           p.Equals(CELL_botleft) || p.Equals(CELL_botright) ||
+                                           p.Equals(CELL_leftSideHigh) || p.Equals(CELL_leftSideLow) ||
+                                           p.Equals(CELL_rightSideHigh) || p.Equals(CELL_rightSideLow)))
                     MarkTile(p, Color.Yellow);
                 else
                     MarkTile(p, Color.Red);
@@ -241,42 +275,46 @@ namespace First_Game
         {
             spriteBatch.Begin();
 
-            pxlrect.X = (int)topleft.X - 1 - (int)camera.pubPosition.X;
-            pxlrect.Y = (int)topleft.Y - 1 - (int)camera.pubPosition.Y;
+            pxlrect.X = (int)TopLeft.X - 1 - (int)camera.pubPosition.X;
+            pxlrect.Y = (int)TopLeft.Y - 1 - (int)camera.pubPosition.Y;
             spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
 
-            pxlrect.X = (int)topright.X - 1 - (int)camera.pubPosition.X;
-            pxlrect.Y = (int)topright.Y - 1 - (int)camera.pubPosition.Y;
+            pxlrect.X = (int)TopRight.X - 1 - (int)camera.pubPosition.X;
+            pxlrect.Y = (int)TopRight.Y - 1 - (int)camera.pubPosition.Y;
             spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
 
-            pxlrect.X = (int)botleft.X - 1 - (int)camera.pubPosition.X;
-            pxlrect.Y = (int)botleft.Y - 1 - (int)camera.pubPosition.Y;
+            pxlrect.X = (int)BotLeft.X - 1 - (int)camera.pubPosition.X;
+            pxlrect.Y = (int)BotLeft.Y - 1 - (int)camera.pubPosition.Y;
             spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
 
-            pxlrect.X = (int)botright.X - 1 - (int)camera.pubPosition.X;
-            pxlrect.Y = (int)botright.Y - 1 - (int)camera.pubPosition.Y;
+            pxlrect.X = (int)BotRight.X - 1 - (int)camera.pubPosition.X;
+            pxlrect.Y = (int)BotRight.Y - 1 - (int)camera.pubPosition.Y;
             spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
 
-            pxlrect.X = (int)midleftHIGH.X - 1 - (int)camera.pubPosition.X;
-            pxlrect.Y = (int)midleftHIGH.Y - 1 - (int)camera.pubPosition.Y;
+            pxlrect.X = (int)LeftSideHigh.X - 1 - (int)camera.pubPosition.X;
+            pxlrect.Y = (int)LeftSideHigh.Y - 1 - (int)camera.pubPosition.Y;
             spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
 
-            pxlrect.X = (int)midleftLOW.X - 1 - (int)camera.pubPosition.X;
-            pxlrect.Y = (int)midleftLOW.Y - 1 - (int)camera.pubPosition.Y;
+            pxlrect.X = (int)LeftSideLow.X - 1 - (int)camera.pubPosition.X;
+            pxlrect.Y = (int)LeftSideLow.Y - 1 - (int)camera.pubPosition.Y;
             spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
 
-            pxlrect.X = (int)midrightHIGH.X - 1 - (int)camera.pubPosition.X;
-            pxlrect.Y = (int)midrightHIGH.Y - 1 - (int)camera.pubPosition.Y;
+            pxlrect.X = (int)RightSideHigh.X - 1 - (int)camera.pubPosition.X;
+            pxlrect.Y = (int)RightSideHigh.Y - 1 - (int)camera.pubPosition.Y;
             spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
 
-            pxlrect.X = (int)midrightLOW.X - 1 - (int)camera.pubPosition.X;
-            pxlrect.Y = (int)midrightLOW.Y - 1 - (int)camera.pubPosition.Y;
+            pxlrect.X = (int)RightSideLow.X - 1 - (int)camera.pubPosition.X;
+            pxlrect.Y = (int)RightSideLow.Y - 1 - (int)camera.pubPosition.Y;
             spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
+
+            pxlrect.X = (int)position.X - 1 - (int)camera.pubPosition.X;
+            pxlrect.Y = (int)position.Y - 1 - (int)camera.pubPosition.Y;
+            spriteBatch.Draw(whtpxl, pxlrect, Color.Green);
 
             spriteBatch.End();
         }
 
-        // Updates the position and re-calculates all the collision points. [inefficient? maybe]
+        // Updates the position
         protected void RefreshPosition()
         {
             position.X += DeltaX;

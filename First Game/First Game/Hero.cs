@@ -48,12 +48,16 @@ namespace First_Game
             friction = .7f;
             airFriction = .98f;
             gravity = .4f;
+            //gravity = 0.0f;
             jumpforce = -20.0f;
             maxSpeedX = 4.5f;
             maxSpeedY = 9.0f;
 
             direction = Direction.RIGHT;
             state = State.STANDING;
+
+            rect = new Rectangle((int)position.X, (int)position.Y, _heroWidth, _heroHeight);
+            pxlrect = new Rectangle(0, 0, 3, 3);
 
 
             // Animation stuff
@@ -64,17 +68,16 @@ namespace First_Game
             setAnimation();
 
             // Collision Points
-            topleft = new Vector2(position.X + rect.Width / 5, position.Y);
-            topright = new Vector2(position.X + rect.Width / 2, position.Y);
-            botleft = new Vector2(position.X, position.Y + rect.Height);
-            botright = new Vector2(position.X + rect.Width, position.Y + rect.Height);
-            midleftHIGH = new Vector2(position.X, position.Y + rect.Height * (4.0f / 10.0f));
-            midleftLOW = new Vector2(position.X, position.Y + rect.Height * (9.0f / 10.0f));
-            midrightHIGH = new Vector2(position.X + rect.Width, position.Y + rect.Height * (4.0f / 10.0f));
-            midrightLOW = new Vector2(position.X + rect.Width, position.Y + rect.Height * (9.0f / 10.0f));
+            topLeft = new Vector2(32,16);
+            topRight = new Vector2(64,16);
+            botLeft = new Vector2(32, rect.Height);
+            botRight = new Vector2(64, rect.Height);
+            leftSideHigh = new Vector2(25,27);
+            leftSideLow = new Vector2(25,57);
+            rightSideHigh = new Vector2(71,27);
+            rightSideLow = new Vector2(71,57);
 
-            rect = new Rectangle((int)position.X, (int)position.Y, _heroWidth, _heroHeight);
-            pxlrect = new Rectangle(0, 0, 3, 3);
+
 
             deltaX = 0.0f;
             deltaY = 0.0f;
@@ -85,41 +88,6 @@ namespace First_Game
         {
             walkLeft = new Animation(spritesheet, LframesStartPos, 96, 64, 12, 3);
             walkRight = new Animation(spritesheet, RframesStartPos, 96, 64, 12, 3);
-        }
-        private void refreshCollisionPoints() // hardcoded for twilight
-        {
-            /*
-            if(direction == Direction.RIGHT)
-                top.X = position.X + rect.Width / 1.5f; //<-- What is / Why 1.5?
-            else
-                top.X = position.X + Tiles.tileWidth;
-            
-            top.Y = position.Y;
-            */
-
-            topleft.X = position.X + 32;
-            topleft.Y = position.Y + 16;
-
-            topright.X = position.X + 64;
-            topright.Y = position.Y + 16;
-
-            botleft.X = position.X + 32;
-            botleft.Y = position.Y + rect.Height;
-
-            botright.X = position.X + 64;
-            botright.Y = position.Y + rect.Height;
-
-            midleftHIGH.X = position.X + 25;
-            midleftHIGH.Y = position.Y + 27;
-
-            midleftLOW.X = position.X + 25;
-            midleftLOW.Y = position.Y + 57;
-
-            midrightHIGH.X = position.X + 71;
-            midrightHIGH.Y = position.Y + 27;
-
-            midrightLOW.X = position.X + 71;
-            midrightLOW.Y = position.Y + 57;
         }
 
 
@@ -150,7 +118,6 @@ namespace First_Game
             if(state != State.INAIR) state = (Math.Abs(DeltaX) < 1) ? State.STANDING : State.RUNNING;
             
             RefreshPosition();
-            refreshCollisionPoints();
             CollisionTest(map.map);
         }
         public override void Draw(GameTime gameTime)

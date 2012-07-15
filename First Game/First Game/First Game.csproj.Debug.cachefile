@@ -1,13 +1,10 @@
-Content\BlackBox.xnb
-Content\ClearBox.xnb
-Content\WhiteBox.xnb
-Content\RedBox.xnb
 Content\Enemy1Damaged.xnb
 Content\Enemy1Normal.xnb
 Content\spritesheet.xnb
 Content\DebugFont.xnb
 Content\whtpxl.xnb
 Content\Font1.xnb
-Content\twiWalk.xnb
 Content\spritesheet_map_genericTiles.xnb
 Content\spritesheet_map_genericTiles_DEBUG.xnb
+Content\spritesheet_ponybot1.xnb
+Content\spritesheet_Twilight.xnb
