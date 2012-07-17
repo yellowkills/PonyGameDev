@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
+using System.Text;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -28,7 +31,6 @@ namespace First_Game
         private Camera camera;
         private kbdController keyControls;
         private Map gameMap, gameMap2;
-        //private Tiles tiles;
         
         Hero _player;
 
@@ -40,6 +42,7 @@ namespace First_Game
 
         // Various GameScreens
         GameScreen activescreen;
+        MainMenu mainMenu;
         TestLevel testlvl, battlelvl;
 
         public static int screenWidth;
@@ -63,7 +66,6 @@ namespace First_Game
             DEBUG = false;
             
             this.IsMouseVisible = true;
-            
 
             graphics.PreferredBackBufferWidth = 1024;
             graphics.PreferredBackBufferHeight = 768;
@@ -72,6 +74,30 @@ namespace First_Game
             //graphics.ToggleFullScreen();
         }
 
+        public void toggleDebug()
+        {
+            DEBUG = !DEBUG;
+            _player.DEBUG = DEBUG;
+
+            if (DEBUG)
+            {
+                testlvl.map.setSpriteSheet(spritesheet_GenericMap_DEBUG);
+                battlelvl.map.setSpriteSheet(spritesheet_GenericMap_DEBUG);
+            }
+            else
+            {
+                testlvl.map.setSpriteSheet(spritesheet_GenericMap);
+                battlelvl.map.setSpriteSheet(spritesheet_GenericMap);
+            }
+
+        }
+
+        public void switchScreens(GameScreen newScreen)
+        {
+            activescreen.Hide();
+            activescreen = newScreen;
+            activescreen.Show();
+        }
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -112,9 +138,6 @@ namespace First_Game
             spritesheet_GenericMap_DEBUG = Content.Load<Texture2D>("spritesheet_map_genericTiles_DEBUG");
             spritesheet_Twilight = Content.Load<Texture2D>("spritesheet_Twilight"); // TWILIGHT!
             spritesheet_ponybot1 = Content.Load<Texture2D>("spritesheet_ponybot1"); // ROBOTS!
-            
-
-
 
 
             Vector2 startPos = new Vector2(100, 100);
@@ -122,39 +145,33 @@ namespace First_Game
             camera = new Camera(this);
             _player = new Hero(this, spriteBatch, camera, gameMap,startPos, 8, spritesheet_Twilight);
             camera.lockEntity(_player);
-            keyControls = new kbdController(this, _player);            
+            keyControls = new kbdController(this, _player);
+            
 
             // General test lvl
             testlvl = new TestLevel(this, spriteBatch);
             testlvl.LoadHero(_player);
             testlvl.LoadMap(camera, spritesheet_GenericMap);
+            testlvl.Hide();
 
             // enemy AI testing lvl
             battlelvl = new TestLevel(this, spriteBatch);
             battlelvl.LoadHero(_player);
             battlelvl.LoadMap(camera, spritesheet_GenericMap);
+            battlelvl.Hide();
+
+            // Main Menu
+            mainMenu = new MainMenu(this, spriteBatch,testlvl,battlelvl);
+            mainMenu.Hide();
 
 
-
+            Components.Add(mainMenu);
             Components.Add(testlvl);
-            //Components.Add(battlelvl);
+            Components.Add(battlelvl);
 
-            //activescreen = battlelvl;
-            activescreen = testlvl;
-            testlvl.Show();
+            activescreen = mainMenu;
+            activescreen.Show();
         }
-
-        public void toggleDebug()
-        {
-            DEBUG = !DEBUG;
-            _player.DEBUG = DEBUG;
-
-            if (DEBUG)
-                gameMap.setSpriteSheet(spritesheet_GenericMap_DEBUG);
-            else
-                gameMap.setSpriteSheet(spritesheet_GenericMap);
-        }
-
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload

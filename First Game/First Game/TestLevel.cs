@@ -18,7 +18,7 @@ namespace First_Game
 
         // Private Variables
         private Hero _player;
-        private Map map;
+        public Map map;
         private Camera camera;
         private HUD hud;
 
@@ -47,8 +47,14 @@ namespace First_Game
             this.map = new Map(camera, spritesheet);
             this.camera = camera;
             _player.map = map;
+
         }
 
+        public void switchToBattleMap()
+        {
+            map.switchToBattleMap();
+            _player.map = map;
+        }
 
         // Base Game Functions
         public override void Update(GameTime gameTime)

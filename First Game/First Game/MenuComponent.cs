@@ -17,6 +17,7 @@ namespace First_Game
     class MenuComponent : Microsoft.Xna.Framework.DrawableGameComponent //TODO
     {
         // [Private Variables] : none
+        
         // [Protected Variables] : none
         // [Public Variables] : none
 
@@ -25,6 +26,10 @@ namespace First_Game
         public MenuComponent(Game game, SpriteBatch spriteBatch)
             : base(game)
         {
+
+
+            
+
 
         }
     }
