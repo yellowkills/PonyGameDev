@@ -23,16 +23,12 @@ namespace First_Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        
-        Texture2D enemy1Normalimg, enemy1Damagedimg;
 
         Texture2D spritesheet_GenericMap, spritesheet_GenericMap_DEBUG, spritesheet_Twilight, spritesheet_ponybot1;
         
         private Camera camera;
         private kbdController keyControls;
-        private Map gameMap, gameMap2;
-        
-        Hero _player;
+        Player player;
 
         public bool DEBUG;
         Rectangle debug;
@@ -43,7 +39,8 @@ namespace First_Game
         // Various GameScreens
         GameScreen activescreen;
         MainMenu mainMenu;
-        TestLevel testlvl, battlelvl;
+        testLevel_1 testlvl;
+        testLevel_2 battlelvl;
 
         public static int screenWidth;
         public static int screenHeight;
@@ -77,19 +74,8 @@ namespace First_Game
         public void toggleDebug()
         {
             DEBUG = !DEBUG;
-            _player.DEBUG = DEBUG;
-
-            if (DEBUG)
-            {
-                testlvl.map.setSpriteSheet(spritesheet_GenericMap_DEBUG);
-                battlelvl.map.setSpriteSheet(spritesheet_GenericMap_DEBUG);
-            }
-            else
-            {
-                testlvl.map.setSpriteSheet(spritesheet_GenericMap);
-                battlelvl.map.setSpriteSheet(spritesheet_GenericMap);
-            }
-
+            testlvl.toggleDebug();
+            battlelvl.toggleDebug();
         }
 
         public void switchScreens(GameScreen newScreen)
@@ -123,15 +109,10 @@ namespace First_Game
             screenWidth = GraphicsDevice.Viewport.Width;
             screenHeight = GraphicsDevice.Viewport.Height;
 
+            // Debug
             debugFont = Content.Load<SpriteFont>("DebugFont");
             debug = new Rectangle(0, 0, 3, 3);
 
-
-
-
-            /*Move all this to a function in the Player/Entity class?*/
-            enemy1Normalimg = Content.Load<Texture2D>("Enemy1Normal");
-            enemy1Damagedimg = Content.Load<Texture2D>("Enemy1Damaged");
 
             // Sprite sheets
             spritesheet_GenericMap = Content.Load<Texture2D>("spritesheet_map_genericTiles");
@@ -140,24 +121,27 @@ namespace First_Game
             spritesheet_ponybot1 = Content.Load<Texture2D>("spritesheet_ponybot1"); // ROBOTS!
 
 
+
+            // This is where the player starts. This will be removed once the player spawn block is implemented
             Vector2 startPos = new Vector2(100, 100);
 
+            
             camera = new Camera(this);
-            _player = new Hero(this, spriteBatch, camera, gameMap,startPos, 8, spritesheet_Twilight);
-            camera.lockEntity(_player);
-            keyControls = new kbdController(this, _player);
+
+            // Player Creation
+            Hero[] heroes = new Hero[] { new Hero(this, spriteBatch, camera, startPos, 8, spritesheet_Twilight) };
+            player = new Player(this, spriteBatch, camera, startPos);
+            player.setHeroesPlayable(heroes);
+            camera.lockEntity(player.activeHero); // TODO: Change lockEntity so that it locks onto a player instead of a hero
+            keyControls = new kbdController(this, player.activeHero);
             
 
-            // General test lvl
-            testlvl = new TestLevel(this, spriteBatch);
-            testlvl.LoadHero(_player);
-            testlvl.LoadMap(camera, spritesheet_GenericMap);
+            // Test Level 1. Used for general testing
+            testlvl = new testLevel_1(this, spriteBatch);
             testlvl.Hide();
 
-            // enemy AI testing lvl
-            battlelvl = new TestLevel(this, spriteBatch);
-            battlelvl.LoadHero(_player);
-            battlelvl.LoadMap(camera, spritesheet_GenericMap);
+            // Test Level 2. Used for enemy AI testing
+            battlelvl = new testLevel_2(this, spriteBatch);
             battlelvl.Hide();
 
             // Main Menu
@@ -210,8 +194,8 @@ namespace First_Game
 
             if (DEBUG)
             {
-                spriteBatch.DrawString(debugFont, _player.DeltaX.ToString(), dbug1, Color.Red);
-                spriteBatch.DrawString(debugFont, _player.DeltaY.ToString(), dbug2, Color.Red);
+                spriteBatch.DrawString(debugFont, player.activeHero.DeltaX.ToString(), dbug1, Color.Red);
+                spriteBatch.DrawString(debugFont, player.activeHero.DeltaY.ToString(), dbug2, Color.Red);
             }
 
             spriteBatch.End();

@@ -62,18 +62,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enemy1Damaged.png">
-      <Name>Enemy1Damaged</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Enemy1Normal.png">
-      <Name>Enemy1Normal</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Spritesheet - First Game.png">
       <Name>spritesheet</Name>
       <Importer>TextureImporter</Importer>

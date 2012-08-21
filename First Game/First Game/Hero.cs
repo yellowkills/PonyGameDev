@@ -35,12 +35,11 @@ namespace First_Game
 
  
         // Default Constructor
-        public Hero(Game game, SpriteBatch spriteBatch, Camera camera, Map map, Vector2 position, int startingHealth,Texture2D spritesheet)
+        public Hero(Game game, SpriteBatch spriteBatch, Camera camera,Vector2 position, int startingHealth,Texture2D spritesheet)
             : base(game, spriteBatch, camera, position, startingHealth)
         {
             this.position = position;
             this.spritesheet = spritesheet;
-            this.map = map;
 
             // Physics stuff
             xAcceleration = .2f;
@@ -81,6 +80,12 @@ namespace First_Game
 
             deltaX = 0.0f;
             deltaY = 0.0f;
+        }
+
+        // Debug toggle
+        public void toggleDebug()
+        {
+            DEBUG = !DEBUG;
         }
 
 

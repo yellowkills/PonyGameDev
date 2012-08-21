@@ -19,7 +19,7 @@ namespace First_Game
         // [Private Variables] : none
         //private MenuComponent health;
         private Vector2 healthDisplay;
-        private Hero _player;
+        private Hero hero;
         private SpriteFont hpFont;
 
         // [Protected Variables] : none
@@ -35,9 +35,9 @@ namespace First_Game
         }
 
 
-        public void setHero(Hero _player)
+        public void setHero(Hero hero)
         {
-            this._player = _player;
+            this.hero = hero;
         }
 
         public override void Update(GameTime gameTime)
@@ -49,7 +49,7 @@ namespace First_Game
             base.Draw(gameTime);
 
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
-            spriteBatch.DrawString(hpFont, "HP " + Convert.ToString(_player.HP), healthDisplay, Color.Red);
+            spriteBatch.DrawString(hpFont, "HP " + Convert.ToString(hero.HP), healthDisplay, Color.Red);
             spriteBatch.End();
         }
     }
