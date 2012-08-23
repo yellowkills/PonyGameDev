@@ -122,28 +122,27 @@ namespace First_Game
 
 
 
-            // This is where the player starts. This will be removed once the player spawn block is implemented
-            Vector2 startPos = new Vector2(100, 100);
-
             
+
+            // Camera creation
             camera = new Camera(this);
 
-            // Player Creation
-            Hero[] heroes = new Hero[] { new Hero(this, spriteBatch, camera, startPos, 8, spritesheet_Twilight) };
-            player = new Player(this, spriteBatch, camera, startPos);
-            player.setHeroesPlayable(heroes);
+
+            // Player creation
+            player = new Player(this, spriteBatch, camera);
             camera.lockEntity(player.activeHero); // TODO: Change lockEntity so that it locks onto a player instead of a hero
             keyControls = new kbdController(this, player.activeHero);
             
 
+            // Level creation
             // Test Level 1. Used for general testing
             testlvl = new testLevel_1(this, spriteBatch);
             testlvl.Hide();
-
             // Test Level 2. Used for enemy AI testing
             battlelvl = new testLevel_2(this, spriteBatch);
             battlelvl.Hide();
 
+            // Menu creation
             // Main Menu
             mainMenu = new MainMenu(this, spriteBatch,testlvl,battlelvl);
             mainMenu.Hide();

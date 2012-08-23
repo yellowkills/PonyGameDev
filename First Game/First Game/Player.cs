@@ -17,9 +17,8 @@ namespace First_Game
     class Player : DrawableGameComponent
     {
         // [Private Variables]
-        private int numLives; // This is only here b/c it is standard in most games. We may not even use this
+        private GameManager game;
         
-
         // [Protected Variables] : none
 
         // [Public Variables]
@@ -28,10 +27,18 @@ namespace First_Game
 
 
         // Default Constructor
-        public Player(Game game, SpriteBatch spritebatch, Camera camera, Vector2 position)
+        public Player(GameManager game, SpriteBatch spriteBatch, Camera camera)
             : base(game)
         {
-            numLives = 3; // Hardcoded for simplicity. This can be changed later.
+            // !HARDCODE! This is where the player starts. This will be removed once the player spawn block is implemented
+            Vector2 startPos = new Vector2(100, 100);
+
+            // !HARDCODE! creates the heroes.
+            Texture2D spritesheet_Twilight = game.Content.Load<Texture2D>("spritesheet_Twilight");
+            Hero[] heroes = new Hero[] { new Hero(game, spriteBatch, camera, startPos, 8, spritesheet_Twilight) };
+            setHeroesPlayable(heroes);
+
+            
         }
 
         // Debug toggle
@@ -45,6 +52,7 @@ namespace First_Game
         {
             this.heroes = heroes;
             activeHero = heroes[0];
+            
         }
 
 
@@ -52,6 +60,18 @@ namespace First_Game
         {
             foreach (Hero h in heroes)
                 h.map = map;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            activeHero.Update(gameTime);
+            base.Update(gameTime);
+        }
+        public override void Draw(GameTime gameTime)
+        {
+
+            activeHero.Draw(gameTime);
+            base.Draw(gameTime);
         }
     }
 }

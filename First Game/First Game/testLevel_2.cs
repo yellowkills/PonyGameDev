@@ -41,13 +41,13 @@ namespace First_Game
 
             // Player Creation
             Hero[] heroes = new Hero[] { new Hero(game, spriteBatch, camera, startPos, 8, spritesheet_Twilight) };
-            player = new Player(game, spriteBatch, camera, startPos);
+            player = new Player(game, spriteBatch, camera);
             player.setHeroesPlayable(heroes);
             camera.lockEntity(player.activeHero); // TODO: Change lockEntity so that it locks onto a player instead of a hero
             kbdController keyControls = new kbdController(game, player.activeHero);
 
 
-            LoadAssets(player, testmap2);
+            LoadAssets(player, testmap2, keyControls);
         }
 
         // Debug toggle

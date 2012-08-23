@@ -29,17 +29,18 @@ namespace First_Game
         public Map map;
 
         // Default Constructor
-        public Level(Game game, SpriteBatch spriteBatch) : base(game, spriteBatch)
+        public Level(GameManager game, SpriteBatch spriteBatch) : base(game, spriteBatch)
         {
             hud = new HUD(game, spriteBatch);
         }
 
 
         // Loads all of the major assests for the level
-        public void LoadAssets(Player player, Map map)
+        public void LoadAssets(Player player, Map map, kbdController keyControls)
         {
             this.map = map;
             this.player = player;
+            this.keyControls = keyControls;
             player.setMap(map);
 
             Components.Add(player);
