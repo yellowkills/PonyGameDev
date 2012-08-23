@@ -24,7 +24,7 @@ namespace First_Game
 
 
         // Default Constructor
-        public testLevel_1(Game1 game, SpriteBatch spriteBatch) : base(game, spriteBatch)
+        public testLevel_1(GameManager game, SpriteBatch spriteBatch) : base(game, spriteBatch)
         {
             hud = new HUD(game, spriteBatch);
 

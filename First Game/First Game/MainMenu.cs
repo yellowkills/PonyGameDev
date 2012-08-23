@@ -23,7 +23,7 @@ namespace First_Game
 
 
         // Default Constructor
-        public MainMenu(Game1 game, SpriteBatch spriteBatch, testLevel_1 lvl1, testLevel_2 lvl2)
+        public MainMenu(GameManager game, SpriteBatch spriteBatch, testLevel_1 lvl1, testLevel_2 lvl2)
             : base(game, spriteBatch)
         {
 

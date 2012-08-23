@@ -48,8 +48,8 @@ namespace First_Game
         public static Vector2 ViewPortVector()
         {
             return new Vector2(
-                    Game1.screenWidth + tileWidth,
-                    Game1.screenHeight + tileHeight);
+                    GameManager.screenWidth + tileWidth,
+                    GameManager.screenHeight + tileHeight);
         }
 
         public static Point[] NearbyCells(Hero h)

@@ -27,7 +27,7 @@ namespace First_Game
         private MouseState mouseState;
         private SpriteBatch spriteBatch;
         private GameScreen goToScreen;
-        private Game1 game;
+        private GameManager game;
 
 
         // [Protected Variables] : none
@@ -35,7 +35,7 @@ namespace First_Game
         public Rectangle buttonArea;
 
         // Default Constructor
-        public Button(Game1 game, SpriteBatch spriteBatch, String text, Rectangle buttonArea)
+        public Button(GameManager game, SpriteBatch spriteBatch, String text, Rectangle buttonArea)
             : base(game)
         {
             this.game = game;
@@ -49,7 +49,7 @@ namespace First_Game
             textPos = new Vector2(0,0);
         }
 
-        public Button(Game1 game, SpriteBatch spriteBatch, Texture2D graphic, String text, Rectangle buttonArea)
+        public Button(GameManager game, SpriteBatch spriteBatch, Texture2D graphic, String text, Rectangle buttonArea)
             : base(game)
         {
             this.game = game;

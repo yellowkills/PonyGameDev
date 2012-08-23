@@ -16,7 +16,7 @@ namespace First_Game
         private bool moveCam;
 
         /***Pointers***/
-        private Game1 gamePtr;
+        private GameManager gamePtr;
 
         private bool hasTarget;
         private Entity lockTarget;
@@ -36,9 +36,9 @@ namespace First_Game
             set
             {
                 position.X = MathHelper.Clamp(value.X, 0,
-                        Map.MapWidthInPixels - Game1.ScreenWidth);
+                        Map.MapWidthInPixels - GameManager.ScreenWidth);
                 position.Y = MathHelper.Clamp(value.Y, 0,
-                        Map.MapHeightInPixels - Game1.ScreenHeight);
+                        Map.MapHeightInPixels - GameManager.ScreenHeight);
             }
         }
 
@@ -48,15 +48,15 @@ namespace First_Game
             set
             {
                 position.X = MathHelper.Clamp(value.X, 0,
-                        Map.MapWidthInPixels - Game1.ScreenWidth);
+                        Map.MapWidthInPixels - GameManager.ScreenWidth);
                 position.Y = MathHelper.Clamp(value.Y, 0,
-                        Map.MapHeightInPixels - Game1.ScreenHeight);
+                        Map.MapHeightInPixels - GameManager.ScreenHeight);
             }
         }
 
         /******************************/
 
-        public Camera(Game1 parent)
+        public Camera(GameManager parent)
         {
             gamePtr = parent;
             pubPosition = new Vector2();
@@ -94,16 +94,16 @@ namespace First_Game
         {
             if (hasTarget)
             {
-                if (lockTarget.position.X >= (Game1.ScreenWidth / 3) * 2 ||
-                    lockTarget.position.X <= Game1.screenWidth / 3)
+                if (lockTarget.position.X >= (GameManager.ScreenWidth / 3) * 2 ||
+                    lockTarget.position.X <= GameManager.screenWidth / 3)
                 {
                     targetCenter.X = lockTarget.position.X;
                     moveCam = true;
                 }
 
                 /* Platform Lock on Y axis */
-                if(lockTarget.position.Y > (Game1.screenHeight/3) *2 ||
-                    lockTarget.position.Y < (Game1.ScreenHeight/3) )
+                if(lockTarget.position.Y > (GameManager.screenHeight/3) *2 ||
+                    lockTarget.position.Y < (GameManager.ScreenHeight/3) )
                 {
                     targetCenter.Y = lockTarget.position.Y; //Target the player's current Y as the center for the camera.
                     moveCam = true;
@@ -162,8 +162,8 @@ namespace First_Game
 
         private void updateCenter()
         {
-            cameraCenter.X = position.X + Game1.screenWidth / 2;
-            cameraCenter.Y = position.Y + Game1.screenHeight / 2;
+            cameraCenter.X = position.X + GameManager.screenWidth / 2;
+            cameraCenter.Y = position.Y + GameManager.screenHeight / 2;
         }
 
         public void resetMotion()

@@ -8,14 +8,14 @@ namespace First_Game
 {
     class kbdController
     {
-        private Game1 gamePtr;
+        private GameManager gamePtr;
         private Hero playerPtr;
 
         KeyboardState oldKeyboardState, currentKeyboardState;
         MouseState oldMouseState, currentMouseState;
         Keys[] keys;
 
-        public kbdController(Game1 mainGame, Hero inPlayer)
+        public kbdController(GameManager mainGame, Hero inPlayer)
         {
             gamePtr = mainGame;
             playerPtr = inPlayer;
