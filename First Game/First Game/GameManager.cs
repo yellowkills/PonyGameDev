@@ -30,6 +30,7 @@ namespace First_Game
         private kbdController keyControls;
         Player player;
 
+        // Debug vars
         public bool DEBUG;
         Rectangle debug;
         SpriteFont debugFont;
@@ -71,6 +72,8 @@ namespace First_Game
             //graphics.ToggleFullScreen();
         }
 
+        // Toggles debug globally. a 'toggledebug()' function will need to be added to any classes that have debug code,
+        // and that function will need to be called here.
         public void toggleDebug()
         {
             DEBUG = !DEBUG;
@@ -78,6 +81,7 @@ namespace First_Game
             battlelvl.toggleDebug();
         }
 
+        // Switches the active screen to 'newScreen'
         public void switchScreens(GameScreen newScreen)
         {
             activescreen.Hide();
