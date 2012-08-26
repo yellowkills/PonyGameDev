@@ -81,6 +81,7 @@ namespace First_Game
             battlelvl.toggleDebug();
         }
 
+
         // Switches the active screen to 'newScreen'
         public void switchScreens(GameScreen newScreen)
         {
@@ -88,6 +89,7 @@ namespace First_Game
             activescreen = newScreen;
             activescreen.Show();
         }
+
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
