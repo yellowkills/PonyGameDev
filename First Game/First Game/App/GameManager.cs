@@ -152,7 +152,7 @@ namespace First_Game
 
             // Player creation
             player = new Player(this, spriteBatch, camera);
-            camera.lockEntity(player.activeHero); // TODO: Change lockEntity so that it locks onto a player instead of a hero
+            camera.lockEntity(player.activeHero);
             keyControls = new kbdController(this, player.activeHero);
             
 
@@ -165,7 +165,7 @@ namespace First_Game
             battlelvl.Hide();
 
             // Menu creation
-            // Player Creation Menu
+            // Kill Screen
             killScreen = new KillScreen(this, spriteBatch);
             killScreen.Hide();
             // Pause Screen

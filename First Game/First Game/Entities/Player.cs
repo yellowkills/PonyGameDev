@@ -27,12 +27,9 @@ namespace First_Game
         public Player(GameManager game, SpriteBatch spriteBatch, Camera camera)
             : base(game)
         {
-            // !HARDCODE! This is where the player starts. This will be removed once the player spawn block is implemented
-            Vector2 startPos = new Vector2(100, 100);
-
             // !HARDCODE! creates the heroes.
             Texture2D spritesheet_Twilight = game.Content.Load<Texture2D>("spritesheet_Twilight");
-            Hero[] heroes = new Hero[] { new Hero(game, spriteBatch, camera, startPos, 8, spritesheet_Twilight) };
+            Hero[] heroes = new Hero[] { new Hero(game, spriteBatch, camera, Vector2.Zero, 8, spritesheet_Twilight) };
             setHeroesPlayable(heroes);
 
             
