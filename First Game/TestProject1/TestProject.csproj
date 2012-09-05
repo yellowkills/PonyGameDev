@@ -66,18 +66,12 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CameraTest.cs" />
-    <Compile Include="EntityTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Shadow Include="Test References\First Game.accessor" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\First Game\Content\First GameContent.contentproj">
-      <Project>{0992DAAF-CA0D-4D06-9391-DA9DA2D4300B}</Project>
-      <Name>First GameContent %28Content%29</Name>
-    </ProjectReference>
     <ProjectReference Include="..\First Game\First Game.csproj">
       <Project>{79A6BF91-9CC5-4878-BDBD-6DC4E569E3CA}</Project>
       <Name>First Game</Name>
