@@ -16,7 +16,6 @@ namespace First_Game
 {
     class Button : DrawableGameComponent
     {
-        // [Private Variables]
         private enum BState { HOVER, UP, DOWN}
         private BState buttonState;
         private Texture2D graphic;
@@ -30,8 +29,6 @@ namespace First_Game
         private GameManager game;
 
 
-        // [Protected Variables] : none
-        // [Public Variables]
         public Rectangle buttonArea;
 
         // Default Constructor
@@ -45,7 +42,7 @@ namespace First_Game
             this.buttonArea = buttonArea;
             this.buttonState = BState.UP;
 
-            buttonFont = game.Content.Load<SpriteFont>("Font1");
+            buttonFont = game.Content.Load<SpriteFont>("MenuFont - Medium");
             textPos = new Vector2(0,0);
         }
 
@@ -59,7 +56,7 @@ namespace First_Game
             this.buttonArea = buttonArea;
             this.buttonState = BState.UP;
 
-            buttonFont = game.Content.Load<SpriteFont>("Font1");
+            buttonFont = game.Content.Load<SpriteFont>("MenuFont - Medium");
             textPos = new Vector2(0,0);
         }
 

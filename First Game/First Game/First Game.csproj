@@ -120,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Util\Animation.cs" />
+    <Compile Include="UI\Menu\KillScreen.cs" />
     <Compile Include="UI\Menu\Util\Button.cs" />
     <Compile Include="UI\Camera.cs" />
     <Compile Include="Map\Test\testLevel_2.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Entities\KillableCreature.cs" />
     <Compile Include="UI\Menu\MainMenu.cs" />
     <Compile Include="Map\Map.cs" />
+    <Compile Include="UI\Menu\Util\HelperGUI.cs" />
     <Compile Include="UI\Menu\Util\MenuComponent.cs" />
     <Compile Include="UI\Menu\PauseScreen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

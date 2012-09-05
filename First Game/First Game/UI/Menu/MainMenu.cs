@@ -16,10 +16,7 @@ namespace First_Game
 {
     class MainMenu : GameScreen 
     {
-        // [Private Variables] : none
         private Button button1, button2, button3, button4;
-        // [Protected Variables] : none
-        // [Public Variables] : none
 
 
         // Default Constructor
@@ -44,6 +41,26 @@ namespace First_Game
 
         }
 
+        public MainMenu(GameManager game, SpriteBatch spriteBatch, testLevel_1 lvl1, testLevel_2 lvl2, KillScreen killScreen)
+            : base(game, spriteBatch)
+        {
+            button1 = new Button(game, spriteBatch, "Start Lvl 1", new Rectangle(0, 0, 300, 200));
+            button1.setButtonDestination(lvl1);
+            button2 = new Button(game, spriteBatch, "Start Lvl 2", new Rectangle(0, 0, 300, 200));
+            button2.setButtonDestination(lvl2);
+            button3 = new Button(game, spriteBatch, "TODO", new Rectangle(0, 0, 300, 200));
+            button4 = new Button(game, spriteBatch, "Quit", new Rectangle(0, 0, 300, 200));
+            button4.setButtonDestination(killScreen);
+
+            centerButtons(game.Window.ClientBounds.Width,
+                          game.Window.ClientBounds.Height);
+
+            Components.Add(button1);
+            Components.Add(button2);
+            Components.Add(button3);
+            Components.Add(button4);
+
+        }
 
         public void centerButtons(int scrW, int scrH)
         {

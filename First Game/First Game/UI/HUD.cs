@@ -14,24 +14,19 @@ using Microsoft.Xna.Framework.Storage;
 
 namespace First_Game
 {
-    class HUD : GameScreen //TODO
+    class HUD : GameScreen
     {
-        // [Private Variables] : none
-        //private MenuComponent health;
         private Vector2 healthDisplay;
         private Hero hero;
         private SpriteFont hpFont;
 
-        // [Protected Variables] : none
-        // [Public Variables] : none
-
 
         // Default Constructor
-        public HUD(Game game, SpriteBatch spriteBatch)
+        public HUD(GameManager game, SpriteBatch spriteBatch)
             : base(game, spriteBatch)
         {
             healthDisplay = new Vector2(5, 5);
-            hpFont = game.Content.Load<SpriteFont>("Font1");
+            hpFont = game.Content.Load<SpriteFont>("MenuFont - Medium");
         }
 
 

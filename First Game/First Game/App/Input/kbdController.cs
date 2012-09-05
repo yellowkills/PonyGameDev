@@ -45,24 +45,25 @@ namespace First_Game
             {
                 if (oldKeyboardState.IsKeyUp(key))
                 {
-                    switch (key)
-                    {
-                        case Keys.Space:
-                            playerPtr.Jump();
-                            break;
-                        case Keys.OemTilde:
-                            gamePtr.toggleDebug();
-                            break;
-                        case Keys.Insert:
-                            playerPtr.testHealing();
-                            break;
-                        case Keys.Delete:
-                            playerPtr.takeDamage();
-                            break;
-                        case Keys.Escape:
-                            gamePtr.Exit();
-                            break;
-                    }
+                    if (gamePtr.activescreen is Level)
+                        switch (key)
+                        {
+                            case Keys.Space:
+                                playerPtr.Jump();
+                                break;
+                            case Keys.OemTilde:
+                                gamePtr.toggleDebug();
+                                break;
+                            case Keys.Insert:
+                                playerPtr.testHealing();
+                                break;
+                            case Keys.Delete:
+                                playerPtr.takeDamage();
+                                break;
+                            case Keys.Escape:
+                                gamePtr.pauseGame();
+                                break;
+                        }
                 }
                 else
                 {

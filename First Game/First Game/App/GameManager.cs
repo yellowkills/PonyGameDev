@@ -38,7 +38,9 @@ namespace First_Game
 
 
         // Various GameScreens
-        GameScreen activescreen;
+        public GameScreen activescreen;
+        KillScreen killScreen;
+        PauseScreen pauseScreen;
         MainMenu mainMenu;
         testLevel_1 testlvl;
         testLevel_2 battlelvl;
@@ -89,6 +91,23 @@ namespace First_Game
             activescreen = newScreen;
             activescreen.Show();
         }
+        
+
+        private Player loadPlayer(String playerName)
+        {
+            Player newplayer = new Player(this,spriteBatch,camera);
+
+            
+
+
+            return newplayer;
+        }
+
+        public void pauseGame()
+        {
+            pauseScreen.setLevel((Level)activescreen);
+            switchScreens(pauseScreen);
+        }
 
 
         /// <summary>
@@ -127,9 +146,6 @@ namespace First_Game
             spritesheet_ponybot1 = Content.Load<Texture2D>("spritesheet_ponybot1"); // ROBOTS!
 
 
-
-            
-
             // Camera creation
             camera = new Camera(this);
 
@@ -149,11 +165,19 @@ namespace First_Game
             battlelvl.Hide();
 
             // Menu creation
+            // Player Creation Menu
+            killScreen = new KillScreen(this, spriteBatch);
+            killScreen.Hide();
+            // Pause Screen
+            pauseScreen = new PauseScreen(this, spriteBatch, killScreen);
+            pauseScreen.Hide();
             // Main Menu
-            mainMenu = new MainMenu(this, spriteBatch,testlvl,battlelvl);
+            mainMenu = new MainMenu(this, spriteBatch, testlvl, battlelvl, killScreen);
             mainMenu.Hide();
 
 
+            Components.Add(killScreen);
+            Components.Add(pauseScreen);
             Components.Add(mainMenu);
             Components.Add(testlvl);
             Components.Add(battlelvl);

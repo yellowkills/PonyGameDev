@@ -162,6 +162,12 @@ namespace First_Game
             state = (Math.Abs(DeltaX) == 0)? State.STANDING : State.RUNNING;
         }
 
+        // Places this entity at the coordinates of "location"
+        public void place(Vector2 location)
+        {
+            position = location;
+        }
+
         public Vector2 centerPoint()
         {
             float cX, cY;

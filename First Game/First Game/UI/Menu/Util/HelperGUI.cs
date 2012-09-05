@@ -1,4 +1,8 @@
-﻿using System;
+﻿/**
+ * This class provides static methods that help with the resizing and repositioning of GUI elements.
+**/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,17 +18,17 @@ using Microsoft.Xna.Framework.Storage;
 
 namespace First_Game
 {
-    class MenuComponent : Microsoft.Xna.Framework.DrawableGameComponent //TODO
+    class HelperGUI // TODO
     {
+
         // Default Constructor
-        public MenuComponent(Game game, SpriteBatch spriteBatch)
-            : base(game)
+        public HelperGUI()
         {
 
+        }
 
-            
-
-
+        public void centerText()
+        {
         }
     }
 }

@@ -42,10 +42,42 @@ namespace First_Game
             this.player = player;
             this.keyControls = keyControls;
             player.setMap(map);
+            player.activeHero.place(findPlayerSpawn(map));
 
             Components.Add(player);
             hud.setHero(player.activeHero);
             Components.Add(hud);
+        }
+
+        public Vector2 findPlayerSpawn(Map m)
+        {
+            Vector2 spawn = new Vector2();
+
+            for (int i = 0; i < m.map.GetLength(0); i++)
+            {
+                for (int j = 0; j < m.map.GetLength(1); j++)
+                {
+                    if(m.map[i,j] == 3)
+                        spawn = new Vector2(j*32,i*32);
+                }
+            }
+
+            return spawn;
+        }
+        public Vector2 findEnemySpawn(Map m)
+        {
+            Vector2 spawn = new Vector2();
+
+            for (int i = 0; i < m.map.GetLength(0); i++)
+            {
+                for (int j = 0; j < m.map.GetLength(1); j++)
+                {
+                    if(m.map[i,j] == 2)
+                        spawn = new Vector2(j*32,i*32);
+                }
+            }
+
+            return spawn;
         }
 
         // Base Game Functions

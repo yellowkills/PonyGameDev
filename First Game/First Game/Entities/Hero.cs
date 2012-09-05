@@ -35,8 +35,8 @@ namespace First_Game
 
  
         // Default Constructor
-        public Hero(Game game, SpriteBatch spriteBatch, Camera camera,Vector2 position, int startingHealth,Texture2D spritesheet)
-            : base(game, spriteBatch, camera, position, startingHealth)
+        public Hero(GameManager game, SpriteBatch spriteBatch, Camera camera,Vector2 position, int startingHealth,Texture2D spritesheet)
+            : base(game, spriteBatch, camera, startingHealth)
         {
             this.position = position;
             this.spritesheet = spritesheet;

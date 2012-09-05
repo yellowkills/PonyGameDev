@@ -17,9 +17,6 @@ namespace First_Game
 {
     class KillableCreature : Entity
     {
-        // [Private Variables] : none
-
-        // [Protected Variables] : none
         protected bool isDead;
         protected bool isRecovering;
 
@@ -87,18 +84,14 @@ namespace First_Game
             }
         }
 
-        // [Public Variables] : none
 
 
         // Default Constructor
-        public KillableCreature(Game game, SpriteBatch spriteBatch, Camera camera, Vector2 position, int startingHP)
+        public KillableCreature(GameManager game, SpriteBatch spriteBatch, Camera camera, int startingHP)
             : base(game, spriteBatch, camera)
         {
-            this.position = position;
             this.startingHP = startingHP;
             HP = startingHP;
-
-
             
             
             healSpeed = 500;    // These values are just so the compiler will shut up. I highly 

@@ -14,17 +14,21 @@ using Microsoft.Xna.Framework.Storage;
 
 namespace First_Game
 {
-    class MenuComponent : Microsoft.Xna.Framework.DrawableGameComponent //TODO
+    class KillScreen : GameScreen
     {
+
         // Default Constructor
-        public MenuComponent(Game game, SpriteBatch spriteBatch)
-            : base(game)
+        public KillScreen(GameManager game, SpriteBatch spriteBatch)
+            : base(game, spriteBatch)
         {
+            this.game = game;
+        }
 
+        public override void Update(GameTime gameTime)
+        {
+            game.Exit();
 
-            
-
-
+            base.Update(gameTime);
         }
     }
 }

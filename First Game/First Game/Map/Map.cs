@@ -72,7 +72,6 @@ namespace First_Game
                     tileRectangle.X = x * Tiles.tileWidth - (int)camera.pubPosition.X;
                     tileRectangle.Y = y * Tiles.tileHeight - (int)camera.pubPosition.Y;
                     spriteBatch.Draw(spritesheet, tileRectangle, tiles.tiles[map[y, x]], Color.White);
-                    //spriteBatch.Draw(tilePtr.tiles[map[y, x]], tileRectangle, Color.White);
                 }
             }
 

@@ -16,12 +16,9 @@ namespace First_Game
 {
     class Player : DrawableGameComponent
     {
-        // [Private Variables]
         private GameManager game;
         
-        // [Protected Variables] : none
 
-        // [Public Variables]
         public Hero[] heroes;
         public Hero activeHero;
 

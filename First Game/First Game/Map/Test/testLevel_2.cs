@@ -47,6 +47,10 @@ namespace First_Game
             kbdController keyControls = new kbdController(game, player.activeHero);
 
 
+            // Enemy Creation
+            Enemy enemy1 = new Enemy(game, spriteBatch, camera, 8);
+
+
             LoadAssets(player, testmap2, keyControls);
         }
 
