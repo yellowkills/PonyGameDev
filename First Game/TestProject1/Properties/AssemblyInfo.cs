@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("First Game")]
-[assembly: AssemblyProduct("First Game")]
+[assembly: AssemblyTitle("TestProject1")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyCompany("")]
-
-[assembly: AssemblyCopyright("Copyright ©  2012")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyProduct("TestProject1")]
+[assembly: AssemblyCopyright("Copyright © Microsoft 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,8 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("5769ab86-45ec-4bcc-ba08-0ab553d5cc81")]
-
+[assembly: Guid("2c20e85d-0cc0-4d2e-a0cf-2cb884a90b26")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -30,7 +29,7 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
+// You can specify all the values or you can default the Build and Revision Numbers 
+// by using the '*' as shown below:
 [assembly: AssemblyVersion("1.0.0.0")]
-
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("TestProject")]
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("TestProject1")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
