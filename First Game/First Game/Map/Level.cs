@@ -44,6 +44,8 @@ namespace First_Game
             player.setMap(map);
             player.activeHero.place(findPlayerSpawn(map));
 
+
+
             Components.Add(player);
             hud.setHero(player.activeHero);
             Components.Add(hud);

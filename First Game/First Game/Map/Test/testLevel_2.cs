@@ -48,10 +48,13 @@ namespace First_Game
 
 
             // Enemy Creation
-            Enemy enemy1 = new Enemy(game, spriteBatch, camera, 8);
-
+            Texture2D enemySpriteSheet = game.Content.Load<Texture2D>("spritesheet_ponybot1");
+            Enemy enemy1 = new Enemy(game, spriteBatch, camera, 8, enemySpriteSheet);
+            enemy1.setMap(testmap2);
+            enemy1.place(findEnemySpawn(testmap2));
 
             LoadAssets(player, testmap2, keyControls);
+            Components.Add(enemy1);
         }
 
         // Debug toggle

@@ -31,9 +31,49 @@ namespace First_Game
 
 
         // Default Constructor
-        public Enemy(GameManager game, SpriteBatch spriteBatch, Camera camera, int startingHealth)
+        public Enemy(GameManager game, SpriteBatch spriteBatch, Camera camera, int startingHealth, Texture2D spritesheet)
             : base(game, spriteBatch, camera, startingHealth)
         {
+            this.position = position;
+            this.spritesheet = spritesheet;
+
+            // Physics stuff
+            xAcceleration = .2f;
+            yAcceleration = .5f;
+            friction = .7f;
+            airFriction = .98f;
+            gravity = .4f;
+            jumpforce = -20.0f;
+            maxSpeedX = 4.5f;
+            maxSpeedY = 9.0f;
+
+            direction = Direction.RIGHT;
+            state = State.STANDING;
+
+            rect = new Rectangle((int)position.X, (int)position.Y, _enemyWidth, _enemyHeight);
+            pxlrect = new Rectangle(0, 0, 3, 3);
+
+
+            // Animation stuff
+            RstandingRECT = new Rectangle(0, 0, 96, 64);
+            RframesStartPos = new Vector2(96, 0);
+            LstandingRECT = new Rectangle(0, 64, 96, 64);
+            LframesStartPos = new Vector2(96, 64);
+            setAnimation();
+
+            // Collision Points
+            topLeft = new Vector2(32, 16);
+            topRight = new Vector2(64, 16);
+            botLeft = new Vector2(32, rect.Height);
+            botRight = new Vector2(64, rect.Height);
+            leftSideHigh = new Vector2(25, 27);
+            leftSideLow = new Vector2(25, 57);
+            rightSideHigh = new Vector2(71, 27);
+            rightSideLow = new Vector2(71, 57);
+
+
+            deltaX = 0.0f;
+            deltaY = 0.0f;
         }
 
         private void setAnimation()
@@ -50,28 +90,15 @@ namespace First_Game
 
 
 
-
-
-
-
-
-
-
+        public void setMap(Map map)
+        {
+            this.map = map;
+        }
 
 
 
         public override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyUp(Keys.A) && Keyboard.GetState().IsKeyUp(Keys.D))
-            {
-                if (state == State.INAIR)
-                    DeltaX *= airFriction;
-                else
-                    DeltaX *= friction;
-
-                if (Math.Abs(DeltaX) < 0.1f) DeltaX = 0;
-            }
-
             DeltaY += gravity;
 
             if (state != State.INAIR) state = (Math.Abs(DeltaX) < 1) ? State.STANDING : State.RUNNING;
