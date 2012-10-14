@@ -1,0 +1,2 @@
+HEROES,Applejack/PinkiePie/Fluttershy
+ENEMIES,Ponybot/Alicornbot

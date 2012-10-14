@@ -1,0 +1,3 @@
+levelnum,3
+mapfilename,Map3Info.txt
+heroes,"Applejack_Pinkie Pie_Fluttershy"

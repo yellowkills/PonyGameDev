@@ -1,0 +1,2 @@
+HEROES,TwilightSparkle/TwilightSparkle/TwilightSparkle
+ENEMIES,Ponybot
