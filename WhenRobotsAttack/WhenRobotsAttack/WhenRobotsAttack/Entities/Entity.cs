@@ -27,14 +27,19 @@ namespace WhenRobotsAttack
         protected Camera camera;
 
 
-
         // enums
         public enum Direction { LEFT, RIGHT, UP, DOWN }
         public enum State { STANDING, RUNNING, INAIR }
+        public enum Status { ACTIVE, INACTIVE };
+        
 
         // States
         protected Direction direction;
         protected State state;
+        public Status status;
+
+        // Gravity Switch
+        public bool isGravityOn;
 
         // Debug Pixel
         protected Rectangle pxlrect;
@@ -129,8 +134,12 @@ namespace WhenRobotsAttack
 
             state = State.STANDING;
             direction = Direction.RIGHT;
+            status = Status.INACTIVE;
 
             loadPhysics();
+            isGravityOn = true;
+            deltaX = 0.0f;
+            deltaY = 0.0f;
         }
 
         // Debug toggle
@@ -313,6 +322,8 @@ namespace WhenRobotsAttack
 
             rect.X = (int)position.X - (int)camera.pubPosition.X;
             rect.Y = (int)position.Y - (int)camera.pubPosition.Y;
+
+            if (isGravityOn) DeltaY += gravity;
         }
 
 

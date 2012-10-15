@@ -96,7 +96,7 @@ namespace WhenRobotsAttack
         {
             healSpeed = 500;    // These values are just so the compiler will shut up. I highly 
             recoverSpeed = 20;  // recommend that you overwrite these when you extend this class.
-            poisonTimer = 0;    //
+            poisonTimer = 100;    // [NOT CURRENTLY USED]
         }
 
 

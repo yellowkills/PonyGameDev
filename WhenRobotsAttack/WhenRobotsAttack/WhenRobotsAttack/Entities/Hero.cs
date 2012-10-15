@@ -18,8 +18,7 @@ namespace WhenRobotsAttack
     {
         #region Class Variables
 
-        public enum Status { ACTIVE, INACTIVE};
-        public Status status;
+        
 
         // The dimentions of the hero in pixels
         private static int _heroHeight = 64;
@@ -43,20 +42,12 @@ namespace WhenRobotsAttack
             rect = new Rectangle((int)position.X, (int)position.Y, _heroWidth, _heroHeight);
 
             this.name = ponyname;
-            this.status = Status.INACTIVE;
             this.spritesheet = game.Content.Load<Texture2D>("spritesheet_" + ponyname);
+
             loadHero(ponyname);
             loadAnimations();
             setCollisionOffsets();
 
-            direction = Direction.RIGHT;
-            state = State.STANDING;
-            status = Status.INACTIVE;
-
-            deltaX = 0.0f;
-            deltaY = 0.0f;
-
-            
         }
 
         // Loading
@@ -129,8 +120,6 @@ namespace WhenRobotsAttack
                     if (Math.Abs(DeltaX) < 0.1f) DeltaX = 0;
                 }
 
-                DeltaY += gravity;
-
                 if (state != State.INAIR) state = (Math.Abs(DeltaX) < 1) ? State.STANDING : State.RUNNING;
             }
             else
@@ -160,6 +149,8 @@ namespace WhenRobotsAttack
                 case State.INAIR:
                     if (direction == Direction.LEFT) walkLeft.DrawFirstFrame(spriteBatch, rect);
                     else walkRight.DrawFirstFrame(spriteBatch, rect);
+                    break;
+                default:
                     break;
             }
         }

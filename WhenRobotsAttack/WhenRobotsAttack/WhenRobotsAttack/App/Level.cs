@@ -56,6 +56,10 @@ namespace WhenRobotsAttack
 
             Components.Add(this.player);
 
+
+            // !HARDCODE DEBUG
+            camera.lockEntity(enemies[0]);
+            //enemies[0].isGravityOn = false;
         }
 
 
@@ -86,7 +90,7 @@ namespace WhenRobotsAttack
             this.enemies = loadEnemies(enemystring);
 
             player.Position = findPlayerSpawn(map);
-            // TODO: set enemy spawn
+            foreach (Enemy e in enemies) e.position = findEnemySpawn(map);
         }
 
         // Loads the trio of heroes for this level
@@ -209,16 +213,16 @@ namespace WhenRobotsAttack
             foreach(Enemy e in enemies)
             {
                 e.Update(gameTime);
-                //map.checkTileCollisions(e);
-                checkCollisions(player.activeHero, e);
+                map.checkTileCollisions(e);
+                //checkCollisions(player.activeHero, e);
             }
 
-
-            base.Update(gameTime);
             game.keyControls.storeStates();
         }
         public override void Draw(GameTime gameTime)
         {
+            //base.Draw(gameTime);
+
             game.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
             // This draws: 
             // 1. all the background layers
@@ -226,6 +230,8 @@ namespace WhenRobotsAttack
             // 3. the player
             // 4. collision and foreground layers 
             // 5. HUD
+            //
+            // TODO: Decide when the collision layer should be drawn [before player/after player]
 
             /*1*/
             for (int i = 0; i < map.collisionLayer; i++)
