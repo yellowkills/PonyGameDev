@@ -34,8 +34,7 @@ namespace WhenRobotsAttack
         // Debug toggle
         public void toggleDebug()
         {
-            foreach (Hero h in heroes)
-                h.toggleDebug();
+            foreach (Hero h in heroes) h.toggleDebug();
         }
 
         // Loading

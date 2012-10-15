@@ -61,7 +61,7 @@ namespace WhenRobotsAttack
         public void toggleDebug()
         {
             player.toggleDebug();
-            foreach (Enemy e in enemies) toggleDebug();
+            foreach (Enemy e in enemies) e.toggleDebug();
         }
 
 
@@ -236,7 +236,7 @@ namespace WhenRobotsAttack
             // TODO: Decide when the collision layer should be drawn [before player/after player]
 
             /*1*/
-            for (int i = 0; i < map.collisionLayer; i++)
+            for (int i = 0; i <= map.collisionLayer; i++)
                 map.layer[i].Draw();
 
             /*2*/
@@ -247,7 +247,7 @@ namespace WhenRobotsAttack
             player.Draw(gameTime);
 
             /*4*/
-            for (int i = map.collisionLayer; i < map.layer.Length; i++)
+            for (int i = map.collisionLayer+1; i < map.layer.Length; i++)
                 map.layer[i].Draw();
 
             /*5*/

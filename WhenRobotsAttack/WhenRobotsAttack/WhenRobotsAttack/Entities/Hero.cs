@@ -90,11 +90,11 @@ namespace WhenRobotsAttack
             // !HARDCODE
             topLeft = new Vector2(32, 16);
             topRight = new Vector2(64, 16);
-            botLeft = new Vector2(32, rect.Height);
-            botRight = new Vector2(64, rect.Height);
-            leftSideHigh = new Vector2(25, 27);
-            leftSideLow = new Vector2(25, 57);
-            rightSideHigh = new Vector2(71, 27);
+            botLeft = new Vector2(38, rect.Height);
+            botRight = new Vector2(58, rect.Height);
+            leftSideHigh = new Vector2(30, 27);
+            leftSideLow = new Vector2(30, 57);
+            rightSideHigh = new Vector2(74, 27);
             rightSideLow = new Vector2(71, 57);
         }
 
@@ -134,7 +134,7 @@ namespace WhenRobotsAttack
         }
         public override void Draw(GameTime gameTime)
         {
-            base.Draw(gameTime);
+            
 
             switch (state)
             {
@@ -153,6 +153,8 @@ namespace WhenRobotsAttack
                 default:
                     break;
             }
+
+            base.Draw(gameTime);
         }
     }
 }

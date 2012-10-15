@@ -233,11 +233,9 @@ namespace WhenRobotsAttack
         // Debug
         private void MarkTile(Point cell, Color tint)
         {
-            game.spriteBatch.Begin();
             pxlrect.X = Map.tileWidth * cell.X + Map.tileWidth / 2 - 1 - (int)camera.pubPosition.X;
             pxlrect.Y = Map.tileHeight * cell.Y + Map.tileHeight / 2 - 1 - (int)camera.pubPosition.Y;
             spriteBatch.Draw(whtpxl, pxlrect, tint);
-            spriteBatch.End();
         }
         protected void drawTestedCells(Tile[,] map)
         {
