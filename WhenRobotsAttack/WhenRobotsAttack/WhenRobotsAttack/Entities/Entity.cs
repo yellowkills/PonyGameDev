@@ -163,23 +163,23 @@ namespace WhenRobotsAttack
         // Movement
         public void MoveLeft()
         {
-            DeltaX -= xAcceleration;
+            DeltaX -= xAcceleration * game.ElapsedSeconds;
             if (DeltaX < 0)
                 direction = Direction.LEFT;
         }
         public void MoveRight()
         {
-            DeltaX += xAcceleration;
+            DeltaX += xAcceleration * game.ElapsedSeconds;
             if (DeltaX > 0)
                 direction = Direction.RIGHT;
         }
         public void MoveUp()
         {
-            DeltaY -= yAcceleration;
+            DeltaY -= yAcceleration * game.ElapsedSeconds;
         }
         public void MoveDown()
         {
-            DeltaY += yAcceleration;
+            DeltaY += yAcceleration * game.ElapsedSeconds;
         }
 
         // Jumping and Landing
@@ -189,7 +189,7 @@ namespace WhenRobotsAttack
             {
                 state = State.INAIR;
                 DeltaY = jumpforce;
-                position.Y += DeltaY;
+                position.Y += DeltaY * game.ElapsedSeconds;
             }
         }
         public void Land()
@@ -317,7 +317,7 @@ namespace WhenRobotsAttack
             rect.X = (int)position.X - (int)camera.pubPosition.X;
             rect.Y = (int)position.Y - (int)camera.pubPosition.Y;
 
-            if (isGravityOn) DeltaY += gravity;
+            if (isGravityOn) DeltaY += gravity*game.ElapsedSeconds;
         }
 
         public override void Draw(GameTime gameTime)

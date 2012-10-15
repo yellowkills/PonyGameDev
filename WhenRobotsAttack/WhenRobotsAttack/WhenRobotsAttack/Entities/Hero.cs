@@ -16,9 +16,8 @@ namespace WhenRobotsAttack
 {
     public class Hero : KillableCreature
     {
-        #region Class Variables
 
-        
+        #region Class Variables
 
         // The dimentions of the hero in pixels
         private static int _heroHeight = 64;

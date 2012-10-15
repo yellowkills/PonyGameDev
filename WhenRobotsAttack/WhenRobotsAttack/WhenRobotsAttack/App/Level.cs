@@ -232,8 +232,6 @@ namespace WhenRobotsAttack
             // 3. the player
             // 4. collision and foreground layers 
             // 5. HUD
-            //
-            // TODO: Decide when the collision layer should be drawn [before player/after player]
 
             /*1*/
             for (int i = 0; i <= map.collisionLayer; i++)

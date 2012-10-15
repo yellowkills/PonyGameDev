@@ -53,6 +53,9 @@ namespace WhenRobotsAttack
         public static int screenWidth;
         public static int screenHeight;
 
+        // Elapsed time since the last update
+        public float ElapsedSeconds;
+
         // Debug vars
         Rectangle debug;
         SpriteFont debugFont;
@@ -110,6 +113,8 @@ namespace WhenRobotsAttack
             dbug1 = new Vector2(5, 5);
             dbug2 = new Vector2(5, 25);
 
+            ElapsedSeconds = 0.0f;
+
             base.Initialize();
         }
 
@@ -161,6 +166,8 @@ namespace WhenRobotsAttack
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            ElapsedSeconds = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             base.Update(gameTime);
         }
 
