@@ -15,7 +15,7 @@ using Microsoft.Xna.Framework.Storage;
 
 namespace WhenRobotsAttack
 {
-    class Level : GameScreen
+    public class Level : GameScreen
     {
 
         #region Class Variables
@@ -56,10 +56,12 @@ namespace WhenRobotsAttack
 
             Components.Add(this.player);
 
+        }
 
-            // !HARDCODE DEBUG
-            camera.lockEntity(enemies[0]);
-            //enemies[0].isGravityOn = false;
+        public void toggleDebug()
+        {
+            player.toggleDebug();
+            foreach (Enemy e in enemies) toggleDebug();
         }
 
 
@@ -214,7 +216,7 @@ namespace WhenRobotsAttack
             {
                 e.Update(gameTime);
                 map.checkTileCollisions(e);
-                //checkCollisions(player.activeHero, e);
+                checkCollisions(player.activeHero, e);
             }
 
             game.keyControls.storeStates();

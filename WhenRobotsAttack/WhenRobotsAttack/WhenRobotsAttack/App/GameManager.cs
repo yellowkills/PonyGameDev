@@ -41,7 +41,7 @@ namespace WhenRobotsAttack
 
         // Player and Level objects
         public Player player;
-        Level currentLevel;
+        public Level currentLevel;
 
         // Textures
         public Texture2D spritesheet_GenericMap, spritesheet_GenericMap_DEBUG, spritesheet_Twilight, spritesheet_ponybot1;
@@ -82,6 +82,12 @@ namespace WhenRobotsAttack
             //graphics.PreferredBackBufferWidth = 1280;
             //graphics.PreferredBackBufferHeight = 1024;
             //graphics.ToggleFullScreen();
+        }
+
+        public void toggleDebug()
+        {
+            if(activescreen is Level) currentLevel.toggleDebug();
+            //if(activescreen is Menu) currentMenu.toggleDebug();
         }
 
         // Switches the active screen to 'newScreen'

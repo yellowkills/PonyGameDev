@@ -37,6 +37,8 @@ namespace WhenRobotsAttack
         public Enemy(GameManager game, string enemyname)
             : base(game)
         {
+            rect = new Rectangle((int)position.X, (int)position.Y, _enemyWidth, _enemyHeight);
+
             this.enemyname = enemyname;
             this.spritesheet = game.Content.Load<Texture2D>("spritesheet_" + enemyname);
 

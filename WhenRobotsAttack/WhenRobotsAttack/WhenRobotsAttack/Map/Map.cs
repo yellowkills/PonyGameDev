@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WhenRobotsAttack
 {
-    class Map
+    public class Map
     {
 
         #region Class Variables

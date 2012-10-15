@@ -129,8 +129,8 @@ namespace WhenRobotsAttack
             this.spriteBatch = game.spriteBatch;
             this.camera = game.camera;
 
-            //pxlrect = new Rectangle(0, 0, 3, 3);
-            //whtpxl = game.Content.Load<Texture2D>("whtpxl");
+            pxlrect = new Rectangle(0, 0, 3, 3);
+            whtpxl = game.Content.Load<Texture2D>("whtpxl");
 
             state = State.STANDING;
             direction = Direction.RIGHT;
@@ -265,8 +265,6 @@ namespace WhenRobotsAttack
         }
         protected void drawCollisionPoints()
         {
-            spriteBatch.Begin();
-
             pxlrect.X = (int)TopLeft.X - 1 - (int)camera.pubPosition.X;
             pxlrect.Y = (int)TopLeft.Y - 1 - (int)camera.pubPosition.Y;
             spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
@@ -302,8 +300,6 @@ namespace WhenRobotsAttack
             pxlrect.X = (int)position.X - 1 - (int)camera.pubPosition.X;
             pxlrect.Y = (int)position.Y - 1 - (int)camera.pubPosition.Y;
             spriteBatch.Draw(whtpxl, pxlrect, Color.Green);
-
-            spriteBatch.End();
         }
 
         // Gets the current state
@@ -326,6 +322,14 @@ namespace WhenRobotsAttack
             if (isGravityOn) DeltaY += gravity;
         }
 
-
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+            if (DEBUG)
+            {
+                drawTestedCells(game.currentLevel.map.layer[game.currentLevel.map.collisionLayer].tile);
+                drawCollisionPoints();
+            }
+        }
     }
 }

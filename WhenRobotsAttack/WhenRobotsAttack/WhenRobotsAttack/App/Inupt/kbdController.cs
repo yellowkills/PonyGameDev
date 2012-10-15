@@ -45,7 +45,7 @@ namespace WhenRobotsAttack
                                 playerPtr.Jump();
                                 break;
                             case Keys.OemTilde:
-                                //gamePtr.toggleDebug();
+                                gamePtr.toggleDebug();
                                 break;
                             case Keys.Insert:
                                 playerPtr.testHealing();
