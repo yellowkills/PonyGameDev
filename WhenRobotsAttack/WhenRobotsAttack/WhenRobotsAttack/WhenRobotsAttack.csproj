@@ -107,6 +107,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\AIControlledEntity.cs" />
+    <Compile Include="Entities\AI\AIBlackBoard.cs" />
+    <Compile Include="Entities\AI\AIMemory.cs" />
+    <Compile Include="Entities\AI\AISensorModule.cs" />
+    <Compile Include="Entities\AI\aStar.cs" />
+    <Compile Include="Entities\AI\WorldState.cs" />
     <Compile Include="Entities\Util\Animation.cs" />
     <Compile Include="Entities\Enemy.cs" />
     <Compile Include="Entities\Hero.cs" />
