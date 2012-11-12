@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Storage;
 
 namespace WhenRobotsAttack
 {
-    public class Entity : DrawableGameComponent
+    public class Entity2 : DrawableGameComponent
     {
         #region Class Variables
 
@@ -63,46 +63,8 @@ namespace WhenRobotsAttack
         public Rectangle rect;
         public Vector2 position;
 
-        // Collision point offsets
-        public Vector2 topLeft, topRight, botLeft, botRight,
-                  leftSideHigh, leftSideLow, rightSideHigh, rightSideLow;
-
         // Actual collision point coordinates
-        public Vector2 TopLeft
-        {
-            get { return Vector2.Add(position, topLeft); }
-        }
-        public Vector2 TopRight
-        {
-            get { return Vector2.Add(position, topRight); }
-        }
-        public Vector2 BotLeft
-        {
-            get { return Vector2.Add(position, botLeft); }
-        }
-        public Vector2 BotRight
-        {
-            get { return Vector2.Add(position, botRight); }
-        }
-        public Vector2 LeftSideHigh
-        {
-            get { return Vector2.Add(position, leftSideHigh); }
-        }
-        public Vector2 LeftSideLow
-        {
-            get { return Vector2.Add(position, leftSideLow); }
-        }
-        public Vector2 RightSideHigh
-        {
-            get { return Vector2.Add(position, rightSideHigh); }
-        }
-        public Vector2 RightSideLow
-        {
-            get { return Vector2.Add(position, rightSideLow); }
-        }
-
-
-        // The change in position
+         // The change in position
         protected float deltaX, deltaY;
 
         // 2D movement in pixels
@@ -126,7 +88,7 @@ namespace WhenRobotsAttack
         #endregion
 
         // Default Constructor
-        public Entity(GameManager game)
+        public Entity2(GameManager game)
             : base(game)
         {
             this.game = game;
@@ -145,10 +107,12 @@ namespace WhenRobotsAttack
             deltaX = 0.0f;
             deltaY = 0.0f;
 
-            sensorA = botLeft;
-            sensorB = botRight;
+            animationOffset = new Vector2(-33,-12);
 
             setAABB();
+
+            sensorA = new Vector2(AABB.Left + 1, AABB.Bottom);
+            sensorB = new Vector2(AABB.Right - 1, AABB.Bottom);
         }
 
         // Debug toggle
@@ -231,22 +195,6 @@ namespace WhenRobotsAttack
             return new Vector2(cX, cY);
         }
 
-        public Point[] NearbyCells(Tile[,] map) // it would be best to break this up into smaller functions
-        {
-            int tileMapWidth = map.GetLength(1);
-            int tileMapHeight = map.GetLength(0);
-
-            List<Point> cells = new List<Point>();
-            Point CELL_topleft = Map.VectorToCell(new Vector2(LeftSideHigh.X - tileMapWidth, TopLeft.Y - Map.tileHeight));
-            Point CELL_botright = Map.VectorToCell(new Vector2(RightSideLow.X + tileMapWidth,
-                                                         BotRight.Y + Map.tileHeight));
-            for (int i = CELL_topleft.Y; i <= CELL_botright.Y; i++)
-                for (int j = CELL_topleft.X; j <= CELL_botright.X; j++)
-                    cells.Add(new Point(j, i));
-
-            return cells.ToArray();
-        }
-
         public Point[] NearbyCellsAABB(Tile[,] map)
         {
             int tileMapWidth = map.GetLength(1);
@@ -270,68 +218,7 @@ namespace WhenRobotsAttack
             pxlrect.Y = Map.tileHeight * cell.Y + Map.tileHeight / 2 - 1 - (int)camera.pubPosition.Y;
             spriteBatch.Draw(whtpxl, pxlrect, tint);
         }
-        protected void drawTestedCells(Tile[,] map)
-        {
-            Point[] cells = NearbyCells(map);
 
-            Point CELL_topleft = Map.VectorToCell(TopLeft);
-            Point CELL_topright = Map.VectorToCell(TopRight);
-            Point CELL_botleft = Map.VectorToCell(BotLeft);
-            Point CELL_botright = Map.VectorToCell(BotRight);
-            Point CELL_leftSideHigh = Map.VectorToCell(LeftSideHigh);
-            Point CELL_leftSideLow = Map.VectorToCell(LeftSideLow);
-            Point CELL_rightSideHigh = Map.VectorToCell(RightSideHigh);
-            Point CELL_rightSideLow = Map.VectorToCell(RightSideLow);
-
-            foreach (Point p in cells)
-            {
-                if (map[p.Y, p.X].value == 2 && (p.Equals(CELL_topleft) || p.Equals(CELL_topright) ||
-                                           p.Equals(CELL_botleft) || p.Equals(CELL_botright) ||
-                                           p.Equals(CELL_leftSideHigh) || p.Equals(CELL_leftSideLow) ||
-                                           p.Equals(CELL_rightSideHigh) || p.Equals(CELL_rightSideLow)))
-                    MarkTile(p, Color.Yellow);
-                else
-                    MarkTile(p, Color.Red);
-            }
-        }
-        protected void drawCollisionPoints()
-        {
-            pxlrect.X = (int)TopLeft.X - 1 - (int)camera.pubPosition.X;
-            pxlrect.Y = (int)TopLeft.Y - 1 - (int)camera.pubPosition.Y;
-            spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
-
-            pxlrect.X = (int)TopRight.X - 1 - (int)camera.pubPosition.X;
-            pxlrect.Y = (int)TopRight.Y - 1 - (int)camera.pubPosition.Y;
-            spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
-
-            pxlrect.X = (int)BotLeft.X - 1 - (int)camera.pubPosition.X;
-            pxlrect.Y = (int)BotLeft.Y - 1 - (int)camera.pubPosition.Y;
-            spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
-
-            pxlrect.X = (int)BotRight.X - 1 - (int)camera.pubPosition.X;
-            pxlrect.Y = (int)BotRight.Y - 1 - (int)camera.pubPosition.Y;
-            spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
-
-            pxlrect.X = (int)LeftSideHigh.X - 1 - (int)camera.pubPosition.X;
-            pxlrect.Y = (int)LeftSideHigh.Y - 1 - (int)camera.pubPosition.Y;
-            spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
-
-            pxlrect.X = (int)LeftSideLow.X - 1 - (int)camera.pubPosition.X;
-            pxlrect.Y = (int)LeftSideLow.Y - 1 - (int)camera.pubPosition.Y;
-            spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
-
-            pxlrect.X = (int)RightSideHigh.X - 1 - (int)camera.pubPosition.X;
-            pxlrect.Y = (int)RightSideHigh.Y - 1 - (int)camera.pubPosition.Y;
-            spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
-
-            pxlrect.X = (int)RightSideLow.X - 1 - (int)camera.pubPosition.X;
-            pxlrect.Y = (int)RightSideLow.Y - 1 - (int)camera.pubPosition.Y;
-            spriteBatch.Draw(whtpxl, pxlrect, Color.Lime);
-
-            pxlrect.X = (int)position.X - 1 - (int)camera.pubPosition.X;
-            pxlrect.Y = (int)position.Y - 1 - (int)camera.pubPosition.Y;
-            spriteBatch.Draw(whtpxl, pxlrect, Color.Green);
-        }
 
         // Gets the current state
         public State getState()
@@ -355,11 +242,6 @@ namespace WhenRobotsAttack
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
-            if (DEBUG)
-            {
-                drawTestedCells(game.currentLevel.map.layer[game.currentLevel.map.collisionLayer].tile);
-                drawCollisionPoints();
-            }
         }
     }
 }

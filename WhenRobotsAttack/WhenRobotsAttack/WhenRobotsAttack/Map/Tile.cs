@@ -13,6 +13,7 @@ namespace WhenRobotsAttack
         Texture2D spritesheetPTR; // A pointer to the sprite sheet
         public int value;
         GameManager game;
+        public int[] heightmap;
 
         public Tile(GameManager game, Texture2D spritesheetPTR, int value,Rectangle clip)
         {

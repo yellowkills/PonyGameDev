@@ -12,11 +12,15 @@ namespace WhenRobotsAttack
         public Tile[,] tile;
         Texture2D spritesheetPTR; // A pointer to the sprite sheet
         GameManager game;
+        int[] fullHeightmap;
+        int[] xySlopeHeightmap;
 
         public TileLayer(GameManager game, Texture2D spritesheet, int[,] tileNums)
         {
             this.game = game;
             this.spritesheetPTR = spritesheet;
+
+            buildHeightmaps();
 
             tile = buildTileLayer(tileNums);
         }
@@ -27,11 +31,39 @@ namespace WhenRobotsAttack
 
             for (int x = 0; x < tileNums.GetLength(0); x++)
                 for (int y = 0; y < tileNums.GetLength(1); y++)
-                    TL[y, x] = new Tile(game, spritesheetPTR, tileNums[x,y],new Rectangle(tileNums[x, y] * Map.tileWidth, 0, Map.tileWidth, Map.tileHeight));
-                
+                {
+                    TL[y, x] = new Tile(game, spritesheetPTR, tileNums[x, y], new Rectangle(tileNums[x, y] * Map.tileWidth, 0, Map.tileWidth, Map.tileHeight));
+                    if (TL[y, x].value == 1 || TL[y, x].value == 2 || TL[y, x].value == 3)
+                        TL[y, x].heightmap = fullHeightmap;
+                    else if (TL[y, x].value == 4)
+                        TL[y, x].heightmap = xySlopeHeightmap;
+                    else if (TL[y, x].value == 5)
+                    {
+                        Array.Reverse(xySlopeHeightmap);
+                        TL[y, x].heightmap = xySlopeHeightmap;
+                    }
+                }
 
                     return TL;
         }
+
+        // hardcoded for testing
+        private void buildHeightmaps()
+        {
+            fullHeightmap = new int[Map.tileWidth];
+            xySlopeHeightmap = new int[Map.tileWidth];
+
+            for (int i = 0; i < Map.tileWidth; i += 1)
+                fullHeightmap[i] = Map.tileHeight;
+
+            for (int i = 0; i < Map.tileWidth; i += 1)
+                xySlopeHeightmap[i] = i;
+        }
+
+
+
+
+
 
         public static Point VectorToCell(Vector2 vector)
         {

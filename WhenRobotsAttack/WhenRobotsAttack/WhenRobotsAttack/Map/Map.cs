@@ -86,7 +86,7 @@ namespace WhenRobotsAttack
 
             foreach (Point p in cells)
             {
-                if (layer[collisionLayer].tile[p.Y, p.X].value == 2)
+                if (layer[collisionLayer].tile[p.Y, p.X].value != 0)
                 {
                     if (e.DeltaY > 0 && (p.Equals(CELL_botleft) || p.Equals(CELL_botright)))
                     {
@@ -135,6 +135,25 @@ namespace WhenRobotsAttack
                         e.DeltaY = 0;
                         e.position.Y = ((p.Y + 1) * Map.tileHeight) - e.topLeft.Y;
                     }
+                }
+            }
+        }
+
+        public void checkTileCollisionsAABB(Entity e)
+        {
+            Point[] cells = e.NearbyCellsAABB(layer[collisionLayer].tile);
+
+            foreach (Point p in cells)
+            {
+                if ((layer[collisionLayer].tile[p.Y, p.X].value == 2) || (layer[collisionLayer].tile[p.Y, p.X].value == 3))
+                {
+                    Vector2 normal = new Vector2();
+                    Vector2 tileCenter = new Vector2(p.X * tileWidth + tileWidth/2,p.Y * tileHeight + tileHeight/2);
+                    Rectangle tempAABB = new Rectangle(e.AABB.X - tileWidth/2, e.AABB.Y - tileHeight/2,e.AABB.Width+tileWidth/2,e.AABB.Height+tileHeight/2);
+
+
+
+
                 }
             }
         }
