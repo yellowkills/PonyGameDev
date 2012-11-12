@@ -319,7 +319,6 @@ namespace WhenRobotsAttack
 
             if (isGravityOn) DeltaY += gravity*game.ElapsedSeconds;
         }
-
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);

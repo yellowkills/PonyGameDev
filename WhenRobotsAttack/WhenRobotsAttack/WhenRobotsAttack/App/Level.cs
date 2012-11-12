@@ -171,7 +171,7 @@ namespace WhenRobotsAttack
                     int h = i * Map.tileMapHeight;
 
 
-                    if (m.layer[m.collisionLayer].tile[i, j].value == 4)
+                    if (m.layer[m.collisionLayer].tile[i, j].value == 9)
                         spawn = new Vector2(j * Map.tileWidth, i * Map.tileHeight);
                 }
             }
@@ -186,7 +186,7 @@ namespace WhenRobotsAttack
             {
                 for (int j = 0; j < m.layer[m.collisionLayer].tile.GetLength(1); j++)
                 {
-                    if (m.layer[m.collisionLayer].tile[i, j].value == 3)
+                    if (m.layer[m.collisionLayer].tile[i, j].value == 8)
                         spawn = new Vector2(j * Map.tileWidth, i * Map.tileHeight);
                 }
             }
