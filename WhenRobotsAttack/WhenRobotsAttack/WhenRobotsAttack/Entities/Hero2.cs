@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Storage;
 
 namespace WhenRobotsAttack
 {
-    public class Hero : KillableCreature
+    public class Hero2 : KillableCreature2
     {
 
         #region Class Variables
@@ -35,7 +35,7 @@ namespace WhenRobotsAttack
 
         #endregion
 
-        public Hero(GameManager game, string ponyname)
+        public Hero2(GameManager game, string ponyname)
             : base(game)
         {
             rect = new Rectangle((int)position.X, (int)position.Y, _heroWidth, _heroHeight);
@@ -45,8 +45,6 @@ namespace WhenRobotsAttack
 
             loadHero(ponyname);
             loadAnimations();
-            setCollisionOffsets();
-
         }
 
         // Loading
@@ -81,20 +79,6 @@ namespace WhenRobotsAttack
 
             walkLeft = new Animation(spritesheet, LframesStartPos, _heroWidth, _heroHeight, numframes, 3);
             walkRight = new Animation(spritesheet, RframesStartPos, _heroWidth, _heroHeight, numframes, 3);
-        }
-
-        // Collision point offsets
-        private void setCollisionOffsets()
-        {
-            // !HARDCODE
-            topLeft = new Vector2(32, 16);
-            topRight = new Vector2(64, 16);
-            botLeft = new Vector2(38, rect.Height);
-            botRight = new Vector2(58, rect.Height);
-            leftSideHigh = new Vector2(30, 27);
-            leftSideLow = new Vector2(30, 57);
-            rightSideHigh = new Vector2(74, 27);
-            rightSideLow = new Vector2(71, 57);
         }
 
         public void testHealing()
@@ -134,6 +118,26 @@ namespace WhenRobotsAttack
         public override void Draw(GameTime gameTime)
         {
             
+
+            switch (state)
+            {
+                case State.STANDING:
+                    if (direction == Direction.LEFT) spriteBatch.Draw(spritesheet, rect, LstandingRECT, Color.White);
+                    else spriteBatch.Draw(spritesheet, rect, RstandingRECT, Color.White);
+                    break;
+                case State.RUNNING:
+                    if (direction == Direction.LEFT) walkLeft.Draw(spriteBatch, position, getRotationAngle());
+                    else walkRight.Draw(spriteBatch, rect);
+                    break;
+                case State.INAIR:
+                    if (direction == Direction.LEFT) walkLeft.DrawFirstFrame(spriteBatch, rect);
+                    else walkRight.DrawFirstFrame(spriteBatch, rect);
+                    break;
+                default:
+                    break;
+            }
+
+            /*
             switch (state)
             {
                 case State.STANDING:
@@ -150,7 +154,7 @@ namespace WhenRobotsAttack
                     break;
                 default:
                     break;
-            }
+            }*/
 
 
 

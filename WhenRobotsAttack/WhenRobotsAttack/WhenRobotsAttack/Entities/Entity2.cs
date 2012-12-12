@@ -28,7 +28,7 @@ namespace WhenRobotsAttack
 
         // Axis Aligned Bounding Box
         public Rectangle AABB;
-        public Vector2 sensorA, sensorB;
+        public Vector2 sensorA, sensorB, sensorAorigin, sensorBorigin;
         public Vector2 animationOffset;
 
         // enums
@@ -62,6 +62,7 @@ namespace WhenRobotsAttack
         // Location and Area that the entity is inhabiting
         public Rectangle rect;
         public Vector2 position;
+        public double rotationAngle;
 
         // Actual collision point coordinates
          // The change in position
@@ -140,6 +141,50 @@ namespace WhenRobotsAttack
             maxSpeedX = Physics.maxSpeedX;
             maxSpeedY = Physics.maxSpeedY;
         }
+
+
+        public float getRotationAngle()
+        {
+            double angle;
+
+            Vector2 diff = Vector2.Subtract(sensorA,sensorB);
+            diff.X = -diff.X;
+
+            angle = Math.Atan2(diff.Y,diff.X);
+
+            //if (diff.X < 0 && diff.Y > 0) angle += MathHelper.Pi;
+            //else if (diff.X < 0 && diff.Y < 0) angle += MathHelper.Pi;
+            //else if (diff.X > 0 && diff.Y < 0) angle += MathHelper.Pi;
+
+            return (float) angle;
+        }
+
+        public int detectA(TileLayer TL)
+        {
+            Point p = Map.VectorToCell(sensorA);
+
+            float i = sensorA.X - p.X * Map.tileWidth;
+
+            int height = TL.tile[p.X, p.Y].heightmap[(int)i];
+
+            return height;
+        }
+
+        public int detectB(TileLayer TL)
+        {
+            Point p = Map.VectorToCell(sensorB);
+
+            float i = sensorB.X - p.X * Map.tileWidth;
+
+            int height = TL.tile[p.X, p.Y].heightmap[(int)i];
+
+            return height;
+        }
+
+
+
+
+
 
         // Movement
         public void MoveLeft()
@@ -238,6 +283,14 @@ namespace WhenRobotsAttack
             rect.Y = (int)position.Y - (int)camera.pubPosition.Y;
 
             if (isGravityOn) DeltaY += gravity*game.ElapsedSeconds;
+
+            int hA = detectA(game.currentLevel.map.layer[1]); //hardcode
+            int hB = detectB(game.currentLevel.map.layer[1]); //hardcode
+
+            //if (hA != null && hB != null)
+
+            //    ;
+            //else if ();
         }
         public override void Draw(GameTime gameTime)
         {

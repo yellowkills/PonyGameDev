@@ -113,10 +113,13 @@
     <Compile Include="Entities\AI\AISensorModule.cs" />
     <Compile Include="Entities\AI\aStar.cs" />
     <Compile Include="Entities\AI\WorldState.cs" />
+    <Compile Include="Entities\KillableCreature2.cs" />
+    <Compile Include="Entities\Hero2.cs" />
     <Compile Include="Entities\Entity2.cs" />
     <Compile Include="Entities\Util\Animation.cs" />
     <Compile Include="Entities\Enemy.cs" />
     <Compile Include="Entities\Hero.cs" />
+    <Compile Include="Entities\Util\Animator.cs" />
     <Compile Include="UI\HUD.cs" />
     <Compile Include="App\Inupt\kbdController.cs" />
     <Compile Include="Entities\KillableCreature.cs" />

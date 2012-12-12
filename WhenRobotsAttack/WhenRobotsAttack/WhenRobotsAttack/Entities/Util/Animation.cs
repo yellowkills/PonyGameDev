@@ -93,5 +93,12 @@ namespace WhenRobotsAttack
 
             Countdown--;
         }
+
+        public void Draw(SpriteBatch spriteBatch, Vector2 spritePos, float rotationAngle)
+        {
+            spriteBatch.Draw(spritesheet, spritePos, clip, Color.White, rotationAngle, Vector2.Zero, 1.0f, SpriteEffects.None, 0f);
+
+            Countdown--;
+        }
     }
 }
